@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (hamburgerBtn && mobileMenu) {
     hamburgerBtn.addEventListener('click', () => {
       mobileMenu.classList.toggle('open');
+      hamburgerBtn.classList.toggle('open'); // animates bars → X
     });
   }
 
@@ -82,26 +83,26 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // About Section Parallax – Image moving inside frame
+    // About Section Parallax – Image moving inside frame (faster)
     gsap.to("#about-img-left", {
-      y: isMobile ? "-15%" : -100,
+      y: "-20%",
       ease: "none",
       scrollTrigger: {
         trigger: "#about",
         start: "top bottom",
         end: "bottom top",
-        scrub: true,
+        scrub: 0.5,
       }
     });
 
     gsap.to("#about-img-right", {
-      y: isMobile ? "15%" : 100,
+      y: "-20%",
       ease: "none",
       scrollTrigger: {
         trigger: "#about",
         start: "top bottom",
         end: "bottom top",
-        scrub: true,
+        scrub: 0.5,
       }
     });
   }

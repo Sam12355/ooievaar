@@ -50,35 +50,55 @@
         }
 
         #mobile-menu {
-            display: none;
+            max-height: 0;
+            overflow: hidden;
             flex-direction: column;
             background: #000;
-            padding: 1rem 1.5rem 2rem;
-            gap: 1.5rem;
-            border-top: 1px solid rgba(205,188,166,0.3);
+            padding: 0 1.5rem;
+            gap: 0;
+            border-top: 0px solid rgba(205,188,166,0.3);
             position: absolute;
             top: 100%;
             left: 0;
             width: 100%;
             z-index: 40;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+            box-shadow: none;
+            transition:
+                max-height 0.4s cubic-bezier(0.4,0,0.2,1),
+                padding 0.4s ease,
+                gap 0.4s ease,
+                border-top-width 0.4s ease,
+                box-shadow 0.4s ease;
+            display: flex;
         }
 
         #mobile-menu.open {
-            display: flex;
+            max-height: 400px;
+            padding: 1.2rem 1.5rem 2rem;
+            gap: 1.5rem;
+            border-top-width: 1px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
         }
 
         #mobile-menu a {
             font-family: 'Kurversbrug', serif;
             font-weight: 300;
             color: #cdbca6;
-            font-size: 20px; /* Larger for mobile taps */
+            font-size: 20px;
             text-transform: uppercase;
             letter-spacing: 0.1em;
             text-decoration: none;
             border-bottom: 1px solid rgba(205,188,166,0.1);
             padding-bottom: 0.5rem;
             transition: color 0.3s ease;
+            opacity: 0;
+            transform: translateY(-8px);
+            transition: opacity 0.3s ease, transform 0.3s ease, color 0.2s ease;
+        }
+
+        #mobile-menu.open a {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         #mobile-menu a:last-child {
@@ -87,6 +107,27 @@
 
         #mobile-menu a:hover {
             color: #fff;
+        }
+
+        /* Hamburger icon animation */
+        #hamburger-btn .bar {
+            display: block;
+            width: 15px;
+            height: 1.5px;
+            background: #000;
+            transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+            transform-origin: center;
+        }
+
+        #hamburger-btn.open .bar:nth-child(1) {
+            transform: translateY(4.5px) rotate(45deg);
+        }
+        #hamburger-btn.open .bar:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+        #hamburger-btn.open .bar:nth-child(3) {
+            transform: translateY(-4.5px) rotate(-45deg);
         }
 
         /* Hide desktop nav on small screens */
@@ -159,11 +200,11 @@
                 </div>
                 <!-- Hamburger (mobile only) -->
                 <button id="hamburger-btn" aria-label="Menu" class="bg-[#cdbca6] rounded-full p-2 flex items-center justify-center hover:opacity-90 transition-opacity">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                        <g transform="translate(2.5, 5)">
-                            <path d="M0 10V8.33333H15V10H0ZM0 5.83333V4.16667H15V5.83333H0ZM0 1.66667V0H15V1.66667H0Z" fill="#000000" />
-                        </g>
-                    </svg>
+                    <span class="flex flex-col gap-[3px] justify-center items-center w-5 h-5">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </span>
                 </button>
             </div>
         </div>
