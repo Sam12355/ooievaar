@@ -258,8 +258,10 @@
             <div class="flex flex-col lg:flex-row items-center justify-between gap-8 md:gap-12">
                 <!-- Left Image: visible on all screens -->
                 <div class="w-full sm:w-3/4 mx-auto lg:mx-0 lg:w-1/4 lg:pt-32">
-                    <img id="about-img-left" src="<?php echo get_template_directory_uri(); ?>/assets/50e5b20ef3bab8e3ecb95301d6e6a59cb7610770.png" alt="Distilleerderij"
-                        class="w-full h-[280px] sm:h-[360px] lg:h-[450px] object-cover rounded-[32px] sm:rounded-[40px] shadow-2xl" />
+                    <div class="w-full h-[280px] sm:h-[360px] lg:h-[450px] overflow-hidden rounded-[32px] sm:rounded-[40px] shadow-2xl relative">
+                        <img id="about-img-left" src="<?php echo get_template_directory_uri(); ?>/assets/50e5b20ef3bab8e3ecb95301d6e6a59cb7610770.png" alt="Distilleerderij"
+                            class="absolute inset-0 w-full h-[130%] object-cover" />
+                    </div>
                 </div>
 
                 <!-- Center Content -->
@@ -281,8 +283,10 @@
 
                 <!-- Right Image: visible on all screens -->
                 <div class="w-full sm:w-3/4 mx-auto lg:mx-0 lg:w-1/4 lg:pt-0">
-                    <img id="about-img-right" src="<?php echo get_template_directory_uri(); ?>/assets/2598b498148e6540a6572d998fa86bee0e7a8b8e.png" alt="Distilleerderij Amsterdam"
-                        class="w-full h-[280px] sm:h-[360px] lg:h-[450px] object-cover rounded-[32px] sm:rounded-[40px] shadow-2xl" />
+                    <div class="w-full h-[280px] sm:h-[360px] lg:h-[450px] overflow-hidden rounded-[32px] sm:rounded-[40px] shadow-2xl relative">
+                        <img id="about-img-right" src="<?php echo get_template_directory_uri(); ?>/assets/2598b498148e6540a6572d998fa86bee0e7a8b8e.png" alt="Distilleerderij Amsterdam"
+                            class="absolute inset-0 w-full h-[130%] object-cover" />
+                    </div>
                 </div>
             </div>
 

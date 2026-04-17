@@ -82,29 +82,27 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // About Section Parallax – only on desktop
-    if (!isMobile) {
-      gsap.to("#about-img-left", {
-        y: -250,
-        ease: "none",
-        scrollTrigger: {
-          trigger: "#about",
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 1.5,
-        }
-      });
+    // About Section Parallax – Image moving inside frame
+    gsap.to("#about-img-left", {
+      y: isMobile ? "-15%" : -100,
+      ease: "none",
+      scrollTrigger: {
+        trigger: "#about",
+        start: "top bottom",
+        end: "bottom top",
+        scrub: true,
+      }
+    });
 
-      gsap.to("#about-img-right", {
-        y: 250,
-        ease: "none",
-        scrollTrigger: {
-          trigger: "#about",
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 1.5,
-        }
-      });
-    }
+    gsap.to("#about-img-right", {
+      y: isMobile ? "15%" : 100,
+      ease: "none",
+      scrollTrigger: {
+        trigger: "#about",
+        start: "top bottom",
+        end: "bottom top",
+        scrub: true,
+      }
+    });
   }
 });
