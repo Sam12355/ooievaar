@@ -2,9 +2,9 @@
 
     <!-- HERO SECTION -->
     <section id="hero" class="relative bg-black overflow-hidden" style="min-height:100vh;">
-        <div class="absolute inset-0" style="top:-40%; bottom:-40%;">
-            <img id="hero-parallax-img" src="<?php echo get_template_directory_uri(); ?>/assets/6addceefab5229029d4dc788a8a17c10ef6ba492.png"
-                alt="Distilleerderij ketels" class="w-full h-full object-cover object-center" style="opacity: 0.85;" />
+        <div class="hero-parallax-bg absolute">
+                <img id="hero-parallax-img" src="<?php echo get_template_directory_uri(); ?>/assets/6addceefab5229029d4dc788a8a17c10ef6ba492.png"
+                alt="Distilleerderij ketels" class="w-full h-full object-cover" style="opacity: 0.85; object-position: center 30%;" />
             <div class="absolute inset-0"
                 style="background:linear-gradient(to bottom,rgba(0,0,0,0.3),rgba(0,0,0,0.1),rgba(0,0,0,0.4));">
             </div>

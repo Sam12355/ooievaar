@@ -45,6 +45,18 @@
             font-weight: 300 !important;
         }
 
+        /* Hero parallax wrapper – full image on mobile, extended for parallax on desktop */
+        .hero-parallax-bg {
+            left: 0; right: 0;
+            top: -40%; bottom: -40%;
+        }
+
+        @media (max-width: 768px) {
+            .hero-parallax-bg {
+                top: 0; bottom: 0;
+            }
+        }
+
         input::placeholder {
             color: rgba(255, 255, 255, 0.6);
         }
