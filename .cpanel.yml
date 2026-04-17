@@ -1,5 +1,5 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/djjetblack/public_html/
-    - /bin/cp -R wp-content/themes/avw-distillery $DEPLOYPATH/wp-content/themes/
+    - export DEPLOYPATH=/home/djjetblack/public_html/ooievaar/wp-content/themes/avw-distillery/
+    - /bin/cp -R wp-content/themes/avw-distillery/. $DEPLOYPATH
