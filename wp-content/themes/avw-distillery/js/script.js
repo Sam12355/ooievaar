@@ -1,4 +1,15 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // ── Mobile Menu Toggle ──
+  const hamburgerBtn = document.getElementById('hamburger-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  if (hamburgerBtn && mobileMenu) {
+    hamburgerBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('open');
+    });
+  }
+
+  // ── Category Filter ──
   const filterButtons = document.querySelectorAll('.category-btn');
   const productCards = document.querySelectorAll('.product-card');
 
@@ -39,13 +50,15 @@ document.addEventListener("DOMContentLoaded", () => {
     gsap.ticker.lagSmoothing(0);
   }
 
-  // ── GSAP Parallax ──
+  // ── GSAP Parallax (desktop only for performance) ──
   if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger);
 
+    const isMobile = window.innerWidth < 768;
+
     // Hero Logo – flies UP very slowly
     gsap.to("#hero-logo", {
-      y: -100,
+      y: isMobile ? -50 : -100,
       opacity: 0,
       ease: "none",
       scrollTrigger: {
@@ -56,9 +69,9 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // Hero Text Set – flies DOWN at the same speed
+    // Hero Text Set – flies DOWN
     gsap.to("#hero-text-set", {
-      y: 500,
+      y: isMobile ? 200 : 500,
       opacity: 0,
       ease: "none",
       scrollTrigger: {
@@ -69,27 +82,29 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // About Section Parallax
-    gsap.to("#about-img-left", {
-      y: -250,
-      ease: "none",
-      scrollTrigger: {
-        trigger: "#about",
-        start: "top bottom",
-        end: "bottom top",
-        scrub: 1.5,
-      }
-    });
+    // About Section Parallax – only on desktop
+    if (!isMobile) {
+      gsap.to("#about-img-left", {
+        y: -250,
+        ease: "none",
+        scrollTrigger: {
+          trigger: "#about",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 1.5,
+        }
+      });
 
-    gsap.to("#about-img-right", {
-      y: 250,
-      ease: "none",
-      scrollTrigger: {
-        trigger: "#about",
-        start: "top bottom",
-        end: "bottom top",
-        scrub: 1.5,
-      }
-    });
+      gsap.to("#about-img-right", {
+        y: 250,
+        ease: "none",
+        scrollTrigger: {
+          trigger: "#about",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 1.5,
+        }
+      });
+    }
   }
 });
