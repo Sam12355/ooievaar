@@ -83,27 +83,52 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // About Section Parallax – Image moving inside frame (faster)
-    gsap.to("#about-img-left", {
-      y: "-20%",
-      ease: "none",
-      scrollTrigger: {
-        trigger: "#about",
-        start: "top bottom",
-        end: "bottom top",
-        scrub: 0.5,
-      }
-    });
+    if (isMobile) {
+      // Mobile: image slides inside fixed frame
+      gsap.to("#about-img-left-mobile", {
+        y: "-20%",
+        ease: "none",
+        scrollTrigger: {
+          trigger: "#about",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 0.5,
+        }
+      });
 
-    gsap.to("#about-img-right", {
-      y: "-20%",
-      ease: "none",
-      scrollTrigger: {
-        trigger: "#about",
-        start: "top bottom",
-        end: "bottom top",
-        scrub: 0.5,
-      }
-    });
+      gsap.to("#about-img-right-mobile", {
+        y: "-20%",
+        ease: "none",
+        scrollTrigger: {
+          trigger: "#about",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 0.5,
+        }
+      });
+    } else {
+      // Desktop: original dramatic staggered movement
+      gsap.to("#about-img-left", {
+        y: -250,
+        ease: "none",
+        scrollTrigger: {
+          trigger: "#about",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 1.5,
+        }
+      });
+
+      gsap.to("#about-img-right", {
+        y: 250,
+        ease: "none",
+        scrollTrigger: {
+          trigger: "#about",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 1.5,
+        }
+      });
+    }
   }
 });
