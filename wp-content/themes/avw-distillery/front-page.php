@@ -54,15 +54,15 @@
             ) );
             ?>
             <div class="flex justify-center mb-8 sm:mb-12">
-                <div class="flex items-center border border-[#eedfcb] rounded-full px-2 py-1.5 gap-1 overflow-x-auto max-w-full" style="scrollbar-width:none;">
+                <div class="flex items-center justify-center flex-wrap border border-[#eedfcb] rounded-[32px] p-1.5 gap-1.5 max-w-full">
                     <button
-                        class="category-btn px-4 sm:px-6 py-2 rounded-full text-[14px] sm:text-[16px] font-['DM_Sans',sans-serif] transition-all bg-[#eedfcb] text-[#031509] whitespace-nowrap flex-shrink-0"
+                        class="category-btn px-4 sm:px-6 py-2 rounded-full text-[14px] sm:text-[16px] font-['DM_Sans',sans-serif] transition-all bg-[#eedfcb] text-[#031509] whitespace-nowrap"
                         data-category="Toon Alles">Toon Alles</button>
                     
                     <?php if ( ! is_wp_error( $categories ) && ! empty( $categories ) ) : ?>
                         <?php foreach ( $categories as $category ) : ?>
                             <button
-                                class="category-btn px-4 sm:px-6 py-2 rounded-full text-[14px] sm:text-[16px] font-['DM_Sans',sans-serif] transition-all text-black whitespace-nowrap flex-shrink-0"
+                                class="category-btn px-4 sm:px-6 py-2 rounded-full text-[14px] sm:text-[16px] font-['DM_Sans',sans-serif] transition-all text-black whitespace-nowrap"
                                 data-category="<?php echo esc_attr( $category->name ); ?>"><?php echo esc_html( $category->name ); ?></button>
                         <?php endforeach; ?>
                     <?php endif; ?>
