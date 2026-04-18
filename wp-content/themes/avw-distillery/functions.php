@@ -36,3 +36,20 @@ function avw_tailwind_config() {
     <?php
 }
 add_action('wp_head', 'avw_tailwind_config');
+
+function avw_setup_theme() {
+    add_theme_support( 'woocommerce' );
+}
+add_action( 'after_setup_theme', 'avw_setup_theme' );
+
+function avw_widgets_init() {
+    register_sidebar( array(
+        'name'          => 'Shop Sidebar',
+        'id'            => 'shop-sidebar',
+        'before_widget' => '<div class="widget %2$s mb-10 border-b border-[#36221d]/10 pb-8 last:border-0">',
+        'after_widget'  => '</div>',
+        'before_title'  => '<h3 class="font-kurversbrug text-[22px] sm:text-[26px] text-[#36221d] mb-5 uppercase tracking-wide">',
+        'after_title'   => '</h3>',
+    ) );
+}
+add_action( 'widgets_init', 'avw_widgets_init' );

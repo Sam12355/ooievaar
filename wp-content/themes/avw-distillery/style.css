@@ -6,3 +6,118 @@ Description: Custom theme for De Ooievaar Distillery, converted from custom HTML
 Version: 1.0.0
 Text Domain: avw-distillery
 */
+
+/* WooCommerce Custom Sidebar Styles */
+.woo-custom-sidebar .widget-title, .woo-custom-sidebar h2.widgettitle {
+    font-family: 'Kurversbrug', serif;
+    font-size: 26px;
+    color: #36221d;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.woo-custom-sidebar input[type="search"], .woo-custom-sidebar input.search-field {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 9999px;
+    border: 1px solid rgba(54, 34, 29, 0.2);
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    outline: none;
+    transition: border-color 0.3s;
+}
+.woo-custom-sidebar input[type="search"]:focus, .woo-custom-sidebar input.search-field:focus {
+    border-color: #36221d;
+}
+
+.woo-custom-sidebar ul.product-categories {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.woo-custom-sidebar ul.product-categories li {
+    margin-bottom: 12px;
+    font-family: 'DM Sans', sans-serif;
+    color: #36221d;
+    font-size: 16px;
+}
+.woo-custom-sidebar ul.product-categories li a {
+    text-decoration: none;
+    color: inherit;
+    transition: opacity 0.2s;
+}
+.woo-custom-sidebar ul.product-categories li a:hover {
+    opacity: 0.7;
+    text-decoration: underline;
+}
+
+/* Price Filter widget */
+.woo-custom-sidebar .price_slider_wrapper .price_slider {
+    background: rgba(54, 34, 29, 0.2);
+    height: 4px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    position: relative;
+}
+.woo-custom-sidebar .price_slider_wrapper .ui-slider-range {
+    background: #36221d;
+    height: 100%;
+    position: absolute;
+}
+.woo-custom-sidebar .price_slider_wrapper .ui-slider-handle {
+    background: #36221d;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    position: absolute;
+    top: -6px;
+    cursor: grab;
+    margin-left: -8px;
+}
+.woo-custom-sidebar .price_slider_amount {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+}
+.woo-custom-sidebar .price_slider_amount .button {
+    background: #36221d;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 9999px;
+    border: none;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: opacity 0.3s;
+}
+.woo-custom-sidebar .price_slider_amount .button:hover {
+    opacity: 0.9;
+}
+
+/* Pagination */
+.woo-pagination ul {
+    display: flex;
+    list-style: none;
+    gap: 8px;
+    padding: 0;
+    margin: 0;
+    justify-content: center;
+}
+.woo-pagination ul li a, .woo-pagination ul li span {
+    display: block;
+    padding: 10px 16px;
+    border-radius: 9999px;
+    background: #eedfcb;
+    color: #36221d;
+    text-decoration: none;
+    font-weight: 500;
+    transition: opacity 0.2s;
+}
+.woo-pagination ul li span.current {
+    background: #36221d;
+    color: white;
+}
+.woo-pagination ul li a:hover {
+    opacity: 0.8;
+}
