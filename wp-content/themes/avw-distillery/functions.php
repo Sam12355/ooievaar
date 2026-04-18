@@ -80,11 +80,12 @@ function avw_force_exact_sentence_search( $query ) {
 }
 add_action( 'pre_get_posts', 'avw_force_exact_sentence_search', 999 );
 
-// Force the correct template for all product-related archive views
+// Force the correct template for all product-related archive views and the assortment page
 function avw_force_product_template( $template ) {
-    $is_product_archive = is_shop() || is_product_taxonomy() || (is_search() && (get_query_var( 'post_type' ) === 'product' || (isset($_GET['post_type']) && $_GET['post_type'] === 'product')));
+    $is_assortment_page = is_shop() || is_product_taxonomy() || (is_page('assortment')) || (strpos($_SERVER['REQUEST_URI'], '/assortment') !== false);
+    $is_product_search = is_search() && (get_query_var( 'post_type' ) === 'product' || (isset($_GET['post_type']) && $_GET['post_type'] === 'product'));
     
-    if ( $is_product_archive ) {
+    if ( $is_assortment_page || $is_product_search ) {
         $new_template = locate_template( array( 'woocommerce/archive-product.php' ) );
         if ( '' != $new_template ) {
             return $new_template;
