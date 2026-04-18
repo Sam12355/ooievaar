@@ -75,6 +75,26 @@ function avw_force_exact_sentence_search( $query ) {
                 if (isset($query->query_vars['taxonomy'])) unset($query->query_vars['taxonomy']);
                 if (isset($query->query_vars['term'])) unset($query->query_vars['term']);
             }
+
+            // PRECISION PRICE FILTERING
+            if ( isset($_GET['min_price']) || isset($_GET['max_price']) ) {
+                $meta_query = $query->get('meta_query');
+                if ( ! is_array($meta_query) ) $meta_query = array();
+                
+                $price_filter = array(
+                    'key'     => '_price',
+                    'type'    => 'NUMERIC',
+                    'compare' => 'BETWEEN',
+                );
+
+                $min = isset($_GET['min_price']) ? floatval($_GET['min_price']) : 0;
+                $max = isset($_GET['max_price']) ? floatval($_GET['max_price']) : 999999;
+                
+                $price_filter['value'] = array($min, $max);
+                $meta_query[] = $price_filter;
+                
+                $query->set('meta_query', $meta_query);
+            }
         }
     }
 }
