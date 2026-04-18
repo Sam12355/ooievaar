@@ -90,7 +90,7 @@ defined( 'ABSPATH' ) || exit;
                 <!-- Price Filter (Dual-Control AJAX) -->
                 <div class="widget">
                     <h3 class="font-kurversbrug text-[22px] sm:text-[26px] text-[#36221d] mb-4 lg:mb-5">Filter op prijs</h3>
-                    <div class="price-filter-wrapper space-y-6" data-v="2.1">
+                    <div class="price-filter-wrapper space-y-6" data-v="3.0">
                         <!-- Custom Manual Inputs -->
                         <div class="flex items-center gap-4">
                             <div class="relative flex-1">
@@ -307,6 +307,7 @@ defined( 'ABSPATH' ) || exit;
                     });
 
                     rebindDynamicEvents();
+                    console.log('=== AVW POWER SYNC v3.0 ACTIVE ===');
 
                     if (typeof jQuery !== 'undefined') {
                         jQuery(document.body).on('price_slider_change', function(event, min, max) {
