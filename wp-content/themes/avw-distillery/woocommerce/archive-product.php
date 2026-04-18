@@ -90,7 +90,7 @@ defined( 'ABSPATH' ) || exit;
                 <!-- Price Filter (Custom AJAX) -->
                 <div class="widget">
                     <h3 class="font-kurversbrug text-[22px] sm:text-[26px] text-[#36221d] mb-4 lg:mb-5">Filter op prijs</h3>
-                    <div class="price-filter-wrapper space-y-4">
+                    <div class="price-filter-wrapper space-y-4" data-v="2.0">
                         <div class="flex items-center gap-4">
                             <div class="relative flex-1">
                                 <label for="min_price_input" class="block text-[11px] uppercase tracking-widest text-[#36221d]/60 mb-1.5 ml-1 font-bold">Vanaf</label>
