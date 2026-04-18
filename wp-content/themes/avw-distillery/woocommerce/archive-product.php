@@ -133,8 +133,28 @@ get_header();
                                 let parser = new DOMParser();
                                 let doc = parser.parseFromString(html, 'text/html');
 
+                                console.log('========== AVW SEARCH DEBUG ==========');
+                                console.log('1. Fetched URL:', url.toString());
+
                                 let docGrid = doc.getElementById('ajax-products-container');
-                                if (grid && docGrid) grid.innerHTML = docGrid.innerHTML;
+                                if (!docGrid) {
+                                    console.error('2. ERROR: The server did not return #ajax-products-container! It might be loading the wrong template.');
+                                    console.log('First 500 chars of response:', html.substring(0, 500));
+                                } else {
+                                    let productTitles = docGrid.querySelectorAll('.product-card h3');
+                                    console.log('2. SUCCESS: Server returned', productTitles.length, 'products for this search.');
+                                    let titleArray = [];
+                                    productTitles.forEach(t => titleArray.push(t.innerText.trim()));
+                                    console.log('3. Product Names Returned:', titleArray);
+
+                                    let testSql = docGrid.getAttribute('data-sql');
+                                    console.log('4. SERVER EXECUTED SQL:', testSql);
+
+                                    if (grid) {
+                                        grid.innerHTML = docGrid.innerHTML;
+                                        grid.setAttribute('data-sql', testSql);
+                                    }
+                                }
 
                                 let pagination = document.getElementById('ajax-pagination-container');
                                 let docPagination = doc.getElementById('ajax-pagination-container');
@@ -233,7 +253,7 @@ get_header();
 
         <!-- PRODUCTS GRID -->
         <div class="flex-1">
-            <div id="ajax-products-container" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8 mb-12 transition-opacity duration-300">
+            <div id="ajax-products-container" data-sql="<?php global $wp_query; echo esc_attr( $wp_query->request ); ?>" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8 mb-12 transition-opacity duration-300">
                 <?php
                 if ( have_posts() ) {
                     while ( have_posts() ) : the_post();
