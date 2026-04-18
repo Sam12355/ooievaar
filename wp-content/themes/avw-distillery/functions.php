@@ -60,8 +60,11 @@ add_action( 'widgets_init', 'avw_widgets_init' );
 // Add SKU to search
 function avw_product_search_join( $join, $query ) {
     global $wpdb;
-    if ( is_search() && $query->is_main_query() && isset($_GET['post_type']) && $_GET['post_type'] === 'product' ) {
-        $join .= " LEFT JOIN {$wpdb->postmeta} AS pm_sku ON {$wpdb->posts}.ID = pm_sku.post_id AND pm_sku.meta_key = '_sku' ";
+    $pt = $query->get('post_type');
+    $is_product = ( $pt === 'product' || is_array($pt) && in_array('product', $pt) || (isset($_GET['post_type']) && $_GET['post_type'] === 'product') );
+    
+    if ( ! is_admin() && $query->is_search() && $query->is_main_query() && $is_product ) {
+        $join .= " LEFT JOIN {$wpdb->postmeta} AS pm_sku ON ({$wpdb->posts}.ID = pm_sku.post_id AND pm_sku.meta_key = '_sku') ";
     }
     return $join;
 }
@@ -70,7 +73,10 @@ add_filter( 'posts_join', 'avw_product_search_join', 10, 2 );
 // Replace WP's default word-splitting search (which breaks on hyphens) with exact phrase matching
 function avw_custom_woo_search( $search, $wp_query ) {
     global $wpdb;
-    if ( ! is_admin() && $wp_query->is_search() && $wp_query->is_main_query() && isset($_GET['post_type']) && $_GET['post_type'] === 'product' ) {
+    $pt = $wp_query->get('post_type');
+    $is_product = ( $pt === 'product' || is_array($pt) && in_array('product', $pt) || (isset($_GET['post_type']) && $_GET['post_type'] === 'product') );
+    
+    if ( ! is_admin() && $wp_query->is_search() && $wp_query->is_main_query() && $is_product ) {
         $search_term = $wp_query->get('s');
         if ( empty( $search_term ) ) return $search;
         
