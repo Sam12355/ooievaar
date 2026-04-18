@@ -76,14 +76,14 @@ function avw_custom_woo_search( $search, $wp_query ) {
         
         $like = '%' . $wpdb->esc_like( $search_term ) . '%';
         
+        // Strict match: ONLY Title and SKU. Ignore content/excerpt to prevent irrelevant matching.
         $search = " AND (
             ({$wpdb->posts}.post_title LIKE '{$like}') 
-            OR ({$wpdb->posts}.post_excerpt LIKE '{$like}') 
-            OR ({$wpdb->posts}.post_content LIKE '{$like}') 
             OR ( pm_sku.meta_value LIKE '{$like}' )
         ) ";
     }
     return $search;
 }
 add_filter( 'posts_search', 'avw_custom_woo_search', 500, 2 );
+
 
