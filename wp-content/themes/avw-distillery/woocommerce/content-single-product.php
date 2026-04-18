@@ -18,16 +18,16 @@ if ( post_password_required() ) {
 }
 ?>
 
-<!-- TOP SECTION: MAIN PRODUCT AREA -->
+	<!-- TOP SECTION: MAIN PRODUCT AREA -->
 <div id="product-<?php the_ID(); ?>" <?php wc_product_class( 'grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start mb-12', $product ); ?>>
 
-	<!-- LEFT: PRODUCT IMAGES -->
-	<div class="product-gallery-container">
-		<div class="relative rounded-[32px] overflow-hidden bg-white shadow-xl shadow-black/5 aspect-square flex items-center justify-center p-8">
+	<!-- LEFT: PRODUCT IMAGES (WITH MAGNIFICATION) -->
+	<div class="product-gallery-container group/zoom cursor-crosshair">
+		<div class="relative rounded-[32px] overflow-hidden bg-white shadow-xl shadow-black/5 aspect-square flex items-center justify-center p-8 border border-[#36221d]/5">
             <?php
             $image_id = $product->get_image_id();
             if ( $image_id ) {
-                echo wp_get_attachment_image( $image_id, 'full', false, array( 'class' => 'w-full h-full object-contain' ) );
+                echo wp_get_attachment_image( $image_id, 'full', false, array( 'class' => 'w-full h-full object-contain transition-transform duration-700 ease-out group-hover/zoom:scale-150 transform-gpu' ) );
             } else {
                 echo wc_placeholder_img( 'full', array( 'class' => 'w-full h-full object-contain' ) );
             }
@@ -71,14 +71,14 @@ if ( post_password_required() ) {
 
         <!-- PRODUCT DETAILS (RESTORED TO TOP) -->
         <div class="product-tabs pt-2">
-            <h4 class="font-kurversbrug text-[20px] text-[#36221d] mb-4 uppercase tracking-wide">Details</h4>
+            <h4 class="font-kurversbrug text-[20px] text-[#36221d] mb-4 uppercase tracking-wide">Product Informatie</h4>
             <div class="prose prose-sm font-sans text-black/70 max-w-none">
                 <?php
                 $tabs = apply_filters( 'woocommerce_product_tabs', array() );
                 if ( ! empty( $tabs ) ) {
                     foreach ( $tabs as $key => $tab ) {
                         if ( $key !== 'description' && $key !== 'reviews' ) { 
-                            echo '<div class="mb-4 last:mb-0"><strong>' . esc_html( $tab['title'] ) . ':</strong> ';
+                            echo '<div class="mb-4 last:mb-0 border-l-2 border-[#36221d]/10 pl-4 py-1"><strong>' . esc_html( $tab['title'] ) . ':</strong> ';
                             call_user_func( $tab['callback'], $key, $tab );
                             echo '</div>';
                         }
@@ -97,10 +97,10 @@ if ( post_password_required() ) {
 <div class="max-w-[1300px] mx-auto px-4 sm:px-6 mb-20">
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-20">
         
-        <!-- LEFT: REVIEWS (1 COL) -->
-        <div class="lg:col-span-1">
-            <h4 class="font-kurversbrug text-[22px] text-[#36221d] mb-8 uppercase tracking-wide text-center lg:text-left">Reviews</h4>
-            <div class="p-6 bg-white/30 rounded-[32px] border border-[#36221d]/5">
+        <!-- LEFT: LUXURY REVIEWS (1 COL) -->
+        <div class="lg:col-span-1 premium-reviews-container">
+            <h4 class="font-kurversbrug text-[22px] text-[#36221d] mb-8 uppercase tracking-wide">Recensies</h4>
+            <div class="reviews-aesthetic">
                 <?php
                 if ( comments_open() || get_comments_number() ) {
                     comments_template();
@@ -115,10 +115,10 @@ if ( post_password_required() ) {
             $related_ids = wc_get_related_products( $product->get_id(), 9 );
             if ( ! empty( $related_ids ) ) : ?>
                 <div class="related-carousel-wrapper relative group p-6 sm:p-10 bg-[#eedfcb]/30 rounded-[32px] border border-[#36221d]/5">
-                    <h4 class="font-kurversbrug text-[22px] text-[#36221d] mb-8 uppercase tracking-[0.2em] text-center">Anderen bekeken ook</h4>
+                    <h4 class="font-kurversbrug text-[22px] text-[#36221d] mb-8 uppercase tracking-[0.2em] text-center">Inspiratie voor u</h4>
                     
-                    <div class="relative px-4 sm:px-8"> <!-- Added Inner Wrapper for Arrows Space -->
-                        <div class="swiper related-swiper overflow-hidden"> <!-- Forced Overflow Hidden -->
+                    <div class="relative px-4 sm:px-8">
+                        <div class="swiper related-swiper overflow-hidden">
                             <div class="swiper-wrapper">
                                 <?php foreach ( $related_ids as $related_id ) : 
                                     $rel_product = wc_get_product( $related_id );
@@ -136,9 +136,13 @@ if ( post_password_required() ) {
                                 <?php endforeach; ?>
                             </div>
                         </div>
-                        <!-- Navigation Buttons (Positioned Relative to the INNER wrapper) -->
-                        <div class="swiper-button-next !text-[#eedfcb] !w-10 !h-10 after:!text-[14px] !bg-[#36221d] rounded-full !-right-5 sm:!-right-8 shadow-2xl z-20"></div>
-                        <div class="swiper-button-prev !text-[#eedfcb] !w-10 !h-10 after:!text-[14px] !bg-[#36221d] rounded-full !-left-5 sm:!-left-8 shadow-2xl z-20"></div>
+                        <!-- Navigation Buttons (ULTRA VISIBLE & ICONIC) -->
+                        <div class="swiper-button-next !text-[#eedfcb] !w-12 !h-12 !bg-[#36221d] rounded-full !-right-6 sm:!-right-10 shadow-2xl z-20 flex items-center justify-center">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </div>
+                        <div class="swiper-button-prev !text-[#eedfcb] !w-12 !h-12 !bg-[#36221d] rounded-full !-left-6 sm:!-left-10 shadow-2xl z-20 flex items-center justify-center">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                        </div>
                     </div>
                 </div>
             <?php endif; ?>
@@ -185,11 +189,23 @@ document.addEventListener('DOMContentLoaded', function() {
     max-width: 300px !important;
 }
 .single_add_to_cart_button:hover { background-color: #000 !important; }
-.cart { display: flex !important; align-items: center !important; gap: 16px !important; flex-wrap: wrap !important; }
-.quantity .qty { border: 1px solid rgba(54, 34, 29, 0.2) !important; border-radius: 12px !important; padding: 12px !important; width: 70px !important; text-align: center !important; }
 
-/* Swiper Nav Style */
-.swiper-button-next:after, .swiper-button-prev:after { font-weight: bold !important; }
+/* Swiper Nav Hide Default Arrow Fonts */
+.swiper-button-next:after, .swiper-button-prev:after { display: none !important; }
+
+/* LUXURY REVIEW AREA STYLING */
+.reviews-aesthetic { font-family: 'DM Sans', sans-serif; }
+.commentlist { padding: 0 !important; list-style: none !important; }
+.commentlist li { margin-bottom: 2rem !important; border-bottom: 1px solid rgba(54, 34, 29, 0.1) !important; padding-bottom: 2rem !important; }
+.comment-text { background: white !important; padding: 2rem !important; border-radius: 20px !important; box-shadow: 0 4px 12px rgba(0,0,0,0.03) !important; }
+.star-rating { color: #36221d !important; font-size: 1.1em !important; margin-bottom: 0.5rem !important; }
+.comment-author { font-weight: bold !important; color: #36221d !important; text-transform: uppercase !important; font-size: 0.8em !important; tracking: 0.1em !important; }
+.comment-meta { margin-bottom: 1rem !important; opacity: 0.5; font-size: 0.8em; }
+#review_form_wrapper { background: #eedfcb/30 !important; padding: 2rem !important; border-radius: 24px !important; margin-top: 3rem !important; border: 1px solid rgba(54, 34, 29, 0.1) !important; }
+#reply-title { font-family: 'Kurversbrug', serif !important; text-transform: uppercase !important; margin-bottom: 1.5rem !important; display: block; }
+.comment-form input, .comment-form textarea { width: 100% !important; border-radius: 12px !important; padding: 12px !important; border: 1px solid rgba(54, 34, 29, 0.1) !important; outline: none !important; }
+.comment-form input:focus, .comment-form textarea:focus { border-color: #36221d !important; }
+#submit { background: #36221d !important; color: #eedfcb !important; padding: 12px 30px !important; border-radius: 12px !important; text-transform: uppercase !important; font-weight: bold !important; border: none !important; margin-top: 1rem !important; cursor: pointer; }
 </style>
 
 <?php do_action( 'woocommerce_after_single_product' ); ?>
