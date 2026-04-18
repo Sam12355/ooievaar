@@ -1,5 +1,6 @@
 <?php
 header('X-AVW-Template: archive-product');
+nocache_headers(); 
 defined( 'ABSPATH' ) || exit;
 ?>
 <?php get_header(); ?>
