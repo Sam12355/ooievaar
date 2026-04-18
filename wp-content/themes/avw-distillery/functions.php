@@ -67,18 +67,23 @@ function avw_product_search_join( $join, $query ) {
 }
 add_filter( 'posts_join', 'avw_product_search_join', 10, 2 );
 
-function avw_product_search_where( $where, $query ) {
+// Replace WP's default word-splitting search (which breaks on hyphens) with exact phrase matching
+function avw_custom_woo_search( $search, $wp_query ) {
     global $wpdb;
-    if ( is_search() && $query->is_main_query() && isset($_GET['post_type']) && $_GET['post_type'] === 'product' ) {
-        $search_term = $wpdb->esc_like( get_search_query() );
-        // Replace exact AND search with a more lenient OR search for post title and SKU
-        $where = preg_replace(
-            "/\(\s*{$wpdb->posts}.post_title\s+LIKE\s*(\'[^\']+\')\s*\)/",
-            "({$wpdb->posts}.post_title LIKE $1) OR (pm_sku.meta_value LIKE '%{$search_term}%')",
-            $where
-        );
+    if ( ! is_admin() && $wp_query->is_search() && $wp_query->is_main_query() && isset($_GET['post_type']) && $_GET['post_type'] === 'product' ) {
+        $search_term = $wp_query->get('s');
+        if ( empty( $search_term ) ) return $search;
+        
+        $like = '%' . $wpdb->esc_like( $search_term ) . '%';
+        
+        $search = " AND (
+            ({$wpdb->posts}.post_title LIKE '{$like}') 
+            OR ({$wpdb->posts}.post_excerpt LIKE '{$like}') 
+            OR ({$wpdb->posts}.post_content LIKE '{$like}') 
+            OR ( pm_sku.meta_value LIKE '{$like}' )
+        ) ";
     }
-    return $where;
+    return $search;
 }
-add_filter( 'posts_where', 'avw_product_search_where', 10, 2 );
+add_filter( 'posts_search', 'avw_custom_woo_search', 500, 2 );
 
