@@ -166,9 +166,6 @@
                     } else {
                         echo '<p class="text-center w-full col-span-full">Geen producten gevonden.</p>';
                     }
-                } else {
-                    echo '<p class="text-center w-full col-span-full">WooCommerce is niet geactiveerd.</p>';
-                }
                 ?>
             </div>
 
