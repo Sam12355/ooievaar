@@ -56,3 +56,29 @@ function avw_widgets_init() {
     ) );
 }
 add_action( 'widgets_init', 'avw_widgets_init' );
+
+// Add SKU to search
+function avw_product_search_join( $join, $query ) {
+    global $wpdb;
+    if ( is_search() && $query->is_main_query() && isset($_GET['post_type']) && $_GET['post_type'] === 'product' ) {
+        $join .= " LEFT JOIN {$wpdb->postmeta} AS pm_sku ON {$wpdb->posts}.ID = pm_sku.post_id AND pm_sku.meta_key = '_sku' ";
+    }
+    return $join;
+}
+add_filter( 'posts_join', 'avw_product_search_join', 10, 2 );
+
+function avw_product_search_where( $where, $query ) {
+    global $wpdb;
+    if ( is_search() && $query->is_main_query() && isset($_GET['post_type']) && $_GET['post_type'] === 'product' ) {
+        $search_term = $wpdb->esc_like( get_search_query() );
+        // Replace exact AND search with a more lenient OR search for post title and SKU
+        $where = preg_replace(
+            "/\(\s*{$wpdb->posts}.post_title\s+LIKE\s*(\'[^\']+\')\s*\)/",
+            "({$wpdb->posts}.post_title LIKE $1) OR (pm_sku.meta_value LIKE '%{$search_term}%')",
+            $where
+        );
+    }
+    return $where;
+}
+add_filter( 'posts_where', 'avw_product_search_where', 10, 2 );
+
