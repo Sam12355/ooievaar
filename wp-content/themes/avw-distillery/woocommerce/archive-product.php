@@ -20,26 +20,82 @@ get_header();
         <!-- SIDEBAR -->
         <div class="w-full lg:w-[320px] flex-shrink-0">
             <div class="bg-[#eedfcb] rounded-[32px] p-6 sm:p-8 woo-custom-sidebar">
-                <?php
-                $widget_args = array(
-                    'before_widget' => '<div class="widget mb-6 lg:mb-8 pb-6 lg:pb-8 border-b border-[#36221d]/10 last:border-0 last:pb-0 last:mb-0">',
-                    'after_widget'  => '</div>',
-                    'before_title'  => '<h3 class="font-kurversbrug text-[22px] sm:text-[26px] text-[#36221d] mb-4 lg:mb-5">',
-                    'after_title'   => '</h3>'
-                );
+                
+                <!-- Custom Search -->
+                <div class="widget mb-6 lg:mb-8 pb-6 lg:pb-8 border-b border-[#36221d]/10">
+                    <h3 class="font-kurversbrug text-[22px] sm:text-[26px] text-[#36221d] mb-4 lg:mb-5">Zoeken</h3>
+                    <form role="search" method="get" class="flex w-full relative" action="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>">
+                        <input type="search" class="w-full bg-white/50 border border-[#36221d]/20 rounded-[20px] py-3 pl-5 pr-12 outline-none font-sans text-black focus:border-[#36221d] transition-colors" placeholder="Zoek producten&hellip;" value="<?php echo get_search_query(); ?>" name="s" />
+                        <input type="hidden" name="post_type" value="product" />
+                        <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-[#36221d] hover:opacity-70 transition-opacity">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        </button>
+                    </form>
+                </div>
 
-                if ( class_exists('WC_Widget_Product_Search') ) {
-                    the_widget( 'WC_Widget_Product_Search', array( 'title' => 'Zoeken' ), $widget_args );
+                <!-- Custom Categories -->
+                <div class="widget mb-6 lg:mb-8 pb-6 lg:pb-8 border-b border-[#36221d]/10">
+                    <h3 class="font-kurversbrug text-[22px] sm:text-[26px] text-[#36221d] mb-4 lg:mb-5">Categorieën</h3>
+                    <ul class="flex flex-col gap-2 m-0 p-0" style="list-style:none;">
+                        <?php
+                        $terms = get_terms( array( 'taxonomy' => 'product_cat', 'hide_empty' => true ) );
+                        if ( ! is_wp_error( $terms ) && ! empty( $terms ) ) {
+                            foreach ( $terms as $term ) {
+                                if ( $term->term_id == get_option('default_product_cat') ) continue;
+                                $link = get_term_link( $term );
+                                $is_active = ( is_product_category( $term->term_id ) || (is_product() && has_term($term->term_id, 'product_cat')) ) ? 'bg-[#36221d] text-white border-transparent' : 'bg-white/40 hover:bg-white text-[#36221d] border border-transparent';
+                                echo '<li style="margin:0;"><a href="' . esc_url( $link ) . '" class="block rounded-[16px] px-5 py-3 font-sans text-[15px] font-medium transition-colors ' . $is_active . '" style="text-decoration:none;">' . esc_html( $term->name ) . '</a></li>';
+                            }
+                        }
+                        ?>
+                    </ul>
+                </div>
+
+                <!-- Price Filter (Native Widget) -->
+                <div class="widget">
+                    <h3 class="font-kurversbrug text-[22px] sm:text-[26px] text-[#36221d] mb-4 lg:mb-5">Filter op prijs</h3>
+                    <?php
+                    // Enqueue woo price slider scripts explicitly to ensure they load
+                    wp_enqueue_script('wc-price-slider');
+                    wp_enqueue_script('jquery-ui-slider');
+                    
+                    if ( class_exists('WC_Widget_Price_Filter') ) {
+                        the_widget( 'WC_Widget_Price_Filter', array( 'title' => '' ), array(
+                            'before_widget' => '<div class="price-filter-wrapper w-full">',
+                            'after_widget'  => '</div>',
+                            'before_title'  => '',
+                            'after_title'   => ''
+                        ) );
+                    }
+                    ?>
+                </div>
+
+                <style>
+                .price_slider_amount button.button {
+                    display: none !important;
                 }
-                
-                if ( class_exists('WC_Widget_Product_Categories') ) {
-                    the_widget( 'WC_Widget_Product_Categories', array( 'title' => 'Categorieën', 'hierarchical' => 1, 'count' => 0 ), $widget_args );
+                .price_slider_amount .price_label {
+                    font-size: 15px !important;
+                    font-weight: 500;
+                    color: #36221d;
                 }
-                
-                if ( class_exists('WC_Widget_Price_Filter') ) {
-                    the_widget( 'WC_Widget_Price_Filter', array( 'title' => 'Filter op prijs' ), $widget_args );
-                }
-                ?>
+                </style>
+                <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    if (typeof jQuery !== 'undefined') {
+                        jQuery(document.body).on('price_slider_change', function(event, min, max) {
+                            var form = jQuery('.price-filter-wrapper form');
+                            if(form.length) {
+                                clearTimeout(window.wooPriceFilterTimeout);
+                                window.wooPriceFilterTimeout = setTimeout(function() {
+                                    form.submit();
+                                }, 800);
+                            }
+                        });
+                    }
+                });
+                </script>
+
             </div>
         </div>
 
