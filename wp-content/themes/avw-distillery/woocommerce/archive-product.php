@@ -91,15 +91,20 @@ defined( 'ABSPATH' ) || exit;
                 <div class="widget">
                     <h3 class="font-kurversbrug text-[22px] sm:text-[26px] text-[#36221d] mb-4 lg:mb-5">Filter op prijs</h3>
                     <div class="price-filter-wrapper space-y-4">
-                        <div class="flex items-center gap-3">
+                        <div class="flex items-center gap-4">
                             <div class="relative flex-1">
-                                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-[#36221d]/50 text-sm">€</span>
-                                <input type="number" id="min_price_input" class="ajax-price-input w-full bg-white/50 border border-[#36221d]/20 rounded-[12px] py-2 pl-7 pr-3 outline-none font-sans text-sm focus:border-[#36221d] transition-colors" placeholder="Min" value="<?php echo isset($_GET['min_price']) ? esc_attr($_GET['min_price']) : ''; ?>" />
+                                <label for="min_price_input" class="block text-[11px] uppercase tracking-widest text-[#36221d]/60 mb-1.5 ml-1 font-bold">Vanaf</label>
+                                <div class="relative">
+                                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-[#36221d]/50 text-sm">€</span>
+                                    <input type="number" id="min_price_input" class="ajax-price-input w-full bg-white border border-[#36221d]/10 rounded-[12px] py-3 pl-8 pr-3 outline-none font-sans text-[16px] focus:border-[#36221d] focus:ring-1 focus:ring-[#36221d]/20 transition-all shadow-sm" placeholder="0" value="<?php echo isset($_GET['min_price']) ? esc_attr($_GET['min_price']) : ''; ?>" />
+                                </div>
                             </div>
-                            <span class="text-[#36221d]/30">—</span>
                             <div class="relative flex-1">
-                                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-[#36221d]/50 text-sm">€</span>
-                                <input type="number" id="max_price_input" class="ajax-price-input w-full bg-white/50 border border-[#36221d]/20 rounded-[12px] py-2 pl-7 pr-3 outline-none font-sans text-sm focus:border-[#36221d] transition-colors" placeholder="Max" value="<?php echo isset($_GET['max_price']) ? esc_attr($_GET['max_price']) : ''; ?>" />
+                                <label for="max_price_input" class="block text-[11px] uppercase tracking-widest text-[#36221d]/60 mb-1.5 ml-1 font-bold">Tot</label>
+                                <div class="relative">
+                                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-[#36221d]/50 text-sm">€</span>
+                                    <input type="number" id="max_price_input" class="ajax-price-input w-full bg-white border border-[#36221d]/10 rounded-[12px] py-3 pl-8 pr-3 outline-none font-sans text-[16px] focus:border-[#36221d] focus:ring-1 focus:ring-[#36221d]/20 transition-all shadow-sm" placeholder="1000" value="<?php echo isset($_GET['max_price']) ? esc_attr($_GET['max_price']) : ''; ?>" />
+                                </div>
                             </div>
                         </div>
                     </div>
