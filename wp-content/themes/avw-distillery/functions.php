@@ -1,7 +1,7 @@
 <?php
 
 function avw_distillery_scripts() {
-    // Enqueue Main Style
+    // Enqueue Main Style with dynamic version to kill cache
     wp_enqueue_style('avw-style', get_stylesheet_uri(), array(), time());
 
     // Enqueue Google Fonts
@@ -17,8 +17,8 @@ function avw_distillery_scripts() {
     // Enqueue Lenis
     wp_enqueue_script('lenis', 'https://unpkg.com/lenis@1.1.20/dist/lenis.min.js', array(), null, true);
 
-    // Enqueue Main Script
-    wp_enqueue_script('avw-main-script', get_template_directory_uri() . '/js/script.js', array('gsap', 'gsap-scroll-trigger', 'lenis'), '1.0.0', true);
+    // Enqueue Main Script with dynamic version
+    wp_enqueue_script('avw-main-script', get_template_directory_uri() . '/js/script.js', array('gsap', 'gsap-scroll-trigger', 'lenis'), time(), true);
 }
 add_action('wp_enqueue_scripts', 'avw_distillery_scripts');
 
