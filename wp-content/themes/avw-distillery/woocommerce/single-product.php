@@ -18,9 +18,9 @@ get_header( 'shop' ); ?>
 
 <!-- PRODUCT HERO (PARALLAX) -->
 <section class="relative bg-[#36221d] pt-28 pb-16 sm:pt-36 sm:pb-20 px-4 sm:px-6 overflow-hidden">
-    <!-- Background Image with Parallax -->
+    <!-- Background Image with Parallax & Headroom buffer -->
     <div class="absolute inset-0 z-0">
-        <img id="product-hero-img" src="<?php echo get_template_directory_uri(); ?>/assets/assortment-hero-v2.png" alt="A. van Wees Distilleerderij" class="w-full h-full object-cover opacity-60" style="object-position: center 40%;" />
+        <img id="product-hero-img" src="<?php echo get_template_directory_uri(); ?>/assets/assortment-hero-v2.png" alt="A. van Wees Distilleerderij" class="w-full h-full object-cover opacity-60 scale-110" style="object-position: center 40%; transform-origin: top center;" />
         <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-[#fdf8f1]"></div>
     </div>
 
@@ -53,6 +53,13 @@ get_header( 'shop' ); ?>
             <?php the_post(); ?>
             <?php wc_get_template_part( 'content', 'single-product' ); ?>
         <?php endwhile; // end of the loop. ?>
+    </div>
+
+    <!-- RELATED PRODUCTS -->
+    <div class="max-w-[1300px] mx-auto border-t border-[#36221d]/10 mt-20 pt-20">
+        <?php
+        woocommerce_output_related_products();
+        ?>
     </div>
 </section>
 
