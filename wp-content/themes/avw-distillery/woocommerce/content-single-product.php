@@ -36,18 +36,18 @@ if ( post_password_required() ) {
 	</div>
 
 	<!-- RIGHT: PRODUCT SUMMARY -->
-	<div class="product-info-summary flex flex-col gap-8">
-		<div class="meta-tags flex flex-wrap gap-3 mb-2">
+	<div class="product-info-summary flex flex-col gap-6 max-w-[540px]">
+		<div class="meta-tags flex flex-wrap gap-3 mb-1">
             <?php
             $categories = wc_get_product_category_list( $product->get_id(), ', ', '<span class="posted_in">', '</span>' );
             if ( $categories ) : ?>
-                <div class="text-[11px] uppercase tracking-widest font-bold text-[#36221d]/40 px-4 py-1.5 border border-[#36221d]/10 rounded-full">
+                <div class="text-[10px] uppercase tracking-widest font-bold text-[#36221d]/40 px-3 py-1 border border-[#36221d]/10 rounded-full">
                     <?php echo strip_tags($categories); ?>
                 </div>
             <?php endif; ?>
             
             <?php if ( wc_product_sku_enabled() && ( $product->get_sku() || $product->is_type( 'variable' ) ) ) : ?>
-                <div class="text-[11px] uppercase tracking-widest font-bold text-[#36221d]/40 px-4 py-1.5 border border-[#36221d]/10 rounded-full">
+                <div class="text-[10px] uppercase tracking-widest font-bold text-[#36221d]/40 px-3 py-1 border border-[#36221d]/10 rounded-full">
                     SKU: <?php echo ( $sku = $product->get_sku() ) ? $sku : esc_html__( 'N/A', 'woocommerce' ); ?>
                 </div>
             <?php endif; ?>
@@ -55,30 +55,30 @@ if ( post_password_required() ) {
 
         <div class="price-area">
             <p class="<?php echo esc_attr( apply_filters( 'woocommerce_product_price_class', 'price' ) ); ?> font-sans text-[#36221d] flex items-baseline gap-2">
-                <span class="text-[28px] md:text-[34px] font-medium leading-none"><?php echo $product->get_price_html(); ?></span>
+                <span class="text-[32px] md:text-[40px] font-bold leading-none"><?php echo $product->get_price_html(); ?></span>
             </p>
         </div>
 
-		<div class="description-area font-sans text-black/80 text-[16px] sm:text-[18px] leading-relaxed">
+		<div class="description-area font-sans text-black/80 text-[15px] sm:text-[16px] leading-relaxed">
 			<?php the_content(); ?>
 		</div>
 
-		<div class="action-area pt-4 border-b border-[#36221d]/10 pb-8">
+		<div class="action-area pt-4 border-b border-[#36221d]/10 pb-10">
 			<?php
             woocommerce_template_single_add_to_cart();
 			?>
 		</div>
 
         <!-- PRODUCT DETAILS (RESTORED TO TOP) -->
-        <div class="product-tabs pt-2">
-            <h4 class="font-kurversbrug text-[20px] text-[#36221d] mb-4 uppercase tracking-wide">Product Informatie</h4>
+        <div class="product-tabs pt-4">
+            <h4 class="font-kurversbrug text-[18px] text-[#36221d] mb-4 uppercase tracking-widest opacity-80">Product Informatie</h4>
             <div class="prose prose-sm font-sans text-black/70 max-w-none">
                 <?php
                 $tabs = apply_filters( 'woocommerce_product_tabs', array() );
                 if ( ! empty( $tabs ) ) {
                     foreach ( $tabs as $key => $tab ) {
                         if ( $key !== 'description' && $key !== 'reviews' ) { 
-                            echo '<div class="mb-4 last:mb-0 border-l-2 border-[#36221d]/10 pl-4 py-1"><strong>' . esc_html( $tab['title'] ) . ':</strong> ';
+                            echo '<div class="mb-3 last:mb-0 text-[13px] border-l-2 border-[#36221d]/10 pl-4 py-0.5"><strong>' . esc_html( $tab['title'] ) . ':</strong> ';
                             call_user_func( $tab['callback'], $key, $tab );
                             echo '</div>';
                         }
@@ -176,19 +176,35 @@ document.addEventListener('DOMContentLoaded', function() {
 .single_add_to_cart_button {
     background-color: #36221d !important;
     color: #eedfcb !important;
-    padding: 16px 40px !important;
-    border-radius: 16px !important;
+    padding: 18px 45px !important;
+    border-radius: 12px !important;
     font-family: 'DM Sans', sans-serif !important;
-    font-weight: 600 !important;
+    font-weight: 700 !important;
     text-transform: uppercase !important;
-    letter-spacing: 0.05em !important;
+    letter-spacing: 0.1em !important;
     transition: all 0.3s ease !important;
     border: none !important;
     cursor: pointer !important;
-    width: 100% !important;
-    max-width: 300px !important;
 }
-.single_add_to_cart_button:hover { background-color: #000 !important; }
+.single_add_to_cart_button:hover { background-color: #000 !important; box-shadow: 0 8px 25px rgba(0,0,0,0.1) !important; transform: translateY(-1px); }
+
+/* QUANTITY BOX REDESIGN */
+.quantity { display: inline-flex !important; margin-right: 15px !important; }
+.quantity .qty {
+    width: 65px !important;
+    height: 60px !important;
+    border-radius: 12px !important;
+    border: 2px solid #36221d !important;
+    background: transparent !important;
+    color: #36221d !important;
+    font-family: 'DM Sans', sans-serif !important;
+    font-weight: 700 !important;
+    font-size: 18px !important;
+    text-align: center !important;
+    outline: none !important;
+    transition: all 0.3s ease !important;
+}
+.quantity .qty:focus { background: white !important; box-shadow: 0 0 0 4px rgba(54, 34, 45, 0.05) !important; }
 
 /* Swiper Nav Hide Default Arrow Fonts */
 .swiper-button-next:after, .swiper-button-prev:after { display: none !important; }
@@ -201,11 +217,12 @@ document.addEventListener('DOMContentLoaded', function() {
 .star-rating { color: #36221d !important; font-size: 1.1em !important; margin-bottom: 0.5rem !important; }
 .comment-author { font-weight: bold !important; color: #36221d !important; text-transform: uppercase !important; font-size: 0.8em !important; tracking: 0.1em !important; }
 .comment-meta { margin-bottom: 1rem !important; opacity: 0.5; font-size: 0.8em; }
-#review_form_wrapper { background: #eedfcb/30 !important; padding: 2rem !important; border-radius: 24px !important; margin-top: 3rem !important; border: 1px solid rgba(54, 34, 29, 0.1) !important; }
-#reply-title { font-family: 'Kurversbrug', serif !important; text-transform: uppercase !important; margin-bottom: 1.5rem !important; display: block; }
-.comment-form input, .comment-form textarea { width: 100% !important; border-radius: 12px !important; padding: 12px !important; border: 1px solid rgba(54, 34, 29, 0.1) !important; outline: none !important; }
-.comment-form input:focus, .comment-form textarea:focus { border-color: #36221d !important; }
-#submit { background: #36221d !important; color: #eedfcb !important; padding: 12px 30px !important; border-radius: 12px !important; text-transform: uppercase !important; font-weight: bold !important; border: none !important; margin-top: 1rem !important; cursor: pointer; }
+#review_form_wrapper { background: white !important; padding: 2.5rem !important; border-radius: 24px !important; margin-top: 3rem !important; border: 1px solid rgba(54, 34, 29, 0.1) !important; box-shadow: 0 10px 30px rgba(0,0,0,0.02); }
+#reply-title { font-family: 'Kurversbrug', serif !important; text-transform: uppercase !important; margin-bottom: 1.5rem !important; display: block; font-size: 1.2rem; }
+.comment-form input, .comment-form textarea { width: 100% !important; border-radius: 12px !important; padding: 14px !important; border: 1.5px solid rgba(54, 34, 29, 0.1) !important; outline: none !important; background: #fdf8f1 !important; }
+.comment-form input:focus, .comment-form textarea:focus { border-color: #36221d !important; background: white !important; }
+#submit { background: #36221d !important; color: #eedfcb !important; padding: 14px 40px !important; border-radius: 12px !important; text-transform: uppercase !important; font-weight: bold !important; border: none !important; margin-top: 1rem !important; cursor: pointer; transition: all 0.3s ease; }
+#submit:hover { background: #000; }
 </style>
 
 <?php do_action( 'woocommerce_after_single_product' ); ?>
