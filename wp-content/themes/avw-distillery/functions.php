@@ -1,6 +1,9 @@
 <?php
 
 function avw_distillery_scripts() {
+    // Enqueue Main Style
+    wp_enqueue_style('avw-style', get_stylesheet_uri(), array(), time());
+
     // Enqueue Google Fonts
     wp_enqueue_style('google-fonts', 'https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap', array(), null);
 

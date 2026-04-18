@@ -21,16 +21,23 @@ get_header();
         <div class="w-full lg:w-[320px] flex-shrink-0">
             <div class="bg-[#eedfcb] rounded-[32px] p-6 sm:p-8 woo-custom-sidebar">
                 <?php
+                $widget_args = array(
+                    'before_widget' => '<div class="widget mb-6 lg:mb-8 pb-6 lg:pb-8 border-b border-[#36221d]/10 last:border-0 last:pb-0 last:mb-0">',
+                    'after_widget'  => '</div>',
+                    'before_title'  => '<h3 class="font-kurversbrug text-[22px] sm:text-[26px] text-[#36221d] mb-4 lg:mb-5">',
+                    'after_title'   => '</h3>'
+                );
+
                 if ( class_exists('WC_Widget_Product_Search') ) {
-                    the_widget( 'WC_Widget_Product_Search', array( 'title' => 'Search by keyword' ) );
+                    the_widget( 'WC_Widget_Product_Search', array( 'title' => 'Zoeken' ), $widget_args );
                 }
-                echo '<div class="my-6 lg:my-8 h-[1px] bg-[#36221d]/10"></div>';
+                
                 if ( class_exists('WC_Widget_Product_Categories') ) {
-                    the_widget( 'WC_Widget_Product_Categories', array( 'title' => 'Product Categories', 'hierarchical' => 1, 'count' => 0 ) );
+                    the_widget( 'WC_Widget_Product_Categories', array( 'title' => 'Categorieën', 'hierarchical' => 1, 'count' => 0 ), $widget_args );
                 }
-                echo '<div class="my-6 lg:my-8 h-[1px] bg-[#36221d]/10"></div>';
+                
                 if ( class_exists('WC_Widget_Price_Filter') ) {
-                    the_widget( 'WC_Widget_Price_Filter', array( 'title' => 'Filter by price' ) );
+                    the_widget( 'WC_Widget_Price_Filter', array( 'title' => 'Filter op prijs' ), $widget_args );
                 }
                 ?>
             </div>
