@@ -17,10 +17,10 @@ get_header( 'shop' ); ?>
 ?>
 
 <!-- PRODUCT HERO (PARALLAX) -->
-<section class="relative bg-[#36221d] pt-28 pb-16 sm:pt-36 sm:pb-20 px-4 sm:px-6 overflow-hidden">
-    <!-- Background Image with Parallax & Headroom buffer -->
+<section class="relative bg-[#36221d] pt-32 pb-20 sm:pt-40 sm:pb-24 px-4 sm:px-6 overflow-hidden">
+    <!-- Background Image with Parallax & Huge Scale buffer -->
     <div class="absolute inset-0 z-0">
-        <img id="product-hero-img" src="<?php echo get_template_directory_uri(); ?>/assets/assortment-hero-v2.png" alt="A. van Wees Distilleerderij" class="w-full h-full object-cover opacity-60 scale-110" style="object-position: center 40%; transform-origin: top center;" />
+        <img id="product-hero-img" src="<?php echo get_template_directory_uri(); ?>/assets/assortment-hero-v2.png" alt="A. van Wees Distilleerderij" class="w-full h-[120%] object-cover opacity-60 scale-125" style="object-position: center 30%; transform-origin: center center;" />
         <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-[#fdf8f1]"></div>
     </div>
 
