@@ -5,10 +5,16 @@ defined( 'ABSPATH' ) || exit;
 <?php get_header(); ?>
 
 <!-- ASSORTMENT HERO -->
-<section class="relative bg-black pt-28 pb-16 sm:pt-36 sm:pb-20 px-4 sm:px-6">
+<section class="relative bg-[#36221d] pt-28 pb-16 sm:pt-36 sm:pb-20 px-4 sm:px-6 overflow-hidden">
+    <!-- Background Image with Parallax-ready styling -->
+    <div class="absolute inset-0 z-0">
+        <img src="<?php echo get_template_directory_uri(); ?>/assets/assortment-hero.png" alt="A. van Wees Assortment Background" class="w-full h-full object-cover opacity-60" style="object-position: center 40%;" />
+        <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-[#e0cbb0]"></div>
+    </div>
+
     <div class="max-w-[800px] mx-auto text-center relative z-10">
-        <h1 id="ajax-page-title" class="font-kurversbrug text-[#eedfcb] text-[36px] sm:text-[48px] md:text-[56px] mb-4 sm:mb-6"><?php woocommerce_page_title(); ?></h1>
-        <p id="ajax-page-description" class="font-sans text-white text-[16px] sm:text-[18px] md:text-[20px] leading-relaxed opacity-90">
+        <h1 id="ajax-page-title" class="font-kurversbrug text-[#eedfcb] text-[36px] sm:text-[48px] md:text-[56px] mb-4 sm:mb-6 drop-shadow-lg"><?php woocommerce_page_title(); ?></h1>
+        <p id="ajax-page-description" class="font-sans text-white text-[16px] sm:text-[18px] md:text-[20px] leading-relaxed opacity-95 drop-shadow-md">
             Ontdek onze uitgebreide collectie ambachtelijk gedistilleerde Oudhollandse genevers, likeuren, bitters en esprits. Gemaakt in het hart van Amsterdam volgens authentieke receptuur.
         </p>
     </div>
