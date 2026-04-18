@@ -21,7 +21,7 @@ if ( post_password_required() ) {
 <div id="product-<?php the_ID(); ?>" <?php wc_product_class( 'grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start', $product ); ?>>
 
 	<!-- PRODUCT IMAGES & RELATED CAROUSEL -->
-	<div class="product-gallery-container flex flex-col gap-10">
+	<div class="product-gallery-container flex flex-col gap-6">
 		<div class="relative rounded-[32px] overflow-hidden bg-white shadow-xl shadow-black/5 aspect-square flex items-center justify-center p-8">
             <?php
             $image_id = $product->get_image_id();
@@ -33,29 +33,32 @@ if ( post_password_required() ) {
             ?>
 		</div>
 
-        <!-- Compact Related Carousel -->
+        <!-- Compact Related Carousel (3-Item Auto-Play) -->
         <?php
-        $related_ids = wc_get_related_products( $product->get_id(), 6 );
+        $related_ids = wc_get_related_products( $product->get_id(), 9 );
         if ( ! empty( $related_ids ) ) : ?>
-            <div class="related-carousel-wrapper">
-                <h4 class="font-kurversbrug text-[18px] text-[#36221d] mb-4 uppercase tracking-wider">Anderen bekeken ook</h4>
-                <div class="swiper related-swiper">
+            <div class="related-carousel-wrapper relative group">
+                <h4 class="font-kurversbrug text-[14px] text-[#36221d] mb-4 uppercase tracking-[0.2em] opacity-60">Ontdek ook</h4>
+                <div class="swiper related-swiper relative">
                     <div class="swiper-wrapper">
                         <?php foreach ( $related_ids as $related_id ) : 
                             $rel_product = wc_get_product( $related_id );
                             if ( ! $rel_product ) continue;
                             ?>
                             <div class="swiper-slide px-1">
-                                <a href="<?php echo get_permalink( $related_id ); ?>" class="block bg-[#eedfcb] rounded-[20px] p-4 group transition-transform hover:scale-[1.02]">
-                                    <div class="bg-white rounded-[14px] p-4 mb-3 aspect-square overflow-hidden flex items-center justify-center">
+                                <a href="<?php echo get_permalink( $related_id ); ?>" class="block bg-[#eedfcb]/80 rounded-[16px] p-3 group transition-all hover:bg-[#eedfcb]">
+                                    <div class="bg-white rounded-[10px] p-2 mb-2 aspect-square overflow-hidden flex items-center justify-center">
                                         <?php echo $rel_product->get_image( 'thumbnail', array( 'class' => 'max-h-full w-auto object-contain transition-transform group-hover:scale-110' ) ); ?>
                                     </div>
-                                    <h5 class="font-kurversbrug text-[14px] text-[#36221d] line-clamp-1 mb-1"><?php echo $rel_product->get_name(); ?></h5>
-                                    <p class="font-sans text-[13px] font-medium text-[#36221d]/70"><?php echo $rel_product->get_price_html(); ?></p>
+                                    <h5 class="font-kurversbrug text-[11px] text-[#36221d] line-clamp-1 mb-0.5"><?php echo $rel_product->get_name(); ?></h5>
+                                    <p class="font-sans text-[10px] font-bold text-[#36221d]"><?php echo strip_tags($rel_product->get_price_html()); ?></p>
                                 </a>
                             </div>
                         <?php endforeach; ?>
                     </div>
+                    <!-- Navigation Buttons (Hidden by default, shown on hover) -->
+                    <div class="swiper-button-next !text-[#36221d] !w-6 !h-6 after:!text-[10px] bg-white/50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <div class="swiper-button-prev !text-[#36221d] !w-6 !h-6 after:!text-[10px] bg-white/50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 </div>
             </div>
         <?php endif; ?>
@@ -91,11 +94,6 @@ if ( post_password_required() ) {
 
 		<div class="action-area pt-4">
 			<?php
-			/**
-			 * Hook: woocommerce_single_product_summary.
-			 * We filter this to only show add_to_cart as we've custom-placed the rest
-			 */
-            // Just outputting add to cart for maximum control
             woocommerce_template_single_add_to_cart();
 			?>
 		</div>
@@ -126,12 +124,20 @@ if ( post_password_required() ) {
 document.addEventListener('DOMContentLoaded', function() {
     if (typeof Swiper !== 'undefined') {
         new Swiper(".related-swiper", {
-            slidesPerView: 2,
-            spaceBetween: 10,
-            freeMode: true,
+            slidesPerView: 3,
+            spaceBetween: 8,
+            loop: true,
+            autoplay: {
+                delay: 3500,
+                disableOnInteraction: false,
+            },
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
             breakpoints: {
-                640: { slidesPerView: 2.2 },
-                1024: { slidesPerView: 2 }
+                640: { slidesPerView: 3 },
+                1024: { slidesPerView: 3 }
             }
         });
     }
@@ -155,14 +161,14 @@ document.addEventListener('DOMContentLoaded', function() {
     width: 100% !important;
     max-width: 320px !important;
 }
-.single_add_to_cart_button:hover {
-    background-color: #000 !important;
-}
-
+.single_add_to_cart_button:hover { background-color: #000 !important; }
 .cart { display: flex !important; align-items: center !important; gap: 16px !important; flex-wrap: wrap !important; }
 .quantity .qty { border: 1px solid rgba(54, 34, 29, 0.2) !important; border-radius: 12px !important; padding: 12px !important; width: 70px !important; text-align: center !important; }
 .price del { opacity: 0.4; font-size: 0.7em; margin-right: 10px; }
 .price ins { text-decoration: none; }
+
+/* Swiper Nav Style */
+.swiper-button-next:after, .swiper-button-prev:after { font-weight: bold; }
 </style>
 
 <?php do_action( 'woocommerce_after_single_product' ); ?>
