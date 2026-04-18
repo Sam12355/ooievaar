@@ -25,13 +25,12 @@ defined( 'ABSPATH' ) || exit;
                 <!-- Custom Search -->
                 <div class="widget mb-6 lg:mb-8 pb-6 lg:pb-8 border-b border-[#36221d]/10">
                     <h3 class="font-kurversbrug text-[22px] sm:text-[26px] text-[#36221d] mb-4 lg:mb-5">Zoeken</h3>
-                    <form id="ajax-search-form" role="search" method="get" class="flex w-full relative" action="" onsubmit="return false;">
-                        <input type="text" class="w-full bg-white/50 border border-[#36221d]/20 rounded-[20px] py-3 pl-5 pr-12 outline-none font-sans text-black focus:border-[#36221d] transition-colors" placeholder="Zoek producten&hellip;" value="<?php echo get_search_query(); ?>" name="s" autocomplete="off" />
-                        <input type="hidden" name="post_type" value="product" />
-                        <button type="button" onclick="document.getElementById('ajax-search-form').dispatchEvent(new Event('submit'))" class="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-[#36221d] hover:opacity-70 transition-opacity">
+                    <div id="ajax-search-container" class="flex w-full relative">
+                        <input type="text" id="ajax-search-input" class="w-full bg-white/50 border border-[#36221d]/20 rounded-[20px] py-3 pl-5 pr-12 outline-none font-sans text-black focus:border-[#36221d] transition-colors" placeholder="Zoek producten&hellip;" value="<?php echo get_search_query(); ?>" autocomplete="off" />
+                        <div id="ajax-search-btn" class="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-[#36221d] hover:opacity-70 transition-opacity cursor-pointer">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                        </button>
-                    </form>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Custom Categories -->
@@ -214,36 +213,42 @@ defined( 'ABSPATH' ) || exit;
                             });
                         });
                         
-                        let searchForm = document.getElementById('ajax-search-form');
-                        if(searchForm && !searchForm.dataset.bound) {
+                        let searchCont = document.getElementById('ajax-search-container');
+                        if(searchCont && !searchCont.dataset.bound) {
                             
                             function triggerSearch() {
                                 let url = new URL(window.location.href.split('?')[0] + window.location.search);
                                 url.search = ''; // wipe current query params
-                                let formData = new FormData(searchForm);
-                                for (let [key, value] of formData.entries()) {
-                                    if(value) url.searchParams.set(key, value);
+                                let searchVal = document.getElementById('ajax-search-input').value;
+                                if(searchVal) {
+                                    url.searchParams.set('s', searchVal);
+                                    url.searchParams.set('post_type', 'product');
                                 }
                                 doAjaxLoad(url.toString(), false);
                             }
 
-                            searchForm.addEventListener('submit', e => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                triggerSearch();
-                                return false;
-                            });
+                            let searchBtn = document.getElementById('ajax-search-btn');
+                            if(searchBtn) {
+                                searchBtn.addEventListener('click', triggerSearch);
+                            }
 
-                            let searchInput = searchForm.querySelector('input[name="s"]');
+                            let searchInput = document.getElementById('ajax-search-input');
                             if (searchInput) {
                                 let searchTimeout;
                                 searchInput.addEventListener('input', function() {
                                     clearTimeout(searchTimeout);
                                     searchTimeout = setTimeout(triggerSearch, 500);
                                 });
+                                // Handle Enter key manually
+                                searchInput.addEventListener('keydown', function(e) {
+                                    if(e.key === 'Enter') {
+                                        e.preventDefault();
+                                        triggerSearch();
+                                    }
+                                });
                             }
 
-                            searchForm.dataset.bound = "true";
+                            searchCont.dataset.bound = "true";
                         }
                     }
 
