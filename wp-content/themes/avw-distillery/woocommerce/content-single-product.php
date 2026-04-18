@@ -116,26 +116,29 @@ if ( post_password_required() ) {
             if ( ! empty( $related_ids ) ) : ?>
                 <div class="related-carousel-wrapper relative group p-6 sm:p-10 bg-[#eedfcb]/30 rounded-[32px] border border-[#36221d]/5">
                     <h4 class="font-kurversbrug text-[22px] text-[#36221d] mb-8 uppercase tracking-[0.2em] text-center">Anderen bekeken ook</h4>
-                    <div class="swiper related-swiper">
-                        <div class="swiper-wrapper">
-                            <?php foreach ( $related_ids as $related_id ) : 
-                                $rel_product = wc_get_product( $related_id );
-                                if ( ! $rel_product ) continue;
-                                ?>
-                                <div class="swiper-slide h-auto">
-                                    <a href="<?php echo get_permalink( $related_id ); ?>" class="flex flex-col h-full bg-[#eedfcb] rounded-[24px] p-5 group transition-all hover:bg-white hover:shadow-xl">
-                                        <div class="bg-white rounded-[16px] p-4 mb-4 aspect-square overflow-hidden flex items-center justify-center">
-                                            <?php echo $rel_product->get_image( 'thumbnail', array( 'class' => 'max-h-full w-auto object-contain transition-transform group-hover:scale-110' ) ); ?>
-                                        </div>
-                                        <h5 class="font-kurversbrug text-[13px] text-[#36221d] line-clamp-2 mb-2"><?php echo $rel_product->get_name(); ?></h5>
-                                        <p class="font-sans text-[12px] font-bold text-[#36221d] mt-auto"><?php echo strip_tags($rel_product->get_price_html()); ?></p>
-                                    </a>
-                                </div>
-                            <?php endforeach; ?>
+                    
+                    <div class="relative px-4 sm:px-8"> <!-- Added Inner Wrapper for Arrows Space -->
+                        <div class="swiper related-swiper overflow-hidden"> <!-- Forced Overflow Hidden -->
+                            <div class="swiper-wrapper">
+                                <?php foreach ( $related_ids as $related_id ) : 
+                                    $rel_product = wc_get_product( $related_id );
+                                    if ( ! $rel_product ) continue;
+                                    ?>
+                                    <div class="swiper-slide h-auto">
+                                        <a href="<?php echo get_permalink( $related_id ); ?>" class="flex flex-col h-full bg-[#eedfcb] rounded-[24px] p-5 group transition-all hover:bg-white hover:shadow-xl">
+                                            <div class="bg-white rounded-[16px] p-4 mb-4 aspect-square overflow-hidden flex items-center justify-center">
+                                                <?php echo $rel_product->get_image( 'thumbnail', array( 'class' => 'max-h-full w-auto object-contain transition-transform group-hover:scale-110' ) ); ?>
+                                            </div>
+                                            <h5 class="font-kurversbrug text-[13px] text-[#36221d] line-clamp-2 mb-2"><?php echo $rel_product->get_name(); ?></h5>
+                                            <p class="font-sans text-[12px] font-bold text-[#36221d] mt-auto"><?php echo strip_tags($rel_product->get_price_html()); ?></p>
+                                        </a>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
                         </div>
-                        <!-- Navigation Buttons (ULTRA VISIBLE) -->
-                        <div class="swiper-button-next !text-[#eedfcb] !w-10 !h-10 after:!text-[14px] !bg-[#36221d] rounded-full !-right-2 shadow-2xl z-20"></div>
-                        <div class="swiper-button-prev !text-[#eedfcb] !w-10 !h-10 after:!text-[14px] !bg-[#36221d] rounded-full !-left-2 shadow-2xl z-20"></div>
+                        <!-- Navigation Buttons (Positioned Relative to the INNER wrapper) -->
+                        <div class="swiper-button-next !text-[#eedfcb] !w-10 !h-10 after:!text-[14px] !bg-[#36221d] rounded-full !-right-5 sm:!-right-8 shadow-2xl z-20"></div>
+                        <div class="swiper-button-prev !text-[#eedfcb] !w-10 !h-10 after:!text-[14px] !bg-[#36221d] rounded-full !-left-5 sm:!-left-8 shadow-2xl z-20"></div>
                     </div>
                 </div>
             <?php endif; ?>
@@ -187,7 +190,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 /* Swiper Nav Style */
 .swiper-button-next:after, .swiper-button-prev:after { font-weight: bold !important; }
-.related-swiper { overflow: visible !important; }
 </style>
 
 <?php do_action( 'woocommerce_after_single_product' ); ?>
