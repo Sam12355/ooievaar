@@ -58,6 +58,14 @@ function avw_widgets_init() {
 add_action( 'widgets_init', 'avw_widgets_init' );
 
 // Add SKU to search
+function avw_force_exact_sentence_search( $query ) {
+    if ( ! is_admin() && $query->is_main_query() && $query->is_search() ) {
+        // Stop WordPress from breaking titles down into separate words!
+        $query->set( 'sentence', 1 );
+    }
+}
+add_action( 'pre_get_posts', 'avw_force_exact_sentence_search', 999 );
+
 function avw_product_search_join( $join, $query ) {
     global $wpdb;
     $pt = $query->get('post_type');
