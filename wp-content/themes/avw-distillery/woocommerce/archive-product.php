@@ -1,7 +1,8 @@
 <?php
+header('X-AVW-Template: archive-product');
 defined( 'ABSPATH' ) || exit;
-get_header(); 
 ?>
+<?php get_header(); ?>
 
 <!-- ASSORTMENT HERO -->
 <section class="relative bg-black pt-28 pb-16 sm:pt-36 sm:pb-20 px-4 sm:px-6">
@@ -128,7 +129,10 @@ get_header();
                         if (pushHistory) window.history.pushState(null, '', url);
 
                         fetch(url)
-                            .then(r => r.text())
+                            .then(r => {
+                                console.log('Response Header X-AVW-Template:', r.headers.get('X-AVW-Template'));
+                                return r.text();
+                            })
                             .then(html => {
                                 let parser = new DOMParser();
                                 let doc = parser.parseFromString(html, 'text/html');
@@ -147,8 +151,12 @@ get_header();
                                     productTitles.forEach(t => titleArray.push(t.innerText.trim()));
                                     console.log('3. Product Names Returned:', titleArray);
 
-                                    let testSql = docGrid.getAttribute('data-sql');
-                                    console.log('4. SERVER EXECUTED SQL:', testSql);
+                                    let testSqlEncoded = docGrid.getAttribute('data-sql');
+                                    try {
+                                        console.log('4. SERVER EXECUTED SQL:', atob(testSqlEncoded));
+                                    } catch(e) {
+                                        console.log('4. SERVER EXECUTED SQL (Raw):', testSqlEncoded);
+                                    }
 
                                     if (grid) {
                                         grid.innerHTML = docGrid.innerHTML;
@@ -254,7 +262,7 @@ get_header();
 
         <!-- PRODUCTS GRID -->
         <div class="flex-1">
-            <div id="ajax-products-container" data-sql="<?php global $wp_query; echo esc_attr( $wp_query->request ); ?>" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8 mb-12 transition-opacity duration-300">
+            <div id="ajax-products-container" data-sql="<?php global $wp_query; echo base64_encode(isset($wp_query->request) ? $wp_query->request : 'no query'); ?>" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8 mb-12 transition-opacity duration-300">
                 <?php
                 if ( have_posts() ) {
                     while ( have_posts() ) : the_post();
