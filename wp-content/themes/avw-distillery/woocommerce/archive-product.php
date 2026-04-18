@@ -89,7 +89,7 @@ defined( 'ABSPATH' ) || exit;
 
                 <!-- Price Filter (Dual-Control AJAX) -->
                 <div class="widget">
-                    <h3 class="font-kurversbrug text-[22px] sm:text-[26px] text-[#36221d] mb-4 lg:mb-5">Filter op prijs (v3.1)</h3>
+                    <h3 class="font-kurversbrug text-[22px] sm:text-[26px] text-[#36221d] mb-4 lg:mb-5">Filter op prijs</h3>
                     <div class="price-filter-wrapper space-y-6" data-v="3.0">
                         <!-- Custom Manual Inputs -->
                         <div class="flex items-center gap-4">
