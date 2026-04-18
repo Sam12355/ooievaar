@@ -56,21 +56,28 @@ get_header(); ?>
                     while ( $loop->have_posts() ) : $loop->the_post();
                         global $product;
                         
-                        $cat_ids = $product->get_category_ids();
-                        $cat_name = '';
-                        if ( ! empty( $cat_ids ) ) {
-                            $cat = get_term( $cat_ids[0], 'product_cat' );
-                            if ( ! is_wp_error( $cat ) && $cat ) {
-                                $cat_name = $cat->name;
+                        $terms = get_the_terms( get_the_ID(), 'product_cat' );
+                        $cat_names = array();
+                        $first_cat_name = '';
+
+                        if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
+                            foreach ( $terms as $term ) {
+                                if ( $term->term_id != get_option('default_product_cat') ) {
+                                    $cat_names[] = $term->name;
+                                    if ( empty( $first_cat_name ) ) {
+                                        $first_cat_name = $term->name;
+                                    }
+                                }
                             }
                         }
+                        $cat_list_str = implode(',', $cat_names);
                         
                         $img_url = has_post_thumbnail() ? get_the_post_thumbnail_url( get_the_ID(), 'large' ) : wc_placeholder_img_src();
                         $currency_symbol = get_woocommerce_currency_symbol();
                         $raw_price = wc_get_price_to_display( $product );
                         $formatted_price = $raw_price ? number_format_i18n( $raw_price, 2 ) : '';
                         ?>
-                        <div class="product-card bg-[#eedfcb] rounded-[24px] sm:rounded-[32px] p-5 sm:p-8 flex flex-col" data-category="<?php echo esc_attr( $cat_name ); ?>">
+                        <div class="product-card bg-[#eedfcb] rounded-[24px] sm:rounded-[32px] p-5 sm:p-8 flex flex-col" data-category="<?php echo esc_attr( $cat_list_str ); ?>">
                             <div class="relative rounded-[18px] sm:rounded-[24px] overflow-hidden mb-5 sm:mb-8 bg-white" style="aspect-ratio:289/203;">
                                 <a href="<?php the_permalink(); ?>">
                                     <img src="<?php echo esc_url( $img_url ); ?>" alt="<?php the_title_attribute(); ?>" class="w-full h-full object-cover transition-transform hover:scale-105 duration-500" />
@@ -96,8 +103,8 @@ get_header(); ?>
                                     <?php if ( $formatted_price ) : ?>
                                     <div class="font-['DM_Sans',sans-serif] text-[#36221d]"><span class="text-[18px]"><?php echo esc_html( $currency_symbol ); ?> </span><span class="text-[22px] font-medium"><?php echo esc_html( $formatted_price ); ?></span></div>
                                     <?php endif; ?>
-                                    <?php if ( $cat_name ) : ?>
-                                    <div class="border border-[rgba(0,0,0,0.3)] rounded-full px-4 py-1.5"><span class="font-['DM_Sans',sans-serif] text-[#061406] text-[13px]"><?php echo esc_html( $cat_name ); ?></span></div>
+                                    <?php if ( $first_cat_name ) : ?>
+                                    <div class="border border-[rgba(0,0,0,0.3)] rounded-full px-4 py-1.5"><span class="font-['DM_Sans',sans-serif] text-[#061406] text-[13px]"><?php echo esc_html( $first_cat_name ); ?></span></div>
                                     <?php endif; ?>
                                 </div>
                                 <a href="<?php the_permalink(); ?>" class="hover:underline">

@@ -29,10 +29,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // 3. Filter products
       productCards.forEach(card => {
-        if (category === 'Toon Alles' || card.getAttribute('data-category') === category) {
+        if (category === 'Toon Alles') {
           card.style.display = 'flex';
         } else {
-          card.style.display = 'none';
+          const cardCategories = card.getAttribute('data-category');
+          if (cardCategories) {
+            const catArray = cardCategories.split(',').map(c => c.trim());
+            if (catArray.includes(category)) {
+              card.style.display = 'flex';
+            } else {
+              card.style.display = 'none';
+            }
+          } else {
+            card.style.display = 'none';
+          }
         }
       });
     });
