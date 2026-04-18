@@ -24,7 +24,7 @@ get_header();
                 <!-- Custom Search -->
                 <div class="widget mb-6 lg:mb-8 pb-6 lg:pb-8 border-b border-[#36221d]/10">
                     <h3 class="font-kurversbrug text-[22px] sm:text-[26px] text-[#36221d] mb-4 lg:mb-5">Zoeken</h3>
-                    <form role="search" method="get" class="flex w-full relative" action="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>">
+                    <form id="ajax-search-form" role="search" method="get" class="flex w-full relative" action="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>">
                         <input type="search" class="w-full bg-white/50 border border-[#36221d]/20 rounded-[20px] py-3 pl-5 pr-12 outline-none font-sans text-black focus:border-[#36221d] transition-colors" placeholder="Zoek producten&hellip;" value="<?php echo get_search_query(); ?>" name="s" />
                         <input type="hidden" name="post_type" value="product" />
                         <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-[#36221d] hover:opacity-70 transition-opacity">
@@ -36,19 +36,55 @@ get_header();
                 <!-- Custom Categories -->
                 <div class="widget mb-6 lg:mb-8 pb-6 lg:pb-8 border-b border-[#36221d]/10">
                     <h3 class="font-kurversbrug text-[22px] sm:text-[26px] text-[#36221d] mb-4 lg:mb-5">Categorieën</h3>
-                    <ul class="flex flex-col gap-2 m-0 p-0" style="list-style:none;">
-                        <?php
-                        $terms = get_terms( array( 'taxonomy' => 'product_cat', 'hide_empty' => true ) );
-                        if ( ! is_wp_error( $terms ) && ! empty( $terms ) ) {
+                    <div id="ajax-categories-container">
+                    <?php
+                    if (!function_exists('avw_render_category_tree')) {
+                        function avw_render_category_tree($parent_id = 0, $depth = 0) {
+                            $terms = get_terms( array( 'taxonomy' => 'product_cat', 'hide_empty' => true, 'parent' => $parent_id ) );
+                            if ( empty($terms) || is_wp_error($terms) ) return;
+
+                            echo '<ul class="flex flex-col gap-2 m-0 p-0 ' . ($depth > 0 ? 'ml-6 mt-2' : '') . '" style="list-style:none;">';
                             foreach ( $terms as $term ) {
                                 if ( $term->term_id == get_option('default_product_cat') ) continue;
+                                
+                                $children = get_terms( array( 'taxonomy' => 'product_cat', 'hide_empty' => true, 'parent' => $term->term_id ) );
+                                $has_children = ! empty($children) && ! is_wp_error($children);
+                                
                                 $link = get_term_link( $term );
                                 $is_active = ( is_product_category( $term->term_id ) || (is_product() && has_term($term->term_id, 'product_cat')) ) ? 'bg-[#36221d] text-white border-transparent' : 'bg-white/40 hover:bg-white text-[#36221d] border border-transparent';
-                                echo '<li style="margin:0;"><a href="' . esc_url( $link ) . '" class="block rounded-[16px] px-5 py-3 font-sans text-[15px] font-medium transition-colors ' . $is_active . '" style="text-decoration:none;">' . esc_html( $term->name ) . '</a></li>';
+                                
+                                echo '<li style="margin:0;" class="relative">';
+                                echo '<div class="flex items-center gap-1">';
+                                echo '<a href="' . esc_url( $link ) . '" class="ajax-link block rounded-[16px] px-5 py-3 font-sans text-[15px] font-medium transition-colors flex-1 ' . $is_active . '" style="text-decoration:none;">' . esc_html( $term->name ) . '</a>';
+                                
+                                if ( $has_children ) {
+                                    echo '<button type="button" class="cat-toggle p-2 hover:bg-black/5 rounded-full transition-colors" data-target="cat-' . $term->term_id . '">';
+                                    echo '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="transition-transform duration-300" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>';
+                                    echo '</button>';
+                                }
+                                echo '</div>';
+                                
+                                if ( $has_children ) {
+                                    $expanded = false;
+                                    $current_obj = get_queried_object();
+                                    if ( is_a($current_obj, 'WP_Term') ) {
+                                        $ancestors = get_ancestors( $current_obj->term_id, 'product_cat' );
+                                        if ( in_array( $term->term_id, $ancestors ) || $current_obj->term_id == $term->term_id ) {
+                                            $expanded = true;
+                                        }
+                                    }
+                                    echo '<div id="cat-' . $term->term_id . '" class="' . ($expanded ? '' : 'hidden') . '">';
+                                    avw_render_category_tree( $term->term_id, $depth + 1 );
+                                    echo '</div>';
+                                }
+                                echo '</li>';
                             }
+                            echo '</ul>';
                         }
-                        ?>
-                    </ul>
+                    }
+                    avw_render_category_tree();
+                    ?>
+                    </div>
                 </div>
 
                 <!-- Price Filter (Native Widget) -->
@@ -82,14 +118,92 @@ get_header();
                 </style>
                 <script>
                 document.addEventListener('DOMContentLoaded', function() {
+                    function doAjaxLoad(url, pushHistory = true) {
+                        let grid = document.getElementById('ajax-products-container');
+                        if (grid) grid.style.opacity = '0.5';
+
+                        if (pushHistory) window.history.pushState(null, '', url);
+
+                        fetch(url)
+                            .then(r => r.text())
+                            .then(html => {
+                                let parser = new DOMParser();
+                                let doc = parser.parseFromString(html, 'text/html');
+
+                                let docGrid = doc.getElementById('ajax-products-container');
+                                if (grid && docGrid) grid.innerHTML = docGrid.innerHTML;
+
+                                let pagination = document.getElementById('ajax-pagination-container');
+                                let docPagination = doc.getElementById('ajax-pagination-container');
+                                if (pagination && docPagination) pagination.innerHTML = docPagination.innerHTML;
+
+                                let categories = document.getElementById('ajax-categories-container');
+                                let docCategories = doc.getElementById('ajax-categories-container');
+                                if (categories && docCategories) categories.innerHTML = docCategories.innerHTML;
+
+                                if (grid) grid.style.opacity = '1';
+
+                                rebindDynamicEvents();
+                            })
+                            .catch(() => window.location.href = url); // fallback
+                    }
+
+                    function rebindDynamicEvents() {
+                        document.querySelectorAll('a.ajax-link, #ajax-pagination-container a').forEach(el => {
+                            el.addEventListener('click', e => {
+                                e.preventDefault();
+                                doAjaxLoad(el.href);
+                            });
+                        });
+
+                        document.querySelectorAll('.cat-toggle').forEach(btn => {
+                            btn.addEventListener('click', e => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                let targetId = btn.getAttribute('data-target');
+                                let target = document.getElementById(targetId);
+                                let svg = btn.querySelector('svg');
+                                if(target) {
+                                    target.classList.toggle('hidden');
+                                    if(svg) {
+                                        svg.style.transform = target.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+                                    }
+                                }
+                            });
+                        });
+                        
+                        let searchForm = document.getElementById('ajax-search-form');
+                        if(searchForm && !searchForm.dataset.bound) {
+                            searchForm.addEventListener('submit', e => {
+                                e.preventDefault();
+                                let url = new URL(searchForm.action);
+                                let formData = new FormData(searchForm);
+                                for (let [key, value] of formData.entries()) {
+                                    if(value) url.searchParams.set(key, value);
+                                }
+                                doAjaxLoad(url.toString());
+                            });
+                            searchForm.dataset.bound = "true";
+                        }
+                    }
+
+                    window.addEventListener('popstate', () => {
+                        doAjaxLoad(window.location.href, false);
+                    });
+
+                    rebindDynamicEvents();
+
                     if (typeof jQuery !== 'undefined') {
                         jQuery(document.body).on('price_slider_change', function(event, min, max) {
                             var form = jQuery('.price-filter-wrapper form');
                             if(form.length) {
                                 clearTimeout(window.wooPriceFilterTimeout);
                                 window.wooPriceFilterTimeout = setTimeout(function() {
-                                    form.submit();
-                                }, 800);
+                                    let url = new URL(window.location.href);
+                                    url.searchParams.set('min_price', jQuery(form).find('input[name="min_price"]').val());
+                                    url.searchParams.set('max_price', jQuery(form).find('input[name="max_price"]').val());
+                                    doAjaxLoad(url.toString());
+                                }, 600);
                             }
                         });
                     }
@@ -101,7 +215,7 @@ get_header();
 
         <!-- PRODUCTS GRID -->
         <div class="flex-1">
-            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8 mb-12">
+            <div id="ajax-products-container" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8 mb-12 transition-opacity duration-300">
                 <?php
                 if ( have_posts() ) {
                     while ( have_posts() ) : the_post();
@@ -173,6 +287,7 @@ get_header();
             </div>
             
             <!-- PAGINATION -->
+            <div id="ajax-pagination-container">
             <?php if ( have_posts() ) : ?>
             <div class="flex justify-center woo-pagination mt-10 font-sans">
                 <?php
@@ -184,6 +299,7 @@ get_header();
                 ?>
             </div>
             <?php endif; ?>
+            </div>
         </div>
     </div>
 </section>
