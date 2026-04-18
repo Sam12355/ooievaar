@@ -54,7 +54,8 @@ get_header(); ?>
 
                 if ( $loop->have_posts() ) {
                     while ( $loop->have_posts() ) : $loop->the_post();
-                        global $product;
+                        $product = wc_get_product( get_the_ID() );
+                        if ( ! $product ) continue;
                         
                         $terms = get_the_terms( get_the_ID(), 'product_cat' );
                         $cat_names = array();
