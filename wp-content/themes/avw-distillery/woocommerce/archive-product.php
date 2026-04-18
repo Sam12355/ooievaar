@@ -199,7 +199,8 @@ get_header();
                         if(searchForm && !searchForm.dataset.bound) {
                             
                             function triggerSearch() {
-                                let url = new URL(window.location.href.split('?')[0], window.location.origin);
+                                let url = new URL(window.location.href.split('?')[0] + window.location.search);
+                                url.search = ''; // wipe current query params
                                 let formData = new FormData(searchForm);
                                 for (let [key, value] of formData.entries()) {
                                     if(value) url.searchParams.set(key, value);

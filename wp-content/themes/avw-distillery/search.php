@@ -3,8 +3,9 @@ defined( 'ABSPATH' ) || exit;
 
 // Route all product searches to our stunning custom WooCommerce archive layout
 if ( isset($_GET['post_type']) && $_GET['post_type'] === 'product' ) {
-    if ( function_exists('wc_get_template') ) {
-        wc_get_template( 'archive-product.php' );
+    $archive_path = get_stylesheet_directory() . '/woocommerce/archive-product.php';
+    if ( file_exists($archive_path) ) {
+        require $archive_path;
         exit;
     }
 }
