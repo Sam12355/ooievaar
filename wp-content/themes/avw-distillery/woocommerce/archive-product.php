@@ -223,6 +223,7 @@ defined( 'ABSPATH' ) || exit;
                                 if(searchVal) {
                                     url.searchParams.set('s', searchVal);
                                     url.searchParams.set('post_type', 'product');
+                                    url.searchParams.set('avw_ajax', '1');
                                 }
                                 doAjaxLoad(url.toString(), false);
                             }
@@ -252,8 +253,21 @@ defined( 'ABSPATH' ) || exit;
                         }
                     }
 
-                    window.addEventListener('popstate', () => {
-                        doAjaxLoad(window.location.href, false);
+                    window.addEventListener('popstate', (e) => {
+                        // If we are currently in an AJax search, don't let popstate trigger a reload
+                        if (window.location.search.includes('s=')) {
+                            doAjaxLoad(window.location.href, false);
+                        } else {
+                            doAjaxLoad(window.location.href, false);
+                        }
+                    });
+
+                    // DEBUG RELOAD HIJACKER
+                    window.addEventListener('beforeunload', (e) => {
+                        if (document.activeElement && document.activeElement.id === 'ajax-search-input') {
+                           console.log('RELOAD ATTEMPTED BY EXTERNAL SCRIPT');
+                           // e.preventDefault(); // Uncomment only if desperately needed as it shows a browser popup
+                        }
                     });
 
                     rebindDynamicEvents();
