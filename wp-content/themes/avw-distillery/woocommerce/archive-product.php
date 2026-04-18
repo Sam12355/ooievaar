@@ -87,23 +87,22 @@ defined( 'ABSPATH' ) || exit;
                     </div>
                 </div>
 
-                <!-- Price Filter (Native Widget) -->
+                <!-- Price Filter (Custom AJAX) -->
                 <div class="widget">
                     <h3 class="font-kurversbrug text-[22px] sm:text-[26px] text-[#36221d] mb-4 lg:mb-5">Filter op prijs</h3>
-                    <?php
-                    // Enqueue woo price slider scripts explicitly to ensure they load
-                    wp_enqueue_script('wc-price-slider');
-                    wp_enqueue_script('jquery-ui-slider');
-                    
-                    if ( class_exists('WC_Widget_Price_Filter') ) {
-                        the_widget( 'WC_Widget_Price_Filter', array( 'title' => '' ), array(
-                            'before_widget' => '<div class="price-filter-wrapper w-full">',
-                            'after_widget'  => '</div>',
-                            'before_title'  => '',
-                            'after_title'   => ''
-                        ) );
-                    }
-                    ?>
+                    <div class="price-filter-wrapper space-y-4">
+                        <div class="flex items-center gap-3">
+                            <div class="relative flex-1">
+                                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-[#36221d]/50 text-sm">€</span>
+                                <input type="number" id="min_price_input" class="ajax-price-input w-full bg-white/50 border border-[#36221d]/20 rounded-[12px] py-2 pl-7 pr-3 outline-none font-sans text-sm focus:border-[#36221d] transition-colors" placeholder="Min" value="<?php echo isset($_GET['min_price']) ? esc_attr($_GET['min_price']) : ''; ?>" />
+                            </div>
+                            <span class="text-[#36221d]/30">—</span>
+                            <div class="relative flex-1">
+                                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-[#36221d]/50 text-sm">€</span>
+                                <input type="number" id="max_price_input" class="ajax-price-input w-full bg-white/50 border border-[#36221d]/20 rounded-[12px] py-2 pl-7 pr-3 outline-none font-sans text-sm focus:border-[#36221d] transition-colors" placeholder="Max" value="<?php echo isset($_GET['max_price']) ? esc_attr($_GET['max_price']) : ''; ?>" />
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <style>
@@ -286,6 +285,23 @@ defined( 'ABSPATH' ) || exit;
                             }
                         });
                     }
+
+                    // Handle Manual Price Inputs
+                    let priceInputs = document.querySelectorAll('.ajax-price-input');
+                    let priceTimeout;
+                    priceInputs.forEach(input => {
+                        input.addEventListener('input', () => {
+                            clearTimeout(priceTimeout);
+                            priceTimeout = setTimeout(() => {
+                                let url = new URL(window.location.href);
+                                let min = document.getElementById('min_price_input').value;
+                                let max = document.getElementById('max_price_input').value;
+                                if (min) url.searchParams.set('min_price', min); else url.searchParams.delete('min_price');
+                                if (max) url.searchParams.set('max_price', max); else url.searchParams.delete('max_price');
+                                doAjaxLoad(url.toString());
+                            }, 800);
+                        });
+                    });
                 });
                 </script>
 
