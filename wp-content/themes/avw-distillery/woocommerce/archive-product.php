@@ -8,7 +8,7 @@ defined( 'ABSPATH' ) || exit;
 <section class="relative bg-[#36221d] pt-28 pb-16 sm:pt-36 sm:pb-20 px-4 sm:px-6 overflow-hidden">
     <!-- Background Image with Parallax-ready styling -->
     <div class="absolute inset-0 z-0">
-        <img src="<?php echo get_template_directory_uri(); ?>/assets/assortment-hero.png" alt="A. van Wees Assortment Background" class="w-full h-full object-cover opacity-60" style="object-position: center 40%;" />
+        <img id="assortment-hero-img" src="<?php echo get_template_directory_uri(); ?>/assets/assortment-hero.png" alt="A. van Wees Assortment Background" class="w-full h-full object-cover opacity-60" style="object-position: center 40%;" />
         <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-[#e0cbb0]"></div>
     </div>
 
@@ -314,6 +314,20 @@ defined( 'ABSPATH' ) || exit;
 
                     rebindDynamicEvents();
                     console.log('=== AVW POWER SYNC v3.0 ACTIVE ===');
+
+                    // Header Parallax initialization
+                    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+                        gsap.to("#assortment-hero-img", {
+                            yPercent: 30,
+                            ease: "none",
+                            scrollTrigger: {
+                                trigger: "#ajax-page-title",
+                                start: "top bottom",
+                                end: "bottom top",
+                                scrub: true
+                            }
+                        });
+                    }
 
                     if (typeof jQuery !== 'undefined') {
                         jQuery(document.body).on('price_slider_change', function(event, min, max) {
