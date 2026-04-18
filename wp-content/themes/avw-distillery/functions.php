@@ -62,7 +62,12 @@ function avw_force_exact_sentence_search( $query ) {
     if ( ! is_admin() && $query->is_main_query() && $query->is_search() ) {
         $pt = $query->get('post_type');
         if ( $pt === 'product' || (is_array($pt) && in_array('product', $pt)) || (isset($_GET['post_type']) && $_GET['post_type'] === 'product') ) {
+            // Stop WordPress from breaking titles down into separate words!
             $query->set( 'sentence', 1 );
+            
+            // BREAK OUT of category restrictions when searching!
+            // This allows searching for "Vodka" even if you are currently inside "Gin"
+            $query->set( 'tax_query', array() );
         }
     }
 }
