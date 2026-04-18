@@ -25,7 +25,7 @@ get_header();
                 <div class="widget mb-6 lg:mb-8 pb-6 lg:pb-8 border-b border-[#36221d]/10">
                     <h3 class="font-kurversbrug text-[22px] sm:text-[26px] text-[#36221d] mb-4 lg:mb-5">Zoeken</h3>
                     <form id="ajax-search-form" role="search" method="get" class="flex w-full relative" action="<?php echo esc_url( home_url( '/' ) ); ?>">
-                        <input type="search" class="w-full bg-white/50 border border-[#36221d]/20 rounded-[20px] py-3 pl-5 pr-12 outline-none font-sans text-black focus:border-[#36221d] transition-colors" placeholder="Zoek producten&hellip;" value="<?php echo get_search_query(); ?>" name="s" />
+                        <input type="text" class="w-full bg-white/50 border border-[#36221d]/20 rounded-[20px] py-3 pl-5 pr-12 outline-none font-sans text-black focus:border-[#36221d] transition-colors" placeholder="Zoek producten&hellip;" value="<?php echo get_search_query(); ?>" name="s" autocomplete="off" />
                         <input type="hidden" name="post_type" value="product" />
                         <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-[#36221d] hover:opacity-70 transition-opacity">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
@@ -115,6 +115,9 @@ get_header();
                     font-weight: 500;
                     color: #36221d;
                 }
+                input[type="text"]::-webkit-search-cancel-button {
+                    display: none;
+                }
                 </style>
                 <script>
                 document.addEventListener('DOMContentLoaded', function() {
@@ -174,8 +177,8 @@ get_header();
                         
                         let searchForm = document.getElementById('ajax-search-form');
                         if(searchForm && !searchForm.dataset.bound) {
-                            searchForm.addEventListener('submit', e => {
-                                e.preventDefault();
+                            
+                            function triggerSearch() {
                                 let actionUrl = searchForm.getAttribute('action');
                                 let url = new URL(actionUrl ? actionUrl : window.location.href, window.location.origin);
                                 let formData = new FormData(searchForm);
@@ -183,7 +186,22 @@ get_header();
                                     if(value) url.searchParams.set(key, value);
                                 }
                                 doAjaxLoad(url.toString());
+                            }
+
+                            searchForm.addEventListener('submit', e => {
+                                e.preventDefault();
+                                triggerSearch();
                             });
+
+                            let searchInput = searchForm.querySelector('input[name="s"]');
+                            if (searchInput) {
+                                let searchTimeout;
+                                searchInput.addEventListener('input', function() {
+                                    clearTimeout(searchTimeout);
+                                    searchTimeout = setTimeout(triggerSearch, 500);
+                                });
+                            }
+
                             searchForm.dataset.bound = "true";
                         }
                     }
