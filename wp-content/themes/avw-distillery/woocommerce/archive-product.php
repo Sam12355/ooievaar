@@ -87,25 +87,41 @@ defined( 'ABSPATH' ) || exit;
                     </div>
                 </div>
 
-                <!-- Price Filter (Custom AJAX) -->
+                <!-- Price Filter (Dual-Control AJAX) -->
                 <div class="widget">
-                    <h3 class="font-kurversbrug text-[22px] sm:text-[26px] text-[#36221d] mb-4 lg:mb-5">Filter op prijs - updated</h3>
-                    <div class="price-filter-wrapper space-y-4" data-v="2.0">
+                    <h3 class="font-kurversbrug text-[22px] sm:text-[26px] text-[#36221d] mb-4 lg:mb-5">Filter op prijs</h3>
+                    <div class="price-filter-wrapper space-y-6" data-v="2.1">
+                        <!-- Custom Manual Inputs -->
                         <div class="flex items-center gap-4">
                             <div class="relative flex-1">
                                 <label for="min_price_input" class="block text-[11px] uppercase tracking-widest text-[#36221d]/60 mb-1.5 ml-1 font-bold">Vanaf</label>
                                 <div class="relative">
                                     <span class="absolute left-3 top-1/2 -translate-y-1/2 text-[#36221d]/50 text-sm">€</span>
-                                    <input type="number" id="min_price_input" class="ajax-price-input w-full bg-white border border-[#36221d]/10 rounded-[12px] py-3 pl-8 pr-3 outline-none font-sans text-[16px] focus:border-[#36221d] focus:ring-1 focus:ring-[#36221d]/20 transition-all shadow-sm" placeholder="0" value="<?php echo isset($_GET['min_price']) ? esc_attr($_GET['min_price']) : ''; ?>" />
+                                    <input type="number" id="min_price_input" class="ajax-price-input w-full bg-white border border-[#36221d]/10 rounded-[12px] py-2.5 pl-8 pr-3 outline-none font-sans text-[15px] focus:border-[#36221d] transition-all" placeholder="0" value="<?php echo isset($_GET['min_price']) ? esc_attr($_GET['min_price']) : ''; ?>" />
                                 </div>
                             </div>
                             <div class="relative flex-1">
                                 <label for="max_price_input" class="block text-[11px] uppercase tracking-widest text-[#36221d]/60 mb-1.5 ml-1 font-bold">Tot</label>
                                 <div class="relative">
                                     <span class="absolute left-3 top-1/2 -translate-y-1/2 text-[#36221d]/50 text-sm">€</span>
-                                    <input type="number" id="max_price_input" class="ajax-price-input w-full bg-white border border-[#36221d]/10 rounded-[12px] py-3 pl-8 pr-3 outline-none font-sans text-[16px] focus:border-[#36221d] focus:ring-1 focus:ring-[#36221d]/20 transition-all shadow-sm" placeholder="1000" value="<?php echo isset($_GET['max_price']) ? esc_attr($_GET['max_price']) : ''; ?>" />
+                                    <input type="number" id="max_price_input" class="ajax-price-input w-full bg-white border border-[#36221d]/10 rounded-[12px] py-2.5 pl-8 pr-3 outline-none font-sans text-[15px] focus:border-[#36221d] transition-all" placeholder="1000" value="<?php echo isset($_GET['max_price']) ? esc_attr($_GET['max_price']) : ''; ?>" />
                                 </div>
                             </div>
+                        </div>
+
+                        <!-- Native Slider Shell -->
+                        <div class="woo-price-slider-shell px-2">
+                        <?php
+                        wp_enqueue_script('wc-price-slider');
+                        if ( class_exists('WC_Widget_Price_Filter') ) {
+                            the_widget( 'WC_Widget_Price_Filter', array( 'title' => '' ), array(
+                                'before_widget' => '<div class="price_slider_wrapper">',
+                                'after_widget'  => '</div>',
+                                'before_title'  => '',
+                                'after_title'   => ''
+                            ) );
+                        }
+                        ?>
                         </div>
                     </div>
                 </div>
@@ -114,10 +130,26 @@ defined( 'ABSPATH' ) || exit;
                 .price_slider_amount button.button {
                     display: none !important;
                 }
+                .price_slider_wrapper .price_slider {
+                    margin-bottom: 0 !important;
+                    background: rgba(54, 34, 29, 0.1) !important;
+                    height: 4px !important;
+                    border: none !important;
+                }
+                .price_slider_wrapper .ui-slider-range {
+                    background: #36221d !important;
+                }
+                .price_slider_wrapper .ui-slider-handle {
+                    background: #36221d !important;
+                    border-radius: 50% !important;
+                    width: 16px !important;
+                    height: 16px !important;
+                    top: -6px !important;
+                    cursor: pointer !important;
+                    border: 2px solid #eedfcb !important;
+                }
                 .price_slider_amount .price_label {
-                    font-size: 15px !important;
-                    font-weight: 500;
-                    color: #36221d;
+                    display: none !important;
                 }
                 input[type="text"]::-webkit-search-cancel-button {
                     display: none;
@@ -278,29 +310,41 @@ defined( 'ABSPATH' ) || exit;
 
                     if (typeof jQuery !== 'undefined') {
                         jQuery(document.body).on('price_slider_change', function(event, min, max) {
-                            var form = jQuery('.price-filter-wrapper form');
-                            if(form.length) {
-                                clearTimeout(window.wooPriceFilterTimeout);
-                                window.wooPriceFilterTimeout = setTimeout(function() {
-                                    let url = new URL(window.location.href);
-                                    url.searchParams.set('min_price', jQuery(form).find('input[name="min_price"]').val());
-                                    url.searchParams.set('max_price', jQuery(form).find('input[name="max_price"]').val());
-                                    doAjaxLoad(url.toString());
-                                }, 600);
-                            }
+                            // Sync Slider -> Inputs
+                            const minInp = document.getElementById('min_price_input');
+                            const maxInp = document.getElementById('max_price_input');
+                            if(minInp) minInp.value = min;
+                            if(maxInp) maxInp.value = max;
+
+                            clearTimeout(window.wooPriceFilterTimeout);
+                            window.wooPriceFilterTimeout = setTimeout(function() {
+                                let url = new URL(window.location.href);
+                                url.searchParams.set('min_price', min);
+                                url.searchParams.set('max_price', max);
+                                doAjaxLoad(url.toString());
+                            }, 600);
                         });
                     }
 
-                    // Handle Manual Price Inputs
+                    // Sync Inputs -> Slider
                     let priceInputs = document.querySelectorAll('.ajax-price-input');
                     let priceTimeout;
                     priceInputs.forEach(input => {
                         input.addEventListener('input', () => {
                             clearTimeout(priceTimeout);
                             priceTimeout = setTimeout(() => {
+                                let min = parseInt(document.getElementById('min_price_input').value) || 0;
+                                let max = parseInt(document.getElementById('max_price_input').value) || 5000;
+
+                                // Trigger jQuery UI slider update
+                                if (typeof jQuery !== 'undefined' && jQuery('.price_slider').length) {
+                                    jQuery('.price_slider').slider('values', 0, min);
+                                    jQuery('.price_slider').slider('values', 1, max);
+                                    // Manually trigger the change event
+                                    jQuery(document.body).trigger('price_slider_updated', [min, max]);
+                                }
+
                                 let url = new URL(window.location.href);
-                                let min = document.getElementById('min_price_input').value;
-                                let max = document.getElementById('max_price_input').value;
                                 if (min) url.searchParams.set('min_price', min); else url.searchParams.delete('min_price');
                                 if (max) url.searchParams.set('max_price', max); else url.searchParams.delete('max_price');
                                 doAjaxLoad(url.toString());
