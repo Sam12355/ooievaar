@@ -7,8 +7,8 @@ defined( 'ABSPATH' ) || exit;
 <!-- ASSORTMENT HERO -->
 <section class="relative bg-black pt-28 pb-16 sm:pt-36 sm:pb-20 px-4 sm:px-6">
     <div class="max-w-[800px] mx-auto text-center relative z-10">
-        <h1 class="font-kurversbrug text-[#eedfcb] text-[36px] sm:text-[48px] md:text-[56px] mb-4 sm:mb-6"><?php woocommerce_page_title(); ?></h1>
-        <p class="font-sans text-white text-[16px] sm:text-[18px] md:text-[20px] leading-relaxed opacity-90">
+        <h1 id="ajax-page-title" class="font-kurversbrug text-[#eedfcb] text-[36px] sm:text-[48px] md:text-[56px] mb-4 sm:mb-6"><?php woocommerce_page_title(); ?></h1>
+        <p id="ajax-page-description" class="font-sans text-white text-[16px] sm:text-[18px] md:text-[20px] leading-relaxed opacity-90">
             Ontdek onze uitgebreide collectie ambachtelijk gedistilleerde Oudhollandse genevers, likeuren, bitters en esprits. Gemaakt in het hart van Amsterdam volgens authentieke receptuur.
         </p>
     </div>
@@ -172,11 +172,22 @@ defined( 'ABSPATH' ) || exit;
                                 let docCategories = doc.getElementById('ajax-categories-container');
                                 if (categories && docCategories) categories.innerHTML = docCategories.innerHTML;
 
+                                let pageTitle = document.getElementById('ajax-page-title');
+                                let docPageTitle = doc.getElementById('ajax-page-title');
+                                if (pageTitle && docPageTitle) pageTitle.innerHTML = docPageTitle.innerHTML;
+
+                                let pageDesc = document.getElementById('ajax-page-description');
+                                let docPageDesc = doc.getElementById('ajax-page-description');
+                                if (pageDesc && docPageDesc) pageDesc.innerHTML = docPageDesc.innerHTML;
+
                                 if (grid) grid.style.opacity = '1';
 
                                 rebindDynamicEvents();
                             })
-                            .catch(() => window.location.href = url); // fallback
+                            .catch(err => {
+                                console.error('AJAX Error:', err);
+                                if (grid) grid.style.opacity = '1';
+                            });
                     }
 
                     function rebindDynamicEvents() {
@@ -213,7 +224,7 @@ defined( 'ABSPATH' ) || exit;
                                 for (let [key, value] of formData.entries()) {
                                     if(value) url.searchParams.set(key, value);
                                 }
-                                doAjaxLoad(url.toString());
+                                doAjaxLoad(url.toString(), false);
                             }
 
                             searchForm.addEventListener('submit', e => {
