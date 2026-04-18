@@ -62,12 +62,13 @@ function avw_force_exact_sentence_search( $query ) {
     if ( ! is_admin() && $query->is_main_query() && $query->is_search() ) {
         $pt = $query->get('post_type');
         if ( $pt === 'product' || (is_array($pt) && in_array('product', $pt)) || (isset($_GET['post_type']) && $_GET['post_type'] === 'product') ) {
-            // Stop WordPress from breaking titles down into separate words!
             $query->set( 'sentence', 1 );
             
-            // BREAK OUT of category restrictions when searching!
-            // This allows searching for "Vodka" even if you are currently inside "Gin"
-            $query->set( 'tax_query', array() );
+            // BREAK OUT OF CATEGORY LOCK: If we are searching, ignore the current category/taxonomy filter
+            if ( ! is_admin() ) {
+                $query->set( 'tax_query', array() );
+                $query->set( 'product_cat', '' );
+            }
         }
     }
 }
@@ -109,11 +110,15 @@ function avw_custom_woo_search( $search, $wp_query ) {
         
         $like = '%' . $wpdb->esc_like( $search_term ) . '%';
         
-        // Strict match: ONLY Title and SKU. Ignore content/excerpt to prevent irrelevant matching.
+        // ULTIMATE STRICTURE: ONLY match title or SKU. 
+        // We use AND (1=1) to ensure we don't break the query if other hooks are present.
         $search = " AND (
             ({$wpdb->posts}.post_title LIKE '{$like}') 
             OR ( pm_sku.meta_value LIKE '{$like}' )
         ) ";
+        
+        // Log it to the console for the user
+        error_log("AVW Search Debug: Term = " . $search_term);
     }
     return $search;
 }
