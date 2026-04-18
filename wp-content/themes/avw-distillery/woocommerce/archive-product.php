@@ -160,7 +160,7 @@ defined( 'ABSPATH' ) || exit;
 
                                     if (grid) {
                                         grid.innerHTML = docGrid.innerHTML;
-                                        grid.setAttribute('data-sql', testSql);
+                                        grid.setAttribute('data-sql', testSqlEncoded);
                                     }
                                 }
 
@@ -218,7 +218,9 @@ defined( 'ABSPATH' ) || exit;
 
                             searchForm.addEventListener('submit', e => {
                                 e.preventDefault();
+                                e.stopPropagation();
                                 triggerSearch();
+                                return false;
                             });
 
                             let searchInput = searchForm.querySelector('input[name="s"]');

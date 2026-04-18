@@ -118,26 +118,45 @@ add_filter( 'posts_join', 'avw_product_search_join', 10, 2 );
 function avw_custom_woo_search( $search, $wp_query ) {
     global $wpdb;
     $pt = $wp_query->get('post_type');
-    $is_product = ( $pt === 'product' || is_array($pt) && in_array('product', $pt) || (isset($_GET['post_type']) && $_GET['post_type'] === 'product') );
+    $is_product = ( $pt === 'product' || (is_array($pt) && in_array('product', $pt)) || (isset($_GET['post_type']) && $_GET['post_type'] === 'product') );
     
     if ( ! is_admin() && $wp_query->is_search() && $wp_query->is_main_query() && $is_product ) {
         $search_term = $wp_query->get('s');
         if ( empty( $search_term ) ) return $search;
         
-        $like = '%' . $wpdb->esc_like( $search_term ) . '%';
+        // Clean the search term: replace weird dashes with a simple space or hyphen
+        $search_term = str_replace(array('–', '—'), '-', $search_term);
         
-        // ULTIMATE STRICTURE: ONLY match title or SKU. 
-        // We use AND (1=1) to ensure we don't break the query if other hooks are present.
-        $search = " AND (
-            ({$wpdb->posts}.post_title LIKE '{$like}') 
-            OR ( pm_sku.meta_value LIKE '{$like}' )
-        ) ";
+        // Split into words for an "AND" search (must contain all words)
+        $words = explode(' ', $search_term);
+        $search = " AND ( ";
+        $subcases = array();
         
-        // Log it to the console for the user
-        error_log("AVW Search Debug: Term = " . $search_term);
+        foreach($words as $word) {
+            $word = trim($word);
+            if(empty($word)) continue;
+            $like = '%' . $wpdb->esc_like( $word ) . '%';
+            $subcases[] = "({$wpdb->posts}.post_title LIKE '{$like}' OR pm_sku.meta_value LIKE '{$like}')";
+        }
+        
+        $search .= implode(' AND ', $subcases);
+        $search .= " ) ";
     }
     return $search;
 }
 add_filter( 'posts_search', 'avw_custom_woo_search', 500, 2 );
+
+// NUCLEAR OPTION: Physically strip the "term_taxonomy_id IN (XXX)" from the WHERE clause during search
+function avw_nuclear_search_globalizer( $where, $wp_query ) {
+    if ( ! is_admin() && $wp_query->is_search() && $wp_query->is_main_query() ) {
+        $pt = $wp_query->get('post_type');
+        if ( $pt === 'product' || (is_array($pt) && in_array('product', $pt)) || (isset($_GET['post_type']) && $_GET['post_type'] === 'product') ) {
+            // This regex removes the category restriction entirely
+            $where = preg_replace('/AND\s*\(\s*[^)]*?term_taxonomy_id\s+IN\s*\(\d+\)\s*\)/i', '', $where);
+        }
+    }
+    return $where;
+}
+add_filter( 'posts_where', 'avw_nuclear_search_globalizer', 999, 2 );
 
 
