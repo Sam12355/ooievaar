@@ -1,5 +1,5 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/janithsi/public_html/ooievaar/wp-content/themes/avw-distillery/
+    - export DEPLOYPATH=/home/janithsi/crazoredigitalservices.com/ooievaar/wp-content/themes/avw-distillery/
     - /bin/cp -R wp-content/themes/avw-distillery/. $DEPLOYPATH
