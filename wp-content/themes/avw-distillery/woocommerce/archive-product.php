@@ -24,7 +24,7 @@ get_header();
                 <!-- Custom Search -->
                 <div class="widget mb-6 lg:mb-8 pb-6 lg:pb-8 border-b border-[#36221d]/10">
                     <h3 class="font-kurversbrug text-[22px] sm:text-[26px] text-[#36221d] mb-4 lg:mb-5">Zoeken</h3>
-                    <form id="ajax-search-form" role="search" method="get" class="flex w-full relative" action="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>">
+                    <form id="ajax-search-form" role="search" method="get" class="flex w-full relative" action="<?php echo esc_url( home_url( '/' ) ); ?>">
                         <input type="search" class="w-full bg-white/50 border border-[#36221d]/20 rounded-[20px] py-3 pl-5 pr-12 outline-none font-sans text-black focus:border-[#36221d] transition-colors" placeholder="Zoek producten&hellip;" value="<?php echo get_search_query(); ?>" name="s" />
                         <input type="hidden" name="post_type" value="product" />
                         <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-[#36221d] hover:opacity-70 transition-opacity">
@@ -176,7 +176,8 @@ get_header();
                         if(searchForm && !searchForm.dataset.bound) {
                             searchForm.addEventListener('submit', e => {
                                 e.preventDefault();
-                                let url = new URL(searchForm.action);
+                                let actionUrl = searchForm.getAttribute('action');
+                                let url = new URL(actionUrl ? actionUrl : window.location.href, window.location.origin);
                                 let formData = new FormData(searchForm);
                                 for (let [key, value] of formData.entries()) {
                                     if(value) url.searchParams.set(key, value);
