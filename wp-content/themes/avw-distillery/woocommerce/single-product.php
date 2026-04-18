@@ -2,6 +2,8 @@
 /**
  * The Template for displaying all single products
  */
+header('X-AVW-Template: single-product');
+nocache_headers();
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
