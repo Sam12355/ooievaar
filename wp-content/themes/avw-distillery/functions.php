@@ -68,6 +68,12 @@ function avw_force_exact_sentence_search( $query ) {
             if ( ! is_admin() ) {
                 $query->set( 'tax_query', array() );
                 $query->set( 'product_cat', '' );
+                $query->set( 'taxonomy', '' );
+                $query->set( 'term', '' );
+                // Explicitly clear the 'product_cat' from the query string to be safe
+                if (isset($query->query_vars['product_cat'])) unset($query->query_vars['product_cat']);
+                if (isset($query->query_vars['taxonomy'])) unset($query->query_vars['taxonomy']);
+                if (isset($query->query_vars['term'])) unset($query->query_vars['term']);
             }
         }
     }
@@ -85,6 +91,16 @@ function avw_force_product_template( $template ) {
     return $template;
 }
 add_filter( 'template_include', 'avw_force_product_template', 99 );
+
+// Prevent SEO/Redirect plugins from hijacking search requests
+function avw_prevent_search_redirects( $redirect_url ) {
+    if ( is_search() && (isset($_GET['post_type']) && $_GET['post_type'] === 'product') ) {
+        return false;
+    }
+    return $redirect_url;
+}
+add_filter( 'redirect_canonical', 'avw_prevent_search_redirects', 10 );
+
 
 function avw_product_search_join( $join, $query ) {
     global $wpdb;
