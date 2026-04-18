@@ -63,31 +63,22 @@ if ( post_password_required() ) {
 			<?php the_content(); ?>
 		</div>
 
-		<div class="action-area pt-4">
+		<div class="action-area pt-4 border-b border-[#36221d]/10 pb-8">
 			<?php
             woocommerce_template_single_add_to_cart();
 			?>
 		</div>
-	</div>
-</div>
 
-<!-- SEPARATOR LINE -->
-<div class="max-w-[1300px] mx-auto my-16 border-t border-[#36221d]/10"></div>
-
-<!-- BOTTOM SECTION: DISCOVERY & REVIEWS -->
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start max-w-[1300px] mx-auto mb-20">
-    
-    <!-- LEFT: REVIEWS & DETAILS -->
-    <div class="discovery-left h-full">
-        <div class="p-8 bg-white/30 rounded-[32px] border border-[#36221d]/5 h-full">
-            <h4 class="font-kurversbrug text-[22px] text-[#36221d] mb-8 uppercase tracking-wide">Product Details & Reviews</h4>
+        <!-- PRODUCT DETAILS (RESTORED TO TOP) -->
+        <div class="product-tabs pt-2">
+            <h4 class="font-kurversbrug text-[20px] text-[#36221d] mb-4 uppercase tracking-wide">Details</h4>
             <div class="prose prose-sm font-sans text-black/70 max-w-none">
                 <?php
                 $tabs = apply_filters( 'woocommerce_product_tabs', array() );
                 if ( ! empty( $tabs ) ) {
                     foreach ( $tabs as $key => $tab ) {
-                        if ( $key !== 'description' ) { 
-                            echo '<div class="mb-8 last:mb-0"><strong>' . esc_html( $tab['title'] ) . ':</strong> ';
+                        if ( $key !== 'description' && $key !== 'reviews' ) { 
+                            echo '<div class="mb-4 last:mb-0"><strong>' . esc_html( $tab['title'] ) . ':</strong> ';
                             call_user_func( $tab['callback'], $key, $tab );
                             echo '</div>';
                         }
@@ -96,38 +87,59 @@ if ( post_password_required() ) {
                 ?>
             </div>
         </div>
-    </div>
+	</div>
+</div>
 
-    <!-- RIGHT: RELATED CAROUSEL -->
-    <div class="discovery-right">
-        <?php
-        $related_ids = wc_get_related_products( $product->get_id(), 9 );
-        if ( ! empty( $related_ids ) ) : ?>
-            <div class="related-carousel-wrapper relative group p-8 bg-[#eedfcb]/30 rounded-[32px] border border-[#36221d]/5">
-                <h4 class="font-kurversbrug text-[18px] text-[#36221d] mb-8 uppercase tracking-[0.2em] opacity-80">Anderen bekeken ook</h4>
-                <div class="swiper related-swiper !overflow-visible">
-                    <div class="swiper-wrapper">
-                        <?php foreach ( $related_ids as $related_id ) : 
-                            $rel_product = wc_get_product( $related_id );
-                            if ( ! $rel_product ) continue;
-                            ?>
-                            <div class="swiper-slide card-slide">
-                                <a href="<?php echo get_permalink( $related_id ); ?>" class="block bg-[#eedfcb] rounded-[16px] p-3 group transition-all hover:bg-white hover:shadow-xl">
-                                    <div class="bg-white rounded-[10px] p-2 mb-2 aspect-square overflow-hidden flex items-center justify-center">
-                                        <?php echo $rel_product->get_image( 'thumbnail', array( 'class' => 'max-h-full w-auto object-contain transition-transform group-hover:scale-110' ) ); ?>
-                                    </div>
-                                    <h5 class="font-kurversbrug text-[11px] text-[#36221d] line-clamp-1 mb-0.5"><?php echo $rel_product->get_name(); ?></h5>
-                                    <p class="font-sans text-[10px] font-bold text-[#36221d]"><?php echo strip_tags($rel_product->get_price_html()); ?></p>
-                                </a>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
-                    <!-- Navigation Buttons (ULTRA VISIBLE) -->
-                    <div class="swiper-button-next !text-[#eedfcb] !w-10 !h-10 after:!text-[14px] !bg-[#36221d] rounded-full !-right-5 shadow-2xl z-20"></div>
-                    <div class="swiper-button-prev !text-[#eedfcb] !w-10 !h-10 after:!text-[14px] !bg-[#36221d] rounded-full !-left-5 shadow-2xl z-20"></div>
-                </div>
+<!-- SEPARATOR LINE -->
+<div class="max-w-[1300px] mx-auto my-16 border-t border-[#36221d]/10"></div>
+
+<!-- BOTTOM DISCOVERY AREA -->
+<div class="max-w-[1300px] mx-auto px-4 sm:px-6 mb-20">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-20">
+        
+        <!-- LEFT: REVIEWS (1 COL) -->
+        <div class="lg:col-span-1">
+            <h4 class="font-kurversbrug text-[22px] text-[#36221d] mb-8 uppercase tracking-wide text-center lg:text-left">Reviews</h4>
+            <div class="p-6 bg-white/30 rounded-[32px] border border-[#36221d]/5">
+                <?php
+                if ( comments_open() || get_comments_number() ) {
+                    comments_template();
+                }
+                ?>
             </div>
-        <?php endif; ?>
+        </div>
+
+        <!-- RIGHT: RELATED CAROUSEL (2 COLS) -->
+        <div class="lg:col-span-2">
+            <?php
+            $related_ids = wc_get_related_products( $product->get_id(), 9 );
+            if ( ! empty( $related_ids ) ) : ?>
+                <div class="related-carousel-wrapper relative group p-6 sm:p-10 bg-[#eedfcb]/30 rounded-[32px] border border-[#36221d]/5">
+                    <h4 class="font-kurversbrug text-[22px] text-[#36221d] mb-8 uppercase tracking-[0.2em] text-center">Anderen bekeken ook</h4>
+                    <div class="swiper related-swiper">
+                        <div class="swiper-wrapper">
+                            <?php foreach ( $related_ids as $related_id ) : 
+                                $rel_product = wc_get_product( $related_id );
+                                if ( ! $rel_product ) continue;
+                                ?>
+                                <div class="swiper-slide h-auto">
+                                    <a href="<?php echo get_permalink( $related_id ); ?>" class="flex flex-col h-full bg-[#eedfcb] rounded-[24px] p-5 group transition-all hover:bg-white hover:shadow-xl">
+                                        <div class="bg-white rounded-[16px] p-4 mb-4 aspect-square overflow-hidden flex items-center justify-center">
+                                            <?php echo $rel_product->get_image( 'thumbnail', array( 'class' => 'max-h-full w-auto object-contain transition-transform group-hover:scale-110' ) ); ?>
+                                        </div>
+                                        <h5 class="font-kurversbrug text-[13px] text-[#36221d] line-clamp-2 mb-2"><?php echo $rel_product->get_name(); ?></h5>
+                                        <p class="font-sans text-[12px] font-bold text-[#36221d] mt-auto"><?php echo strip_tags($rel_product->get_price_html()); ?></p>
+                                    </a>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                        <!-- Navigation Buttons (ULTRA VISIBLE) -->
+                        <div class="swiper-button-next !text-[#eedfcb] !w-10 !h-10 after:!text-[14px] !bg-[#36221d] rounded-full !-right-2 shadow-2xl z-20"></div>
+                        <div class="swiper-button-prev !text-[#eedfcb] !w-10 !h-10 after:!text-[14px] !bg-[#36221d] rounded-full !-left-2 shadow-2xl z-20"></div>
+                    </div>
+                </div>
+            <?php endif; ?>
+        </div>
     </div>
 </div>
 
@@ -135,19 +147,16 @@ if ( post_password_required() ) {
 document.addEventListener('DOMContentLoaded', function() {
     if (typeof Swiper !== 'undefined') {
         new Swiper(".related-swiper", {
-            slidesPerView: 3,
-            spaceBetween: 8,
+            slidesPerView: 1.5,
+            spaceBetween: 15,
             loop: true,
-            autoplay: {
-                delay: 3500,
-                disableOnInteraction: false,
-            },
+            autoplay: { delay: 3500 },
             navigation: {
                 nextEl: ".swiper-button-next",
                 prevEl: ".swiper-button-prev",
             },
             breakpoints: {
-                640: { slidesPerView: 3 },
+                640: { slidesPerView: 2.2 },
                 1024: { slidesPerView: 3 }
             }
         });
@@ -170,20 +179,15 @@ document.addEventListener('DOMContentLoaded', function() {
     border: none !important;
     cursor: pointer !important;
     width: 100% !important;
+    max-width: 300px !important;
 }
 .single_add_to_cart_button:hover { background-color: #000 !important; }
 .cart { display: flex !important; align-items: center !important; gap: 16px !important; flex-wrap: wrap !important; }
 .quantity .qty { border: 1px solid rgba(54, 34, 29, 0.2) !important; border-radius: 12px !important; padding: 12px !important; width: 70px !important; text-align: center !important; }
-.price del { opacity: 0.4; font-size: 0.7em; margin-right: 10px; }
-.price ins { text-decoration: none; }
 
 /* Swiper Nav Style */
 .swiper-button-next:after, .swiper-button-prev:after { font-weight: bold !important; }
-.swiper-button-disabled { opacity: 0 !important; }
-
-/* Discovery Zone Fixes */
-.discovery-left .woocommerce-Reviews-title { font-family: 'Kurversbrug', serif !important; font-size: 1.2rem !important; margin-bottom: 2rem !important; display: block; }
-.discovery-left .comment-reply-title { font-family: 'Kurversbrug', serif !important; font-size: 1.1rem !important; }
+.related-swiper { overflow: visible !important; }
 </style>
 
 <?php do_action( 'woocommerce_after_single_product' ); ?>
