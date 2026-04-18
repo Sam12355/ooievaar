@@ -20,8 +20,8 @@ if ( post_password_required() ) {
 
 <div id="product-<?php the_ID(); ?>" <?php wc_product_class( 'grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start', $product ); ?>>
 
-	<!-- PRODUCT IMAGES -->
-	<div class="product-gallery">
+	<!-- PRODUCT IMAGES & RELATED CAROUSEL -->
+	<div class="product-gallery-container flex flex-col gap-10">
 		<div class="relative rounded-[32px] overflow-hidden bg-white shadow-xl shadow-black/5 aspect-square flex items-center justify-center p-8">
             <?php
             $image_id = $product->get_image_id();
@@ -32,6 +32,33 @@ if ( post_password_required() ) {
             }
             ?>
 		</div>
+
+        <!-- Compact Related Carousel -->
+        <?php
+        $related_ids = wc_get_related_products( $product->get_id(), 6 );
+        if ( ! empty( $related_ids ) ) : ?>
+            <div class="related-carousel-wrapper">
+                <h4 class="font-kurversbrug text-[18px] text-[#36221d] mb-4 uppercase tracking-wider">Anderen bekeken ook</h4>
+                <div class="swiper related-swiper">
+                    <div class="swiper-wrapper">
+                        <?php foreach ( $related_ids as $related_id ) : 
+                            $rel_product = wc_get_product( $related_id );
+                            if ( ! $rel_product ) continue;
+                            ?>
+                            <div class="swiper-slide px-1">
+                                <a href="<?php echo get_permalink( $related_id ); ?>" class="block bg-[#eedfcb] rounded-[20px] p-4 group transition-transform hover:scale-[1.02]">
+                                    <div class="bg-white rounded-[14px] p-4 mb-3 aspect-square overflow-hidden flex items-center justify-center">
+                                        <?php echo $rel_product->get_image( 'thumbnail', array( 'class' => 'max-h-full w-auto object-contain transition-transform group-hover:scale-110' ) ); ?>
+                                    </div>
+                                    <h5 class="font-kurversbrug text-[14px] text-[#36221d] line-clamp-1 mb-1"><?php echo $rel_product->get_name(); ?></h5>
+                                    <p class="font-sans text-[13px] font-medium text-[#36221d]/70"><?php echo $rel_product->get_price_html(); ?></p>
+                                </a>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
 	</div>
 
 	<!-- PRODUCT SUMMARY -->
@@ -95,6 +122,22 @@ if ( post_password_required() ) {
 	</div>
 </div>
 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof Swiper !== 'undefined') {
+        new Swiper(".related-swiper", {
+            slidesPerView: 2,
+            spaceBetween: 10,
+            freeMode: true,
+            breakpoints: {
+                640: { slidesPerView: 2.2 },
+                1024: { slidesPerView: 2 }
+            }
+        });
+    }
+});
+</script>
+
 <style>
 /* PREMIUM BUTTON STYLING */
 .single_add_to_cart_button {
@@ -114,36 +157,12 @@ if ( post_password_required() ) {
 }
 .single_add_to_cart_button:hover {
     background-color: #000 !important;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
-    transform: translateY(-2px) !important;
 }
 
-.cart {
-    display: flex !important;
-    align-items: center !important;
-    gap: 16px !important;
-    flex-wrap: wrap !important;
-}
-
-.quantity .qty {
-    background: transparent !important;
-    border: 1px solid rgba(54, 34, 29, 0.2) !important;
-    border-radius: 12px !important;
-    padding: 12px !important;
-    width: 70px !important;
-    font-family: 'DM Sans', sans-serif !important;
-    font-weight: 500 !important;
-    text-align: center !important;
-}
-
-.price del {
-    opacity: 0.4;
-    font-size: 0.7em;
-    margin-right: 10px;
-}
-.price ins {
-    text-decoration: none;
-}
+.cart { display: flex !important; align-items: center !important; gap: 16px !important; flex-wrap: wrap !important; }
+.quantity .qty { border: 1px solid rgba(54, 34, 29, 0.2) !important; border-radius: 12px !important; padding: 12px !important; width: 70px !important; text-align: center !important; }
+.price del { opacity: 0.4; font-size: 0.7em; margin-right: 10px; }
+.price ins { text-decoration: none; }
 </style>
 
 <?php do_action( 'woocommerce_after_single_product' ); ?>
