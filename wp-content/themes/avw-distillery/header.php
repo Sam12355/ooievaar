@@ -169,19 +169,42 @@
     <nav class="bg-black shadow-[0px_4px_4px_0px_rgba(0,0,0,0.13)] sticky top-0 z-50">
         <div class="max-w-[1440px] mx-auto px-4 py-3 flex items-center justify-between gap-4">
             
-            <!-- Left: Nav links (desktop only) -->
-            <?php
-            wp_nav_menu( array(
-                'theme_location' => 'primary',
-                'container'      => 'div',
-                'container_id'   => 'desktop-nav-links',
-                'container_class'=> 'flex items-center gap-6',
-                'menu_class'     => 'flex items-center gap-6',
-                'items_wrap'     => '%3$s', // This keeps the flat structure we want
-                'depth'          => 1,
-                'fallback_cb'    => '__return_false'
-            ) );
-            ?>
+            <!-- Double-Safety Nav Links -->
+            <div id="desktop-nav-links" class="flex items-center gap-6">
+                <?php
+                // 1. Try to get items from the native PRIMARY location (Filtered by Polylang)
+                $locations = get_nav_menu_locations();
+                $menu_items = false;
+
+                if (isset($locations['primary'])) {
+                    $menu_items = wp_get_nav_menu_items($locations['primary']);
+                }
+
+                // 2. If blank, try searching manually for "AVW Main Menu"
+                if (!$menu_items) {
+                    $fallback_menu = wp_get_nav_menu_object('AVW Main Menu');
+                    if ($fallback_menu) {
+                        $menu_items = wp_get_nav_menu_items($fallback_menu->term_id);
+                    }
+                }
+
+                // 3. If STILL blank, just get the first created menu so it's never empty
+                if (!$menu_items) {
+                    $all_menus = wp_get_nav_menus();
+                    if (!empty($all_menus)) {
+                        $menu_items = wp_get_nav_menu_items($all_menus[0]->term_id);
+                    }
+                }
+
+                if ($menu_items) :
+                    foreach ($menu_items as $item) : ?>
+                        <a href="<?php echo esc_url($item->url); ?>" class="font-kurversbrug font-light text-[#cdbca6] text-[14px] uppercase tracking-wider hover:text-white transition-colors whitespace-nowrap">
+                            <?php echo esc_html($item->title); ?>
+                        </a>
+                    <?php endforeach;
+                endif;
+                ?>
+            </div>
 
             <!-- Right: Action buttons -->
             <div class="flex items-center gap-3 flex-shrink-0 ml-auto">
@@ -228,15 +251,13 @@
 
         <!-- Mobile dropdown menu -->
         <div id="mobile-menu">
-            <?php
-            wp_nav_menu( array(
-                'theme_location' => 'primary', // Use same menu
-                'container'      => false,
-                'items_wrap'     => '%3$s',
-                'depth'          => 1,
-                'fallback_cb'    => '__return_false'
-            ) );
-            ?>
+            <?php if ($menu_items) : ?>
+                <?php foreach ($menu_items as $item) : ?>
+                    <a href="<?php echo esc_url($item->url); ?>">
+                        <?php echo esc_html($item->title); ?>
+                    </a>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </div>
     </nav>
 

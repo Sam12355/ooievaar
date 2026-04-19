@@ -228,7 +228,8 @@ function avw_auto_create_menu() {
  * Boutique Menu Styling: Inject Tailwind & Kurversbrug classes into native WP Menu links
  */
 function avw_add_menu_link_class( $atts, $item, $args ) {
-    if ( $args->theme_location == 'primary' ) {
+    // Fuzzy matching to support Polylang/WPML language suffixes (e.g. primary___nl)
+    if ( strpos( $args->theme_location, 'primary' ) !== false ) {
         $atts['class'] = 'font-kurversbrug font-light text-[#cdbca6] text-[14px] uppercase tracking-wider hover:text-white transition-colors whitespace-nowrap';
     }
     return $atts;
