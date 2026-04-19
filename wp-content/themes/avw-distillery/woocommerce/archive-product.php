@@ -411,7 +411,7 @@ defined( 'ABSPATH' ) || exit;
                                 <a href="<?php the_permalink(); ?>">
                                     <img src="<?php echo esc_url( $img_url ); ?>" alt="<?php the_title_attribute(); ?>" class="w-full h-full object-cover transition-transform hover:scale-105 duration-500" />
                                 </a>
-                                <div class="absolute top-3 left-3 flex gap-2">
+                                <div class="absolute top-3 left-3 flex gap-2 z-20">
                                     <!-- Add to cart (Using original Bag Icon) -->
                                     <a href="?add-to-cart=<?php echo esc_attr( $product->get_id() ); ?>" data-quantity="1" class="bg-[#eedfcb] rounded-full p-2 hover:opacity-90 transition-opacity shadow-sm add_to_cart_button ajax_add_to_cart relative" data-product_id="<?php echo esc_attr( $product->get_id() ); ?>" data-product_sku="<?php echo esc_attr( $product->get_sku() ); ?>" aria-label="Voeg toe aan winkelmand">
                                         <div class="cart-icon-wrapper">

@@ -125,6 +125,7 @@
                                     <a href="<?php the_permalink(); ?>">
                                         <img src="<?php echo esc_url( $img_url ); ?>" alt="<?php the_title_attribute(); ?>" class="w-full h-full object-cover transition-transform hover:scale-105 duration-500" />
                                     </a>
+                                    <div class="absolute top-3 left-3 flex gap-2 z-20">
                                         <!-- Add to cart (Using original Bag Icon) -->
                                         <a href="?add-to-cart=<?php echo esc_attr( $product->get_id() ); ?>" data-quantity="1" class="bg-[#eedfcb] rounded-full p-2 hover:opacity-90 transition-opacity shadow-sm add_to_cart_button ajax_add_to_cart relative" data-product_id="<?php echo esc_attr( $product->get_id() ); ?>" data-product_sku="<?php echo esc_attr( $product->get_sku() ); ?>" aria-label="Voeg toe aan winkelmand">
                                             <div class="cart-icon-wrapper">
@@ -143,6 +144,7 @@
                                                 <path d="M9 15.75C9 15.75 1.6875 11.8125 1.6875 7.17188C1.6875 6.16488 2.08753 5.19913 2.79958 4.48708C3.51163 3.77503 4.47738 3.375 5.48438 3.375C7.07273 3.375 8.43328 4.24055 9 5.625C9.56672 4.24055 10.9273 3.375 12.5156 3.375C13.5226 3.375 14.4884 3.77503 15.2004 4.48708C15.9125 5.19913 16.3125 6.16488 16.3125 7.17188C16.3125 11.8125 9 15.75 9 15.75Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" />
                                             </svg>
                                         </a>
+                                    </div>
                                 </div>
                                 <div class="flex flex-col gap-3 flex-1">
                                     <div class="flex items-center gap-4 flex-wrap">
