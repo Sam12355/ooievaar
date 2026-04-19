@@ -123,6 +123,9 @@
     .avw-toast.show { transform: translateX(0); }
     .avw-toast a { color: #fff; text-decoration: underline; font-weight: 600; }
     
+    /* Hide WooCommerce default AJAX labels */
+    .added_to_cart.wc-forward { display: none !important; }
+
     /* Spinner Animation */
     @keyframes avw-spin {
         to { transform: rotate(360deg); }
