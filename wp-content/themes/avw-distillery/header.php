@@ -253,7 +253,7 @@
                         <path d="M11.8125 6.1875C11.8125 6.93342 11.5162 7.64879 10.9887 8.17624C10.4613 8.70368 9.74592 9 9 9C8.25408 9 7.53871 8.70368 7.01126 8.17624C6.48382 7.64879 6.1875 6.93342 6.1875 6.1875" stroke="black" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                     <?php 
-                    $cart_count = WC()->cart->get_cart_contents_count();
+                    $cart_count = ( isset(WC()->cart) && WC()->cart ) ? WC()->cart->get_cart_contents_count() : 0;
                     ?>
                     <div id="cart-badge" class="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-md transition-all <?php echo $cart_count > 0 ? 'scale-100 opacity-100' : 'scale-0 opacity-0'; ?>">
                         <?php echo $cart_count; ?>

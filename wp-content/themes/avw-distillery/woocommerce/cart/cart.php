@@ -343,7 +343,8 @@ do_action( 'woocommerce_before_cart' );
             <tbody>
                 <?php do_action( 'woocommerce_before_cart_contents' ); ?>
 
-                <!-- DEBUG: Cart has <?php echo count( WC()->cart->get_cart() ); ?> items -->
+                <!-- DEBUG: Cart has <?php echo (isset(WC()->cart) && WC()->cart) ? count( WC()->cart->get_cart() ) : '0 (not initialized)'; ?> items -->
+                <?php if (isset(WC()->cart) && WC()->cart) : ?>
                 <?php foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) :
                     $_product   = apply_filters( 'woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key );
                     $product_id = apply_filters( 'woocommerce_cart_item_product_id', $cart_item['product_id'], $cart_item, $cart_item_key );
@@ -409,6 +410,7 @@ do_action( 'woocommerce_before_cart' );
                     </td>
                 </tr>
                 <?php endif; endforeach; ?>
+                <?php endif; ?>
 
                 <?php do_action( 'woocommerce_cart_contents' ); ?>
 
