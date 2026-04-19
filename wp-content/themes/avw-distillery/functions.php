@@ -190,4 +190,40 @@ function avw_nuclear_search_globalizer( $where, $wp_query ) {
 }
 add_filter( 'posts_where', 'avw_nuclear_search_globalizer', 999, 2 );
 
+/**
+ * AUTO-SETUP: Create the Main Menu if it doesn't exist
+ * This runs on theme setup to save the user manual work.
+ */
+function avw_auto_create_menu() {
+    $menu_name = 'AVW Main Menu';
+    $menu_exists = wp_get_nav_menu_object($menu_name);
+
+    if (!$menu_exists) {
+        $menu_id = wp_create_nav_menu($menu_name);
+
+        $menu_items = array(
+            'De Distilleerderij' => '#',
+            'Producten'          => '#',
+            'Beleef'             => '#',
+            'Kennis'             => '#',
+            'Webwinkel'          => '#',
+            'Blog & Nieuws'      => '#',
+        );
+
+        foreach ($menu_items as $title => $url) {
+            wp_update_nav_menu_item($menu_id, 0, array(
+                'menu-item-title'  => $title,
+                'menu-item-url'    => $url,
+                'menu-item-status' => 'publish',
+                'menu-item-type'   => 'custom',
+            ));
+        }
+
+        $locations = get_theme_mod('nav_menu_locations');
+        $locations['primary'] = $menu_id;
+        set_theme_mod('nav_menu_locations', $locations);
+    }
+}
+add_action('init', 'avw_auto_create_menu');
+
 
