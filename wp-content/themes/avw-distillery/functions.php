@@ -224,6 +224,26 @@ function avw_auto_create_menu() {
         set_theme_mod('nav_menu_locations', $locations);
     }
 }
-add_action('init', 'avw_auto_create_menu');
+/**
+ * Boutique Menu Styling: Inject Tailwind & Kurversbrug classes into native WP Menu links
+ */
+function avw_add_menu_link_class( $atts, $item, $args ) {
+    if ( $args->theme_location == 'primary' ) {
+        $atts['class'] = 'font-kurversbrug font-light text-[#cdbca6] text-[14px] uppercase tracking-wider hover:text-white transition-colors whitespace-nowrap';
+    }
+    return $atts;
+}
+add_filter( 'nav_menu_link_attributes', 'avw_add_menu_link_class', 10, 3 );
+
+/**
+ * Mobile Menu Styling: Inject alternate styles for the dropdown
+ */
+function avw_add_mobile_menu_link_class( $atts, $item, $args ) {
+    if ( $args->theme_location == 'mobile' ) {
+        $atts['class'] = 'block py-2 text-[#cdbca6] hover:text-white transition-colors';
+    }
+    return $atts;
+}
+// Note: We are using 'primary' for both for now, but filtered by the items_wrap in header.
 
 
