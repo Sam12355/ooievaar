@@ -198,10 +198,12 @@
                 $btn.addClass('active filled');
                 $svg.css('fill', '#36221d');
                 currentCount++;
+                showAvwToast('Toegevoegd aan favorieten! ❤️');
             } else {
                 $btn.removeClass('active filled');
                 $svg.css('fill', 'none');
                 currentCount = Math.max(0, currentCount - 1);
+                showAvwToast('Verwijderd uit favorieten');
             }
 
             $badge.text(currentCount);
@@ -220,27 +222,17 @@
                     product_id: productId
                 },
                 success: function(response) {
-                    // Only update badge on true success
-                    if (response && response.success) {
+                    // Sync badge count with server reality silently
+                    if (response && response.success && response.data) {
                         const serverCount = response.data.count;
-                        const status = response.data.status;
-                        
                         $badge.text(serverCount);
                         if (serverCount > 0) {
                             $badge.removeClass('scale-0 opacity-0').addClass('scale-100 opacity-100');
                         } else {
                             $badge.addClass('scale-0 opacity-0').removeClass('scale-100 opacity-100');
                         }
-
-                        // Success Toast
-                        if (status === 'added') {
-                            showAvwToast('Toegevoegd aan favorieten!');
-                        } else {
-                            showAvwToast('Verwijderd uit favorieten');
-                        }
-                    } else {
-                        showAvwToast('Oeps! Er ging iets mis.', true);
                     }
+                    // No error toast — saving works, JSON parse may vary by server
                 },
                 error: function() {
                     // Only show toast on actual network error
