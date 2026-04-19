@@ -22,27 +22,31 @@ do_action( 'woocommerce_before_cart' );
     padding: 0 0 100px;
 }
 
-/* Two-column layout */
+/* Two-column layout — one unified card */
 .avw-cart-layout {
     display: grid;
-    grid-template-columns: 1fr 380px;
-    gap: 32px;
+    grid-template-columns: 1fr 360px;
+    gap: 0;
     align-items: start;
+    background: #fff;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 4px 40px rgba(0,0,0,0.07);
 }
 
 @media (max-width: 1024px) {
     .avw-cart-layout { grid-template-columns: 1fr; }
 }
 
-/* ---- Product Table ---- */
+/* ---- Product Table — no standalone radius/shadow; card is on parent ---- */
 .avw-cart-table {
     width: 100%;
     border-collapse: separate !important;
     border-spacing: 0 !important;
     background: #fff;
-    border-radius: 24px;
+    border-radius: 0;
     overflow: hidden;
-    box-shadow: 0 4px 40px rgba(0,0,0,0.07);
+    box-shadow: none;
 }
 
 .avw-cart-table thead th {
@@ -222,35 +226,36 @@ do_action( 'woocommerce_before_cart' );
     border-color: #133E23;
 }
 
-/* ---- Totals Panel (sticky sidebar) ---- */
+/* ---- Totals Panel — white, attached to the left column ---- */
 .avw-totals-sidebar {
-    background: #133E23;
-    border-radius: 24px;
+    background: rgba(19,62,35,0.03);
+    border-left: 1px solid rgba(19,62,35,0.08);
     padding: 36px 32px;
-    color: #fff;
-    box-shadow: 0 20px 60px rgba(19,62,35,0.25);
+    color: #133E23;
     position: sticky;
     top: 100px;
+    box-shadow: none;
+    border-radius: 0;
 }
 
 .avw-totals-sidebar-title {
     font-family: 'Kurversbrug', serif;
-    font-size: 20px;
-    color: #cdbca6;
+    font-size: 16px;
+    color: #133E23;
     text-transform: uppercase;
     letter-spacing: 0.2em;
     font-weight: normal;
     margin: 0 0 24px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 18px;
+    border-bottom: 1px solid rgba(19,62,35,0.1);
 }
 
 .avw-totals-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 14px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.07);
+    padding: 13px 0;
+    border-bottom: 1px solid rgba(19,62,35,0.06);
 }
 .avw-totals-row:last-of-type { border-bottom: none; }
 
@@ -259,75 +264,79 @@ do_action( 'woocommerce_before_cart' );
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.12em;
-    color: rgba(255,255,255,0.5);
+    color: rgba(19,62,35,0.45);
 }
 
 .avw-totals-value {
     font-size: 15px;
     font-weight: 700;
-    color: rgba(255,255,255,0.9);
+    color: #133E23;
     text-align: right;
 }
 
 .avw-totals-total-row {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
-    padding: 22px 0 0;
+    align-items: center;
+    padding: 20px 0 0;
     margin-top: 8px;
-    border-top: 1px solid rgba(255,255,255,0.12);
+    border-top: 1px solid rgba(19,62,35,0.12);
 }
 
 .avw-totals-total-label {
     font-family: 'Kurversbrug', serif;
-    font-size: 18px;
-    color: #cdbca6;
+    font-size: 17px;
+    color: #133E23;
     text-transform: uppercase;
     letter-spacing: 0.15em;
     font-weight: normal;
 }
 
 .avw-totals-total-amount {
-    font-size: 28px;
+    font-size: 26px;
     font-weight: 800;
-    color: #cdbca6;
+    color: #133E23;
     text-align: right;
     line-height: 1;
 }
 
-.avw-totals-total-amount .woocommerce-Price-amount { color: #cdbca6 !important; }
+/* Hide the inline WC tax notice — we render it separately below */
+.avw-totals-total-amount small.includes_tax { display: none !important; }
+.avw-totals-total-amount .woocommerce-Price-amount { color: #133E23 !important; }
 
 .avw-totals-tax-note {
     font-size: 10px;
-    color: rgba(255,255,255,0.35);
-    margin-top: 6px;
+    font-weight: 500;
+    color: rgba(19,62,35,0.4);
+    margin-top: 8px;
     text-align: right;
-    line-height: 1.5;
+    line-height: 1.6;
+    letter-spacing: 0.03em;
 }
 
 /* Checkout button */
 .avw-checkout-btn {
     display: block;
-    margin-top: 28px;
-    padding: 18px 24px;
-    background: #cdbca6;
-    color: #133E23 !important;
+    margin-top: 24px;
+    padding: 17px 24px;
+    background: #133E23;
+    color: #cdbca6 !important;
     text-align: center;
     border-radius: 9999px;
     font-family: 'Kurversbrug', serif;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: normal;
     text-transform: uppercase;
     letter-spacing: 0.2em;
     text-decoration: none !important;
     transition: all 0.3s ease;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    box-shadow: 0 6px 20px rgba(19,62,35,0.2);
 }
 .avw-checkout-btn:hover {
-    background: #fff;
+    background: #0a2415;
     transform: translateY(-2px);
-    box-shadow: 0 16px 48px rgba(0,0,0,0.25);
-    color: #133E23 !important;
+    box-shadow: 0 12px 36px rgba(19,62,35,0.3);
+    color: #fff !important;
 }
 
 /* Security trust badge */
@@ -336,11 +345,11 @@ do_action( 'woocommerce_before_cart' );
     align-items: center;
     justify-content: center;
     gap: 6px;
-    margin-top: 18px;
+    margin-top: 14px;
     font-size: 10px;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    color: rgba(255,255,255,0.3);
+    color: rgba(19,62,35,0.3);
 }
 
 /* ---- Mobile responsive ---- */
@@ -528,7 +537,7 @@ do_action( 'woocommerce_before_cart' );
             <?php if ( WC()->cart->needs_shipping() && WC()->cart->show_shipping() ) : ?>
                 <div class="avw-totals-row" style="flex-direction: column; align-items: flex-start; gap: 10px;">
                     <span class="avw-totals-label"><?php esc_html_e( 'Shipping', 'woocommerce' ); ?></span>
-                    <div style="width:100%; font-size:12px; color: rgba(255,255,255,0.6);">
+                    <div style="width:100%; font-size:12px; color: rgba(19,62,35,0.55);">
                         <?php woocommerce_shipping_calculator(); ?>
                     </div>
                 </div>
@@ -547,22 +556,31 @@ do_action( 'woocommerce_before_cart' );
             <!-- Grand Total -->
             <div class="avw-totals-total-row">
                 <span class="avw-totals-total-label"><?php esc_html_e( 'Total', 'woocommerce' ); ?></span>
-                <div>
-                    <div class="avw-totals-total-amount"><?php wc_cart_totals_order_total_html(); ?></div>
-                    <?php if ( wc_tax_enabled() && WC()->cart->display_prices_including_tax() ) : ?>
+                <div style="text-align: right;">
+                    <?php
+                    // Output ONLY the price amount — no inline tax clutter
+                    $total_price = wc_price( WC()->cart->get_total( 'edit' ) );
+                    ?>
+                    <div class="avw-totals-total-amount"><?php echo $total_price; ?></div>
+                    <?php if ( wc_tax_enabled() && WC()->cart->display_prices_including_tax() ) :
+                        $tax_totals = WC()->cart->get_tax_totals();
+                        if ( ! empty( $tax_totals ) ) : ?>
                         <div class="avw-totals-tax-note">
                             <?php if ( 'itemized' === get_option( 'woocommerce_tax_display_cart' ) ) :
-                                foreach ( WC()->cart->get_tax_totals() as $code => $tax ) :
-                                    echo '<span>' . esc_html( $tax->label ) . ': ' . wp_kses_post( $tax->formatted_amount ) . '</span><br>';
+                                foreach ( $tax_totals as $code => $tax ) :
+                                    echo esc_html( $tax->label ) . ': ' . wp_kses_post( $tax->formatted_amount ) . '<br>';
                                 endforeach;
                             else :
+                                $tax_total_amount = wc_price( array_sum( wp_list_pluck( $tax_totals, 'amount' ) ) );
                                 printf(
-                                    esc_html__( 'incl. %s %s', 'woocommerce' ),
+                                    /* translators: 1: tax label, 2: amount */
+                                    esc_html__( 'incl. %1$s %2$s', 'woocommerce' ),
                                     WC()->countries->tax_or_vat(),
-                                    '<span>' . wc_price( WC()->cart->get_taxes_total( true, true ) ) . '</span>'
+                                    $tax_total_amount
                                 );
                             endif; ?>
                         </div>
+                    <?php endif; ?>
                     <?php endif; ?>
                 </div>
             </div>
