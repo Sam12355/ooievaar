@@ -179,9 +179,9 @@
                 $menu_items = wp_get_nav_menu_items($locations['primary']);
             }
 
-            // 2. FORCE fallback to the new Hierarchical "Boutique Main Menu"
+            // 2. FORCE fallback to the new Hierarchical "Premium Boutique Menu"
             if (!$menu_items || empty($menu_items)) {
-                $boutique_menu = wp_get_nav_menu_object('Boutique Main Menu');
+                $boutique_menu = wp_get_nav_menu_object('Premium Boutique Menu');
                 if ($boutique_menu) {
                     $menu_items = wp_get_nav_menu_items($boutique_menu->term_id);
                 }

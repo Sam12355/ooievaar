@@ -194,7 +194,7 @@ add_filter( 'posts_where', 'avw_nuclear_search_globalizer', 999, 2 );
  * AUTO-SETUP: Create the Full Boutique Menu with Hierarchy
  */
 function avw_auto_create_menu() {
-    $menu_name = 'Boutique Main Menu'; // New name to force fresh creation
+    $menu_name = 'Premium Boutique Menu';
     $menu_exists = wp_get_nav_menu_object($menu_name);
 
     if (!$menu_exists) {
@@ -209,6 +209,12 @@ function avw_auto_create_menu() {
                     'Familiegeschiedenis' => '#',
                     'Vacatures' => '#',
                     'Contact' => '#',
+                )
+            ),
+            'Producten' => array(
+                'url' => '#',
+                'children' => array(
+                    'Assortiment' => '/assortiment/',
                 )
             ),
             'Beleef' => array(
