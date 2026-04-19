@@ -311,27 +311,87 @@ do_action( 'woocommerce_before_cart' );
 
                 <?php do_action( 'woocommerce_cart_contents' ); ?>
 
+                <!-- Actions Row -->
                 <tr>
-                    <td colspan="6" class="actions" style="padding: 0 !important; border: none !important;">
-                        <div class="avw-cart-actions">
-                            <a href="<?php echo esc_url( apply_filters( 'woocommerce_return_to_shop_redirect', wc_get_page_permalink( 'shop' ) ) ); ?>" class="avw-continue">
+                    <td colspan="6" class="actions" style="padding: 16px 26px !important; border-bottom: 1px solid rgba(19,62,35,0.08) !important;">
+                        <div class="avw-cart-actions flex flex-wrap justify-between items-center gap-4">
+                            <a href="<?php echo esc_url( apply_filters( 'woocommerce_return_to_shop_redirect', wc_get_page_permalink( 'shop' ) ) ); ?>" class="text-[12px] uppercase tracking-widest font-bold text-[#133E23] hover:text-[#9c8a74]">
                                 &#8592; <?php esc_html_e( 'Continue shopping', 'woocommerce' ); ?>
                             </a>
 
-                            <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+                            <div class="flex flex-wrap items-center gap-3">
                                 <?php if ( wc_coupons_enabled() ) : ?>
-                                <div class="coupon avw-coupon">
-                                    <label for="coupon_code" class="screen-reader-text"><?php esc_html_e( 'Coupon:', 'woocommerce' ); ?></label>
-                                    <input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" placeholder="<?php esc_attr_e( 'Coupon code', 'woocommerce' ); ?>" />
-                                    <button type="submit" class="button avw-coupon-btn" name="apply_coupon" value="<?php esc_attr_e( 'Apply coupon', 'woocommerce' ); ?>"><?php esc_attr_e( 'Apply', 'woocommerce' ); ?></button>
-                                </div>
+                                    <div class="coupon avw-coupon flex border border-[#133E23]/20 rounded-full overflow-hidden bg-white">
+                                        <input type="text" name="coupon_code" class="px-4 py-2 text-sm outline-none w-32 sm:w-48" id="coupon_code" value="" placeholder="<?php esc_attr_e( 'Coupon code', 'woocommerce' ); ?>" />
+                                        <button type="submit" class="bg-[#133E23] text-white px-4 py-2 text-xs font-bold uppercase tracking-widest" name="apply_coupon" value="<?php esc_attr_e( 'Apply coupon', 'woocommerce' ); ?>"><?php esc_attr_e( 'Apply', 'woocommerce' ); ?></button>
+                                    </div>
                                 <?php endif; ?>
 
-                                <button type="submit" class="button avw-update-btn" name="update_cart" value="<?php esc_attr_e( 'Update cart', 'woocommerce' ); ?>"><?php esc_html_e( 'Update cart', 'woocommerce' ); ?></button>
+                                <button type="submit" class="border-2 border-[#133E23] text-[#133E23] px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-[#133E23] hover:text-white transition-all" name="update_cart" value="<?php esc_attr_e( 'Update cart', 'woocommerce' ); ?>"><?php esc_html_e( 'Update cart', 'woocommerce' ); ?></button>
                             </div>
 
                             <?php do_action( 'woocommerce_cart_actions' ); ?>
                             <?php wp_nonce_field( 'woocommerce-cart', 'woocommerce-cart-nonce' ); ?>
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Integrated Totals -->
+                <tr class="avw-cart-totals-row">
+                    <td colspan="4" class="hidden md:table-cell border-none!"></td>
+                    <td colspan="2" class="p-0 border-none!">
+                        <div class="bg-[#133E23] text-white p-6 sm:p-10 md:rounded-br-[28px] space-y-5">
+                            <h3 class="font-kurversbrug text-[#cdbca6] text-lg uppercase tracking-[0.2em] mb-4 border-b border-white/10 pb-4">
+                                <?php esc_html_e( 'Cart totals', 'woocommerce' ); ?>
+                            </h3>
+
+                            <div class="flex justify-between items-center border-b border-white/10 pb-3">
+                                <span class="text-[11px] uppercase tracking-widest opacity-60"><?php esc_html_e( 'Subtotal', 'woocommerce' ); ?></span>
+                                <span class="text-base font-bold"><?php wc_cart_totals_subtotal_html(); ?></span>
+                            </div>
+
+                            <?php foreach ( WC()->cart->get_coupons() as $code => $coupon ) : ?>
+                                <div class="flex justify-between items-center border-b border-white/10 pb-3">
+                                    <span class="text-[11px] uppercase tracking-widest opacity-60"><?php wc_cart_totals_coupon_label( $coupon ); ?></span>
+                                    <span class="text-base font-bold"><?php wc_cart_totals_coupon_html( $coupon ); ?></span>
+                                </div>
+                            <?php endforeach; ?>
+
+                            <?php if ( WC()->cart->needs_shipping() && WC()->cart->show_shipping() ) : ?>
+                                <div class="border-b border-white/10 pb-3">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <span class="text-[11px] uppercase tracking-widest opacity-60"><?php esc_html_e( 'Shipping', 'woocommerce' ); ?></span>
+                                    </div>
+                                    <div class="text-xs text-white/80">
+                                        <?php woocommerce_shipping_calculator(); ?>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+
+                            <div class="pt-2">
+                                <div class="flex justify-between items-end mb-1">
+                                    <span class="font-kurversbrug text-xl uppercase tracking-widest text-[#cdbca6]"><?php esc_html_e( 'Total', 'woocommerce' ); ?></span>
+                                    <span class="text-3xl font-bold text-[#cdbca6]"><?php wc_cart_totals_order_total_html(); ?></span>
+                                </div>
+                                
+                                <?php if ( wc_tax_enabled() && WC()->cart->display_prices_including_tax() ) : ?>
+                                    <div class="text-right">
+                                        <?php if ( 'itemized' === get_option( 'woocommerce_tax_display_cart' ) ) : ?>
+                                            <?php foreach ( WC()->cart->get_tax_totals() as $code => $tax ) : ?>
+                                                <small class="text-[10px] opacity-50 block"><?php printf( esc_html__( '(includes %s)', 'woocommerce' ), $tax->label ); ?>: <?php echo wp_kses_post( $tax->formatted_amount ); ?></small>
+                                            <?php endforeach; ?>
+                                        <?php else : ?>
+                                            <small class="text-[10px] opacity-50 block"><?php printf( esc_html__( '(includes %s)', 'woocommerce' ), WC()->countries->tax_or_vat() ); ?>: <?php wc_cart_totals_taxes_total_html(); ?></small>
+                                        <?php endif; ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                            
+                            <div class="pt-6">
+                                <a href="<?php echo esc_url( wc_get_checkout_url() ); ?>" class="checkout-button block bg-[#cdbca6] text-[#133E23] py-5 rounded-full font-kurversbrug text-base text-center uppercase tracking-[0.2em] hover:bg-white transition-all transform hover:-translate-y-1 shadow-2xl">
+                                    <?php esc_html_e( 'Proceed to checkout', 'woocommerce' ); ?>
+                                </a>
+                            </div>
                         </div>
                     </td>
                 </tr>
@@ -342,11 +402,6 @@ do_action( 'woocommerce_before_cart' );
 
         <?php do_action( 'woocommerce_after_cart_table' ); ?>
     </form>
-
-    <!-- Totals Panel -->
-    <div class="cart-collaterals avw-totals-panel">
-        <?php do_action( 'woocommerce_cart_collaterals' ); ?>
-    </div>
 </div>
 
 <?php do_action( 'woocommerce_after_cart' ); ?>
