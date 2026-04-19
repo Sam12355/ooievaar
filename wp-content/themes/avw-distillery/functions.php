@@ -780,6 +780,55 @@ function avw_cart_page_styles() {
         body.woocommerce-cart .cart_totals { max-width: 100% !important; padding: 28px !important; }
         body.woocommerce-cart .woocommerce-cart-form .actions { flex-direction: column !important; }
     }
+
+    /* ---- CRITICAL: Force ALL WooCommerce price text visible (Tailwind resets these) ---- */
+    body.woocommerce-cart .woocommerce-Price-amount,
+    body.woocommerce-cart .woocommerce-Price-amount bdi,
+    body.woocommerce-cart .woocommerce-Price-currencySymbol,
+    body.woocommerce-cart .amount,
+    body.woocommerce-cart ins .amount,
+    body.woocommerce-cart td.product-price *,
+    body.woocommerce-cart td.product-subtotal * {
+        color: #133E23 !important;
+        font-weight: 700 !important;
+        font-size: 15px !important;
+        display: inline !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+
+    /* Force quantity input fully visible */
+    body.woocommerce-cart input[type="number"],
+    body.woocommerce-cart input[type="number"].qty,
+    body.woocommerce-cart .qty {
+        color: #133E23 !important;
+        background: white !important;
+        border: 1.5px solid rgba(19,62,35,0.25) !important;
+        border-radius: 9999px !important;
+        width: 64px !important;
+        height: 42px !important;
+        text-align: center !important;
+        font-size: 15px !important;
+        font-weight: 700 !important;
+        padding: 0 !important;
+        display: inline-block !important;
+        visibility: visible !important;
+    }
+
+    /* Ensure table cells are not collapsed */
+    body.woocommerce-cart table.shop_table td.product-price,
+    body.woocommerce-cart table.shop_table td.product-quantity,
+    body.woocommerce-cart table.shop_table td.product-subtotal {
+        min-width: 80px !important;
+        white-space: nowrap !important;
+    }
+
+    /* Cart totals panel — force separation from table */
+    body.woocommerce-cart .cart-collaterals {
+        clear: both !important;
+        display: block !important;
+        margin-top: 40px !important;
+    }
     </style>
     <?php
 }
