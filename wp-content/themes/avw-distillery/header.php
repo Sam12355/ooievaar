@@ -183,19 +183,15 @@
             if (!$menu_items || empty($menu_items)) {
                 $boutique_menu = wp_get_nav_menu_object('Premium Boutique Menu');
                 if ($boutique_menu) {
-                    $menu_items = wp_get_nav_menu_items($boutique_menu->term_id);
-                }
-            }
-
-            // 3. Last resort: Old AVW Menu
+            // Fallback to Supreme Boutique Menu
             if (!$menu_items || empty($menu_items)) {
-                $old_menu = wp_get_nav_menu_object('AVW Main Menu');
-                if ($old_menu) {
-                    $menu_items = wp_get_nav_menu_items($old_menu->term_id);
+                $supreme_menu = wp_get_nav_menu_object('Supreme Boutique Menu');
+                if ($supreme_menu) {
+                    $menu_items = wp_get_nav_menu_items($supreme_menu->term_id);
                 }
             }
 
-            // Organize items into a tree
+            // Tree construction logic
             $menu_tree = array();
             if ($menu_items) {
                 $items_by_id = array();
@@ -213,6 +209,36 @@
                     }
                 }
             }
+
+            /**
+             * RECURSIVE RENDERER: The engine that powers infinite depth
+             */
+            function avw_render_dropdown($children, $level = 1) {
+                $z_index = 100 + $level;
+                $is_first_level = ($level === 1);
+                $panel_pos = $is_first_level ? 'top-full left-0 pt-4 translate-y-2' : 'left-full top-0 ml-4 translate-x-2';
+                $hover_pos = $is_first_level ? 'group-hover:translate-y-0' : 'group-hover/sub:translate-x-0';
+                $group_class = $is_first_level ? 'group' : 'group/sub';
+                ?>
+                <div class="dropdown-panel absolute <?php echo $panel_pos; ?> opacity-0 invisible <?php echo $hover_pos; ?> group-hover:opacity-100 group-hover:visible transition-all duration-300 z-[<?php echo $z_index; ?>]">
+                    <div class="bg-black border border-[#cdbca6]/10 rounded-xl shadow-2xl p-6 min-w-[240px]">
+                        <div class="flex flex-col gap-4">
+                            <?php foreach ($children as $child) : ?>
+                                <div class="relative group">
+                                    <a href="<?php echo esc_url($child->url); ?>" class="font-kurversbrug text-[#cdbca6]/80 text-[13px] uppercase tracking-wider hover:text-white flex items-center justify-between gap-4">
+                                        <?php echo esc_html($child->title); ?>
+                                        <?php if (!empty($child->children)) : ?>
+                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                        <?php endif; ?>
+                                    </a>
+                                    <?php if (!empty($child->children)) avw_render_dropdown($child->children, $level + 1); ?>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                </div>
+                <?php
+            }
             ?>
 
             <!-- Left: Nav links (desktop only) -->
@@ -226,41 +252,7 @@
                                     <svg class="w-3 h-3 opacity-50 group-hover:rotate-180 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                                 <?php endif; ?>
                             </a>
-                            
-                            <?php if (!empty($parent->children)) : ?>
-                                <!-- Dropdown Panel -->
-                                <div class="dropdown-panel absolute top-full left-0 pt-4 opacity-0 invisible translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 z-[100]">
-                                    <div class="bg-black border border-[#cdbca6]/10 rounded-xl shadow-2xl p-6 min-w-[240px]">
-                                        <div class="flex flex-col gap-4">
-                                            <?php foreach ($parent->children as $child) : ?>
-                                                <div class="relative group/sub">
-                                                    <a href="<?php echo esc_url($child->url); ?>" class="font-kurversbrug text-[#cdbca6]/80 text-[13px] uppercase tracking-wider hover:text-white flex items-center justify-between">
-                                                        <?php echo esc_html($child->title); ?>
-                                                        <?php if (!empty($child->children)) : ?>
-                                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                                                        <?php endif; ?>
-                                                    </a>
-                                                    
-                                                    <?php if (!empty($child->children)) : ?>
-                                                        <!-- Nested Grandchild Dropdown -->
-                                                        <div class="absolute left-full top-0 ml-4 opacity-0 invisible translate-x-2 group-hover/sub:opacity-100 group-hover/sub:visible group-hover/sub:translate-x-0 transition-all duration-300">
-                                                            <div class="bg-black border border-[#cdbca6]/10 rounded-xl shadow-2xl p-6 min-w-[200px]">
-                                                                <div class="flex flex-col gap-3">
-                                                                    <?php foreach ($child->children as $grandchild) : ?>
-                                                                        <a href="<?php echo esc_url($grandchild->url); ?>" class="font-kurversbrug text-[#cdbca6]/60 text-[12px] uppercase tracking-wider hover:text-white">
-                                                                            <?php echo esc_html($grandchild->title); ?>
-                                                                        </a>
-                                                                    <?php endforeach; ?>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    <?php endif; ?>
-                                                </div>
-                                            <?php endforeach; ?>
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php endif; ?>
+                            <?php if (!empty($parent->children)) avw_render_dropdown($parent->children); ?>
                         </div>
                     <?php endforeach; ?>
                 <?php endif; ?>

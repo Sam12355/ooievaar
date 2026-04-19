@@ -194,7 +194,7 @@ add_filter( 'posts_where', 'avw_nuclear_search_globalizer', 999, 2 );
  * AUTO-SETUP: Create the Full Boutique Menu with Hierarchy
  */
 function avw_auto_create_menu() {
-    $menu_name = 'Premium Boutique Menu';
+    $menu_name = 'Supreme Boutique Menu';
     $menu_exists = wp_get_nav_menu_object($menu_name);
 
     if (!$menu_exists) {
@@ -256,11 +256,10 @@ function avw_auto_create_menu() {
             )
         );
 
-        // Helper function for recursive menu creation
         if (!function_exists('avw_build_menu_recursive_setup')) {
             function avw_build_menu_recursive_setup($items, $menu_id, $parent_id = 0) {
                 foreach ($items as $title => $data) {
-                    $url = is_array($data) ? $data['url'] : $data;
+                    $url = (is_array($data) && isset($data['url'])) ? $data['url'] : (is_array($data) ? '#' : $data);
                     $item_id = wp_update_nav_menu_item($menu_id, 0, array(
                         'menu-item-title'     => $title,
                         'menu-item-url'       => $url,
@@ -268,8 +267,11 @@ function avw_auto_create_menu() {
                         'menu-item-type'      => 'custom',
                         'menu-item-parent-id' => $parent_id,
                     ));
-                    if (is_array($data) && isset($data['children'])) {
-                        avw_build_menu_recursive_setup($data['children'], $menu_id, $item_id);
+                    if (is_array($data)) {
+                        $children = isset($data['children']) ? $data['children'] : (isset($data['url']) ? array() : $data);
+                        if (!empty($children) && is_array($children)) {
+                            avw_build_menu_recursive_setup($children, $menu_id, $item_id);
+                        }
                     }
                 }
             }
