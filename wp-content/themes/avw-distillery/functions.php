@@ -424,7 +424,7 @@ function avw_get_favorites() {
 }
 // Force Cart Title to change for verification
 add_filter('the_title', function($title, $id = null) {
-    if (is_cart() && in_the_loop()) {
+    if (function_exists('is_cart') && is_cart() && in_the_loop()) {
         return 'Winkelmand - updated so i ll check if it can be seen in ui';
     }
     return $title;
