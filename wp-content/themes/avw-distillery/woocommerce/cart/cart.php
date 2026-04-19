@@ -324,7 +324,7 @@ do_action( 'woocommerce_before_cart' );
 </style>
 
 <div class="avw-cart-wrap">
-    <h1 class="avw-cart-title"><?php the_title(); ?></h1>
+    <h1 class="avw-cart-title">Winkelmand</h1>
 
     <form class="woocommerce-cart-form" action="<?php echo esc_url( wc_get_cart_url() ); ?>" method="post">
         <?php do_action( 'woocommerce_before_cart_table' ); ?>
