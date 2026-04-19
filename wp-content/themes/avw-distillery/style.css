@@ -121,3 +121,107 @@ Text Domain: avw-distillery
 .woo-pagination ul li a:hover {
     opacity: 0.8;
 }
+
+/* --- BOUTIQUE CART & CHECKOUT --- */
+
+/* Grand Checkout Button */
+.checkout-button.button.alt {
+    display: block;
+    width: 100% !important;
+    background: #cdbca6 !important;
+    color: #133E23 !important;
+    padding: 20px 30px !important;
+    border-radius: 9999px !important;
+    font-family: 'Kurversbrug', serif !important;
+    font-size: 18px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.2em !important;
+    text-align: center !important;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+    border: none !important;
+}
+.checkout-button.button.alt:hover {
+    background: #ffffff !important;
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2) !important;
+}
+
+/* Quantity Dials */
+.woocommerce-cart-form__contents .quantity input.qty {
+    width: 60px !important;
+    height: 40px !important;
+    border-radius: 9999px !important;
+    border: 1px solid rgba(19, 62, 35, 0.2) !important;
+    background: transparent !important;
+    color: #133E23 !important;
+    font-weight: bold !important;
+    text-align: center !important;
+    padding: 0 !important;
+    font-family: 'DM Sans', sans-serif !important;
+}
+
+/* Shipping Calculator & Inputs */
+.shipping-calculator-button {
+    color: #cdbca6 !important;
+    font-size: 13px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.1em !important;
+    text-decoration: none !important;
+    font-weight: bold !important;
+}
+.shipping-calculator-button:after {
+    content: ' \2193';
+}
+
+.woocommerce-cart .input-text {
+    border-radius: 8px !important;
+    border: 1px solid rgba(19, 62, 35, 0.1) !important;
+    padding: 10px 14px !important;
+}
+
+/* Hide legacy WC elements on Cart */
+.cart-collaterals h2 {
+    display: none !important;
+}
+
+/* Responsive Cart Mobile Fixes */
+@media (max-width: 768px) {
+    .woocommerce-cart-form__contents thead {
+        display: none !important;
+    }
+    .woocommerce-cart-form__contents tr {
+        display: block !important;
+        margin-bottom: 30px !important;
+        background: white !important;
+        border-radius: 20px !important;
+        padding: 20px !important;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05) !important;
+    }
+    .woocommerce-cart-form__contents td {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        border: none !important;
+        padding: 10px 0 !important;
+        text-align: right !important;
+    }
+    .woocommerce-cart-form__contents td:before {
+        content: attr(data-title);
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 12px;
+        color: #133E23;
+        opacity: 0.6;
+        text-align: left;
+    }
+    .woocommerce-cart-form__contents .product-remove {
+        justify-content: flex-end !important;
+    }
+    .woocommerce-cart-form__contents .product-thumbnail {
+        justify-content: center !important;
+    }
+    .woocommerce-cart-form__contents .product-thumbnail:before {
+        display: none !important;
+    }
+}
