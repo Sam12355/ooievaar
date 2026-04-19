@@ -174,15 +174,24 @@
             $locations = get_nav_menu_locations();
             $menu_items = false;
 
-            if (isset($locations['primary'])) {
+            // 1. Try language-specific primary location first (Polylang compatibility)
+            if (has_nav_menu('primary')) {
                 $menu_items = wp_get_nav_menu_items($locations['primary']);
             }
 
-            // Fallback to AVW Main Menu if location is empty
-            if (!$menu_items) {
-                $fallback_menu = wp_get_nav_menu_object('AVW Main Menu');
-                if ($fallback_menu) {
-                    $menu_items = wp_get_nav_menu_items($fallback_menu->term_id);
+            // 2. FORCE fallback to the new Hierarchical "Boutique Main Menu"
+            if (!$menu_items || empty($menu_items)) {
+                $boutique_menu = wp_get_nav_menu_object('Boutique Main Menu');
+                if ($boutique_menu) {
+                    $menu_items = wp_get_nav_menu_items($boutique_menu->term_id);
+                }
+            }
+
+            // 3. Last resort: Old AVW Menu
+            if (!$menu_items || empty($menu_items)) {
+                $old_menu = wp_get_nav_menu_object('AVW Main Menu');
+                if ($old_menu) {
+                    $menu_items = wp_get_nav_menu_items($old_menu->term_id);
                 }
             }
 
