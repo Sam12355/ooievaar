@@ -216,11 +216,12 @@
                 url: '<?php echo admin_url('admin-ajax.php'); ?>',
                 type: 'POST',
                 data: {
-                    action: 'avw_toggle_favorite',
+                    action: 'avw_v3_toggle_fav',
                     product_id: productId
                 },
                 success: function(response) {
-                    if (response.success) {
+                    // Only update badge on true success
+                    if (response && response.success) {
                         const serverCount = response.data.count;
                         $badge.text(serverCount);
                         if (serverCount > 0) {
@@ -228,12 +229,11 @@
                         } else {
                             $badge.addClass('scale-0 opacity-0').removeClass('scale-100 opacity-100');
                         }
-                    } else {
-                        showAvwToast('Oeps! Er ging iets mis bij het opslaan.', true);
                     }
                 },
                 error: function() {
-                    showAvwToast('Server fout. Probeer het later opnieuw.', true);
+                    // Only show toast on actual network error
+                    showAvwToast('Netwerk fout. Probeer het later opnieuw.', true);
                 }
             });
         });
