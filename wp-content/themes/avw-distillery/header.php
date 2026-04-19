@@ -315,7 +315,7 @@
         </div>
 
         <!-- Mobile dropdown menu -->
-        <div id="mobile-menu" class="hidden">
+        <div id="mobile-menu">
             <div class="flex flex-col gap-6 py-8">
                 <?php if (!empty($menu_tree)) : ?>
                     <?php foreach ($menu_tree as $parent) : ?>
