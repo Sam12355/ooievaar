@@ -169,15 +169,15 @@
     <nav class="bg-black shadow-[0px_4px_4px_0px_rgba(0,0,0,0.13)] sticky top-0 z-50">
         <div class="max-w-[1440px] mx-auto px-4 py-3 flex items-center justify-between gap-4">
             
-            <!-- Dynamic Nav Menu Logic -->
+            <!-- Dynamic Nav Menu Logic (Language Aware) -->
             <?php
-            $locations = get_nav_menu_locations();
             $menu_items = false;
-            if (isset($locations['primary'])) {
-                $menu = wp_get_nav_menu_object($locations['primary']);
-                if ($menu) {
-                    $menu_items = wp_get_nav_menu_items($menu->term_id);
-                }
+            $locations = get_nav_menu_locations();
+            
+            // For Multi-language (Polylang/WPML), the current location is filtered by WP automatically
+            if (has_nav_menu('primary')) {
+                // This call is filtered by translations plugins
+                $menu_items = wp_get_nav_menu_items(wp_get_nav_menu_object($locations['primary'])->term_id);
             }
             ?>
 
@@ -191,7 +191,7 @@
                     <?php endforeach; ?>
                 <?php else : ?>
                     <!-- Fallback: Instructions for user -->
-                    <span class="text-[#cdbca6] text-[10px] uppercase opacity-50">Please assign a menu to "Primary Menu"</span>
+                    <span class="text-[#cdbca6] text-[10px] uppercase opacity-50">Please assign a menu to "Primary Menu" in Menus -> Manage Locations</span>
                 <?php endif; ?>
             </div>
 
@@ -206,7 +206,7 @@
                 <!-- User -->
                 <button class="bg-[#cdbca6] rounded-full p-2 flex items-center justify-center hover:opacity-90 transition-opacity">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                        <path d="M18.0414 17.1875C17.9865 17.2825 17.9076 17.3614 17.8126 17.4163C17.7175 17.4712 17.6097 17.5 17.5 17.5H2.5C2.39034 17.4999 2.28265 17.4709 2.18772 17.416C2.0928 17.3611 2.01399 17.2822 1.95921 17.1872C1.90444 17.0922 1.87561 16.9845 1.87564 16.8748C1.87567 16.7652 1.90455 16.6575 1.95938 16.5625C3.14922 14.5055 4.98281 13.0305 7.12266 12.3312C6.06419 11.7011 5.24183 10.741 4.78186 9.59828C4.3219 8.45556 4.24975 7.19344 4.57652 6.00575C4.90328 4.81806 5.61088 3.77046 6.59064 3.02385C7.57041 2.27723 8.76818 1.87287 10 1.87287C11.2318 1.87287 12.4296 2.27723 13.4094 3.02385C14.3891 3.77046 15.0967 4.81806 15.4235 6.00575C15.7502 7.19344 15.6781 8.45556 15.2181 9.59828C14.7582 10.741 13.9358 11.7011 12.8773 12.3312C15.0172 13.0305 16.8508 14.5055 18.0406 16.5625C18.0956 16.6574 18.1246 16.7652 18.1247 16.8749C18.1249 16.9846 18.0961 17.0924 18.0414 17.1875Z" fill="#000000" />
+                        <path d="M18.0414 17.1875C17.9865 17.2825 17.9076 17.3614 17.8126 17.4163C17.7175 17.4712 17.6097 17.5 17.5 17.5H2.5C2.39034 17.4999 2.28265 17.4709 2.18772 17.416C2.0928 17.3611 2.01399 17.2822 1.95921 17.1872C1.90444 17.0922 1.87561 16.9845 1.87564 16.8748C1.87567 16.7652 1.90455 16.6575 1.95938 16.5625C3.14922 14.5055 4.98281 13.0305 7.12266 12.3312C6.06419 11.7011 5.24183 10.741 4.78186 9.59828C4.3219 8.45556 4.24975 7.19344 4.57652 6.00575C4.90328 4.81806 5.61088 3.77046 6.59064 3.02385C7.57041 2.27723 8.76818 1.87287 10 1.87287C11.2318 1.87287 12.4296 2.27723 13.4094 3.02385C14.3891 3.02385 15.0967 4.81806 15.4235 6.00575C15.7502 7.19344 15.6781 8.45556 15.2181 9.59828C14.7582 10.741 13.9358 11.7011 12.8773 12.3312C15.0172 13.0305 16.8508 14.5055 18.0406 16.5625C18.0956 16.6574 18.1246 16.7652 18.1247 16.8749C18.1249 16.9846 18.0961 17.0924 18.0414 17.1875Z" fill="#000000" />
                     </svg>
                 </button>
                 <!-- Search -->
