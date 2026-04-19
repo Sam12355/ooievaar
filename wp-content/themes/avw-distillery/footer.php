@@ -174,12 +174,35 @@
             const $btn = $(this);
             const $svg = $btn.find('svg');
             const productId = $btn.data('product_id');
+            const $badge = $('#fav-badge');
             
-            // Premium Pulse Animation
+            // 1. INSTANT FEEDBACK (Optimistic UI)
+            const isAdding = !$btn.hasClass('filled');
+            let currentCount = parseInt($badge.text()) || 0;
+
+            // Animate Heart
             $svg.css('transform', 'scale(1.3)');
             setTimeout(() => { $svg.css('transform', 'scale(1)'); }, 200);
 
-            // AJAX Toggle
+            if (isAdding) {
+                $btn.addClass('active filled');
+                $svg.css('fill', '#36221d');
+                currentCount++;
+            } else {
+                $btn.removeClass('active filled');
+                $svg.css('fill', 'none');
+                currentCount = Math.max(0, currentCount - 1);
+            }
+
+            // Update Badge Instantly
+            $badge.text(currentCount);
+            if (currentCount > 0) {
+                $badge.removeClass('scale-0 opacity-0').addClass('scale-100 opacity-100');
+            } else {
+                $badge.addClass('scale-0 opacity-0').removeClass('scale-100 opacity-100');
+            }
+
+            // 2. SILENT BACKGROUND SAVE
             $.ajax({
                 url: '<?php echo admin_url('admin-ajax.php'); ?>',
                 type: 'POST',
@@ -189,26 +212,18 @@
                 },
                 success: function(response) {
                     if (response.success) {
-                        const count = response.data.count;
-                        const status = response.data.status;
-                        
-                        // Update Header Badge
-                        const $badge = $('#fav-badge');
-                        $badge.text(count);
-                        if (count > 0) {
+                        // Double check count with server reality
+                        const serverCount = response.data.count;
+                        $badge.text(serverCount);
+                        if (serverCount > 0) {
                             $badge.removeClass('scale-0 opacity-0').addClass('scale-100 opacity-100');
                         } else {
                             $badge.addClass('scale-0 opacity-0').removeClass('scale-100 opacity-100');
                         }
-
-                        // Update Toggle UI (Fill/Empty)
-                        if (status === 'added') {
-                            $svg.css('fill', '#36221d');
-                            $btn.addClass('active filled');
-                        } else {
-                            $svg.css('fill', 'none');
-                            $btn.removeClass('active filled');
-                        }
+                    } else {
+                        // Revert on serious failure
+                        alert('Er ging iets mis bij het opslaan van uw favoriet.');
+                        location.reload(); 
                     }
                 }
             });
