@@ -24,6 +24,10 @@ get_header();
     font-family: 'DM Sans', sans-serif;
 }
 
+.avw-page-wrap.avw-woo-page {
+    max-width: 1400px;
+}
+
 .avw-page-title {
     font-family: 'Kurversbrug', serif;
     font-size: clamp(2rem, 5vw, 3.5rem);
@@ -195,14 +199,15 @@ get_header();
 }
 </style>
 
-<div class="avw-page-wrap">
+<div class="avw-page-wrap <?php echo (is_cart() || is_checkout() || is_account_page()) ? 'avw-woo-page' : ''; ?>">
     <?php
-    // Show the page WP editor content (if any) OR WooCommerce shortcode output
     while ( have_posts() ) :
         the_post();
         ?>
 
-        <h1 class="avw-page-title"><?php the_title(); ?></h1>
+        <?php if ( ! is_cart() && ! is_checkout() && ! is_account_page() ) : ?>
+            <h1 class="avw-page-title"><?php the_title(); ?></h1>
+        <?php endif; ?>
 
         <div class="avw-page-content">
             <?php the_content(); ?>

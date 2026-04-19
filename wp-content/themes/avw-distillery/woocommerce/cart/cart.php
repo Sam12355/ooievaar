@@ -16,9 +16,7 @@ do_action( 'woocommerce_before_cart' );
    BOUTIQUE CART — Master Design System
    ====================================================== */
 .avw-cart-wrap {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 60px 24px 100px;
+    padding: 0 0 100px;
     font-family: 'DM Sans', sans-serif;
 }
 .avw-cart-title {
@@ -226,7 +224,7 @@ do_action( 'woocommerce_before_cart' );
 </style>
 
 <div class="avw-cart-wrap">
-    <h1 class="avw-cart-title">Winkelmand</h1>
+    <h1 class="avw-cart-title"><?php esc_html_e( 'Cart', 'woocommerce' ); ?></h1>
 
     <form class="woocommerce-cart-form" action="<?php echo esc_url( wc_get_cart_url() ); ?>" method="post">
         <?php do_action( 'woocommerce_before_cart_table' ); ?>
