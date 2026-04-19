@@ -191,8 +191,7 @@ function avw_nuclear_search_globalizer( $where, $wp_query ) {
 add_filter( 'posts_where', 'avw_nuclear_search_globalizer', 999, 2 );
 
 /**
- * AUTO-SETUP: Create the Main Menu if it doesn't exist
- * This runs on theme setup to save the user manual work.
+ * AUTO-SETUP: Create the Full Boutique Menu with Hierarchy
  */
 function avw_auto_create_menu() {
     $menu_name = 'AVW Main Menu';
@@ -201,29 +200,87 @@ function avw_auto_create_menu() {
     if (!$menu_exists) {
         $menu_id = wp_create_nav_menu($menu_name);
 
-        $menu_items = array(
-            'De Distilleerderij' => '#',
-            'Producten'          => '#',
-            'Beleef'             => '#',
-            'Kennis'             => '#',
-            'Webwinkel'          => '#',
-            'Blog & Nieuws'      => '#',
+        // Define our Complex Hierarchy
+        $full_structure = array(
+            'De Distilleerderij' => array(
+                'url' => '#',
+                'children' => array(
+                    'Over' => '#',
+                    'Receptuur & ambacht' => '#',
+                    'Familiegeschiedenis' => '#',
+                    'Vacatures' => '#',
+                    'Contact' => '#',
+                )
+            ),
+            'Producten' => array(
+                'url' => '#',
+                'children' => array() // This will be handled by Webwinkel sub
+            ),
+            'Beleef' => array(
+                'url' => '#',
+                'children' => array(
+                    'Proeflokaal' => '#',
+                    'Rondleiding / Proeverij' => '#',
+                    'Geneverschool' => '#'
+                )
+            ),
+            'Kennis' => array(
+                'url' => '#',
+                'children' => array(
+                    'Kennisbank' => array(
+                        'url' => '#',
+                        'children' => array('Kennis Artikel' => '#')
+                    )
+                )
+            ),
+            'Webwinkel' => array(
+                'url' => '#',
+                'children' => array(
+                    'Producten' => array(
+                        'url' => '#',
+                        'children' => array(
+                            'Categorien' => array('url' => '#', 'children' => array('Product' => '#')),
+                            'Mandje' => '#',
+                            'Afrekenen' => '#',
+                            'Account/Inloggen' => '#',
+                            'Service' => array('url' => '#', 'children' => array('FAQ' => '#', 'Verzend Info' => '#'))
+                        )
+                    ),
+                    'Zakelijk' => '#'
+                )
+            ),
+            'Blog & Nieuws' => array(
+                'url' => '#',
+                'children' => array('Artikel' => '#')
+            )
         );
 
-        foreach ($menu_items as $title => $url) {
-            wp_update_nav_menu_item($menu_id, 0, array(
-                'menu-item-title'  => $title,
-                'menu-item-url'    => $url,
-                'menu-item-status' => 'publish',
-                'menu-item-type'   => 'custom',
-            ));
+        // Helper function for recursive menu creation
+        function avw_build_menu_recursive($items, $menu_id, $parent_id = 0) {
+            foreach ($items as $title => $data) {
+                $url = is_array($data) ? $data['url'] : $data;
+                $item_id = wp_update_nav_menu_item($menu_id, 0, array(
+                    'menu-item-title'     => $title,
+                    'menu-item-url'       => $url,
+                    'menu-item-status'    => 'publish',
+                    'menu-item-type'      => 'custom',
+                    'menu-item-parent-id' => $parent_id,
+                ));
+                if (is_array($data) && isset($data['children'])) {
+                    avw_build_menu_recursive($data['children'], $menu_id, $item_id);
+                }
+            }
         }
+        
+        avw_build_menu_recursive($full_structure, $menu_id);
 
         $locations = get_theme_mod('nav_menu_locations');
         $locations['primary'] = $menu_id;
         set_theme_mod('nav_menu_locations', $locations);
     }
 }
+add_action('init', 'avw_auto_create_menu');
+
 /**
  * Boutique Menu Styling: Inject Tailwind & Kurversbrug classes into native WP Menu links
  */

@@ -199,65 +199,143 @@
                 if ($menu_items) :
                     foreach ($menu_items as $item) : ?>
                         <a href="<?php echo esc_url($item->url); ?>" class="font-kurversbrug font-light text-[#cdbca6] text-[14px] uppercase tracking-wider hover:text-white transition-colors whitespace-nowrap">
-                            <?php echo esc_html($item->title); ?>
-                        </a>
-                    <?php endforeach;
-                endif;
-                ?>
+            <!-- Dynamic Nav Menu Logic (Hierarchy Aware) -->
+            <?php
+            $locations = get_nav_menu_locations();
+            $menu_items = false;
+
+            if (isset($locations['primary'])) {
+                $menu_items = wp_get_nav_menu_items($locations['primary']);
+            }
+
+            // Organize items into a tree
+            $menu_tree = array();
+            if ($menu_items) {
+                $items_by_id = array();
+                foreach($menu_items as $item) {
+                    $item->children = array();
+                    $items_by_id[$item->ID] = $item;
+                }
+                foreach($items_by_id as $item) {
+                    if ($item->menu_item_parent == 0) {
+                        $menu_tree[] = $item;
+                    } else {
+                        if (isset($items_by_id[$item->menu_item_parent])) {
+                            $items_by_id[$item->menu_item_parent]->children[] = $item;
+                        }
+                    }
+                }
+            }
+            ?>
+
+            <!-- Left: Nav links (desktop only) -->
+            <div id="desktop-nav-links" class="flex items-center gap-8">
+                <?php if (!empty($menu_tree)) : ?>
+                    <?php foreach ($menu_tree as $parent) : ?>
+                        <div class="group relative py-2">
+                            <a href="<?php echo esc_url($parent->url); ?>" class="font-kurversbrug font-light text-[#cdbca6] text-[14px] uppercase tracking-widest hover:text-white transition-colors whitespace-nowrap flex items-center gap-1">
+                                <?php echo esc_html($parent->title); ?>
+                                <?php if (!empty($parent->children)) : ?>
+                                    <svg class="w-3 h-3 opacity-50 group-hover:rotate-180 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                <?php endif; ?>
+                            </a>
+                            
+                            <?php if (!empty($parent->children)) : ?>
+                                <!-- Dropdown Panel -->
+                                <div class="dropdown-panel absolute top-full left-0 pt-4 opacity-0 invisible translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 z-[100]">
+                                    <div class="bg-black border border-[#cdbca6]/10 rounded-xl shadow-2xl p-6 min-w-[240px]">
+                                        <div class="flex flex-col gap-4">
+                                            <?php foreach ($parent->children as $child) : ?>
+                                                <div class="relative group/sub">
+                                                    <a href="<?php echo esc_url($child->url); ?>" class="font-kurversbrug text-[#cdbca6]/80 text-[13px] uppercase tracking-wider hover:text-white flex items-center justify-between">
+                                                        <?php echo esc_html($child->title); ?>
+                                                        <?php if (!empty($child->children)) : ?>
+                                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                                        <?php endif; ?>
+                                                    </a>
+                                                    
+                                                    <?php if (!empty($child->children)) : ?>
+                                                        <!-- Nested Grandchild Dropdown -->
+                                                        <div class="absolute left-full top-0 ml-4 opacity-0 invisible translate-x-2 group-hover/sub:opacity-100 group-hover/sub:visible group-hover/sub:translate-x-0 transition-all duration-300">
+                                                            <div class="bg-black border border-[#cdbca6]/10 rounded-xl shadow-2xl p-6 min-w-[200px]">
+                                                                <div class="flex flex-col gap-3">
+                                                                    <?php foreach ($child->children as $grandchild) : ?>
+                                                                        <a href="<?php echo esc_url($grandchild->url); ?>" class="font-kurversbrug text-[#cdbca6]/60 text-[12px] uppercase tracking-wider hover:text-white">
+                                                                            <?php echo esc_html($grandchild->title); ?>
+                                                                        </a>
+                                                                    <?php endforeach; ?>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    <?php endif; ?>
+                                                </div>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else : ?>
+                    <span class="text-[#cdbca6] text-[10px] uppercase opacity-50 italic">Admin: Setup your menu in Appearance -> Menus</span>
+                <?php endif; ?>
             </div>
 
             <!-- Right: Action buttons -->
             <div class="flex items-center gap-3 flex-shrink-0 ml-auto">
                 <!-- Heart -->
-                <button class="bg-[#cdbca6] rounded-full p-2 flex items-center justify-center hover:opacity-90 transition-opacity">
+                <button class="bg-[#cdbca6] rounded-full p-2.5 flex items-center justify-center hover:opacity-90 transition-all active:scale-95 shadow-sm">
                     <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
                         <path d="M9 15.75C9 15.75 1.6875 11.8125 1.6875 7.17188C1.6875 6.16488 2.08753 5.19913 2.79958 4.48708C3.51163 3.77503 4.47738 3.375 5.48438 3.375C7.07273 3.375 8.43328 4.24055 9 5.625C9.56672 4.24055 10.9273 3.375 12.5156 3.375C13.5226 3.375 14.4884 3.77503 15.2004 4.48708C15.9125 5.19913 16.3125 6.16488 16.3125 7.17188C16.3125 11.8125 9 15.75 9 15.75Z" stroke="#133E23" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                 </button>
                 <!-- User -->
-                <button class="bg-[#cdbca6] rounded-full p-2 flex items-center justify-center hover:opacity-90 transition-opacity">
+                <button class="bg-[#cdbca6] rounded-full p-2.5 flex items-center justify-center hover:opacity-90 transition-all active:scale-95 shadow-sm">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                        <path d="M18.0414 17.1875C17.9865 17.2825 17.9076 17.3614 17.8126 17.4163C17.7175 17.4712 17.6097 17.5 17.5 17.5H2.5C2.39034 17.4999 2.28265 17.4709 2.18772 17.416C2.0928 17.3611 2.01399 17.2822 1.95921 17.1872C1.90444 17.0922 1.87561 16.9845 1.87564 16.8748C1.87567 16.9845 1.90455 16.8767 1.87564 16.8748C1.87564 16.8748 1.87564 16.8748 1.87564 16.8748C1.87564 16.8748 1.87564 16.8748 1.87564 16.8748Z" fill="#000000" />
+                        <path d="M18.0414 17.1875C17.9865 17.2825 17.9076 17.3614 17.8126 17.4163C17.7175 17.4712 17.6097 17.5 17.5 17.5H2.5C2.39034 17.4999 2.28265 17.4709 2.18772 17.416C2.0928 17.3611 2.01399 17.2822 1.95921 17.1872C1.90444 17.0922 1.87561 16.9845 1.87564 16.8748C1.87564 16.9845 1.90455 16.8767 1.87564 16.8748C1.87564 16.8748 1.87564 16.8748 1.87564 16.8748C1.87564 16.8748 1.87564 16.8748 1.87564 16.8748Z" fill="#000000" />
                     </svg>
                 </button>
                 <!-- Search -->
-                <button class="bg-white rounded-full px-3 py-2 flex items-center gap-2 hover:bg-gray-100 transition-colors shadow-sm">
+                <button class="bg-white rounded-full px-4 py-2 flex items-center gap-2 hover:bg-gray-100 transition-all active:scale-95 shadow-sm">
                     <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
                         <path d="M7.875 13.5C10.9816 13.5 13.5 10.9816 13.5 7.875C13.5 4.7684 10.9816 2.25 7.875 2.25C4.7684 2.25 2.25 4.7684 2.25 7.875C2.25 10.9816 4.7684 13.5 7.875 13.5Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" />
                         <path d="M11.8526 11.8526L15.75 15.75" stroke="black" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
-                    <span class="text-black text-[14px] font-['DM_Sans',sans-serif] font-medium hidden sm:inline">Zoek</span>
+                    <span class="text-black text-[14px] font-bold hidden sm:inline">Zoek</span>
                 </button>
-                <!-- Language -->
-                <div class="hidden sm:flex items-center gap-1 cursor-pointer group">
-                    <svg width="18" height="18" viewBox="0 0 16 16" fill="none">
-                        <path d="M8 14C11.3137 14 14 11.3137 14 8C14 4.68629 11.3137 2 8 2C4.68629 2 2 4.68629 2 8C2 11.3137 4.68629 14 8 14Z" stroke="#cdbca6" stroke-linecap="round" stroke-linejoin="round" />
-                        <path d="M10.5 8C10.5 12 8 14 8 14C8 14 5.5 12 5.5 8C5.5 4 8 2 8 2C8 2 10.5 4 10.5 8Z" stroke="#cdbca6" stroke-linecap="round" stroke-linejoin="round" />
-                        <path d="M2.34125 6H13.6587" stroke="#cdbca6" stroke-linecap="round" stroke-linejoin="round" />
-                        <path d="M2.34125 10H13.6587" stroke="#cdbca6" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                    <span class="text-[#cdbca6] text-[14px] font-['DM_Sans',sans-serif] font-bold">NL</span>
-                </div>
                 <!-- Hamburger (mobile only) -->
-                <button id="hamburger-btn" aria-label="Menu" class="bg-[#cdbca6] rounded-full p-2 flex items-center justify-center hover:opacity-90 transition-opacity">
-                    <span class="flex flex-col gap-[3px] justify-center items-center w-5 h-5">
-                        <span class="bar"></span>
-                        <span class="bar"></span>
-                        <span class="bar"></span>
+                <button id="hamburger-btn" aria-label="Menu" class="bg-[#cdbca6] rounded-full p-2.5 flex items-center justify-center hover:opacity-90 transition-opacity">
+                    <span class="flex flex-col gap-[4px] justify-center items-center w-5 h-5">
+                        <span class="bar h-[2px]"></span>
+                        <span class="bar h-[2px]"></span>
+                        <span class="bar h-[2px]"></span>
                     </span>
                 </button>
             </div>
         </div>
 
         <!-- Mobile dropdown menu -->
-        <div id="mobile-menu">
-            <?php if ($menu_items) : ?>
-                <?php foreach ($menu_items as $item) : ?>
-                    <a href="<?php echo esc_url($item->url); ?>">
-                        <?php echo esc_html($item->title); ?>
-                    </a>
-                <?php endforeach; ?>
-            <?php endif; ?>
+        <div id="mobile-menu" class="hidden">
+            <div class="flex flex-col gap-6 py-8">
+                <?php if (!empty($menu_tree)) : ?>
+                    <?php foreach ($menu_tree as $parent) : ?>
+                        <div class="flex flex-col gap-2">
+                            <a href="<?php echo esc_url($parent->url); ?>" class="font-kurversbrug text-[#cdbca6] text-[20px] uppercase tracking-widest border-b border-[#cdbca6]/10 pb-2">
+                                <?php echo esc_html($parent->title); ?>
+                            </a>
+                            <?php if (!empty($parent->children)) : ?>
+                                <div class="flex flex-col gap-3 pl-4 mt-2">
+                                    <?php foreach ($parent->children as $child) : ?>
+                                        <a href="<?php echo esc_url($child->url); ?>" class="text-[#cdbca6]/80 text-[14px] uppercase tracking-wider font-kurversbrug">
+                                            <?php echo esc_html($child->title); ?>
+                                        </a>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </div>
         </div>
     </nav>
 
