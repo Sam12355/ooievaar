@@ -26,6 +26,9 @@ get_header();
 
 .avw-page-wrap.avw-woo-page {
     max-width: 1400px;
+    padding-left: 32px;
+    padding-right: 32px;
+    padding-top: 48px;
 }
 
 .avw-page-title {

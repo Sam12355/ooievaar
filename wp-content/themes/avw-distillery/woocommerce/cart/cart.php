@@ -12,396 +12,579 @@ do_action( 'woocommerce_before_cart' );
 ?>
 
 <style>
-/* ======================================================
-   BOUTIQUE CART — Master Design System
-   ====================================================== */
-.avw-cart-wrap {
-    padding: 0 0 100px;
+/* ============================================================
+   BOUTIQUE CART — Full Page Design System
+   ============================================================ */
+
+/* Page wrapper */
+.avw-cart-page {
     font-family: 'DM Sans', sans-serif;
-}
-.avw-cart-title {
-    font-family: 'Kurversbrug', serif;
-    font-size: clamp(2.5rem, 6vw, 4rem);
-    color: #133E23;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    text-align: center;
-    margin-bottom: 50px;
+    padding: 0 0 100px;
 }
 
-/* TABLE */
+/* Two-column layout */
+.avw-cart-layout {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 32px;
+    align-items: start;
+}
+
+@media (max-width: 1024px) {
+    .avw-cart-layout { grid-template-columns: 1fr; }
+}
+
+/* ---- Product Table ---- */
 .avw-cart-table {
-    border: none !important;
-    border-radius: 28px !important;
-    overflow: hidden !important;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.08) !important;
-    background: #fff !important;
+    width: 100%;
     border-collapse: separate !important;
     border-spacing: 0 !important;
-    margin-bottom: 32px !important;
-    width: 100% !important;
+    background: #fff;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 4px 40px rgba(0,0,0,0.07);
 }
+
 .avw-cart-table thead th {
-    background: rgba(19,62,35,0.04) !important;
-    border-bottom: 1px solid rgba(19,62,35,0.08) !important;
-    padding: 22px 26px !important;
-    font-size: 12px !important;
-    font-weight: 700 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.15em !important;
-    color: #133E23 !important;
+    background: rgba(19,62,35,0.03);
+    border-bottom: 1px solid rgba(19,62,35,0.08);
+    padding: 18px 24px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: rgba(19,62,35,0.5);
     text-align: left;
+    white-space: nowrap;
 }
-.avw-cart-table tbody tr { transition: background 0.2s; }
-.avw-cart-table tbody tr:hover { background: rgba(19,62,35,0.015); }
+
 .avw-cart-table td {
-    padding: 22px 26px !important;
-    border: none !important;
-    border-bottom: 1px solid rgba(19,62,35,0.05) !important;
-    vertical-align: middle !important;
+    padding: 20px 24px;
+    border-bottom: 1px solid rgba(19,62,35,0.05);
+    vertical-align: middle;
+    background: #fff;
 }
 
-/* THUMBNAIL */
+.avw-cart-table tbody tr:last-child td { border-bottom: none; }
+.avw-cart-table tbody tr:hover td { background: rgba(19,62,35,0.01); }
+
+/* Thumbnail */
+.avw-cart-table td.product-thumbnail { width: 100px; }
 .avw-cart-table td.product-thumbnail img {
-    width: 84px !important;
-    height: 84px !important;
+    width: 80px !important;
+    height: 80px !important;
     object-fit: cover !important;
-    border-radius: 18px !important;
-    border: 1px solid rgba(19,62,35,0.08) !important;
+    border-radius: 14px !important;
+    border: 1px solid rgba(19,62,35,0.07) !important;
+    display: block;
 }
 
-/* PRODUCT NAME */
-.avw-cart-table td.product-name a {
-    font-weight: 700 !important;
-    color: #133E23 !important;
-    text-decoration: none !important;
-}
-.avw-cart-table td.product-name a:hover { color: #9c8a74 !important; }
-
-/* PRICE */
-.avw-cart-table td.product-price,
-.avw-cart-table td.product-subtotal {
-    font-weight: 700 !important;
-    color: #133E23 !important;
-}
-
-/* REMOVE */
+/* Remove button */
+.avw-cart-table td.product-remove { width: 50px; }
 .avw-cart-table td.product-remove a.remove {
     display: flex !important;
     align-items: center;
     justify-content: center;
-    width: 34px;
-    height: 34px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
-    background: rgba(239,68,68,0.08);
-    color: #ef4444 !important;
-    font-size: 20px;
+    background: rgba(239,68,68,0.07);
+    color: rgba(239,68,68,0.7) !important;
+    font-size: 18px;
     text-decoration: none !important;
     transition: all 0.2s;
+    line-height: 1;
 }
 .avw-cart-table td.product-remove a.remove:hover {
     background: #ef4444;
     color: #fff !important;
 }
 
-/* QUANTITY */
+/* Product name */
+.avw-cart-table td.product-name a {
+    font-weight: 600;
+    color: #133E23 !important;
+    text-decoration: none !important;
+    font-size: 15px;
+    transition: color 0.2s;
+}
+.avw-cart-table td.product-name a:hover { color: #9c8a74 !important; }
+
+/* Price & subtotal */
+.avw-cart-table td.product-price,
+.avw-cart-table td.product-subtotal {
+    font-weight: 700;
+    color: #133E23;
+    white-space: nowrap;
+}
+.avw-cart-table td.product-subtotal { color: #133E23; font-weight: 800; }
+
+/* Quantity input */
 .avw-cart-table .quantity input.qty {
-    width: 64px !important;
-    height: 42px;
+    width: 60px !important;
+    height: 38px;
     border-radius: 9999px;
-    border: 1.5px solid rgba(19,62,35,0.2) !important;
+    border: 1.5px solid rgba(19,62,35,0.18) !important;
     text-align: center;
     font-weight: 700;
-    font-size: 15px;
+    font-size: 14px;
+    color: #133E23;
     background: transparent !important;
     outline: none;
+    transition: border-color 0.2s;
+}
+.avw-cart-table .quantity input.qty:focus {
+    border-color: #133E23 !important;
 }
 
-/* ACTIONS */
-.avw-cart-actions {
+/* ---- Cart Actions Bar ---- */
+.avw-cart-actions-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    gap: 16px;
-    padding: 24px;
-    background: rgba(19,62,35,0.02);
+    gap: 12px;
+    padding: 18px 24px;
+    background: rgba(19,62,35,0.025);
+    border-top: 1px solid rgba(19,62,35,0.07);
+    border-radius: 0 0 24px 24px;
 }
-.avw-coupon {
+
+.avw-continue-link {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: rgba(19,62,35,0.5);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+.avw-continue-link:hover { color: #133E23; }
+
+.avw-actions-right {
     display: flex;
-    border-radius: 9999px;
-    border: 1.5px solid rgba(19,62,35,0.15);
-    background: white;
-    overflow: hidden;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
 }
-.avw-coupon input {
-    padding: 12px 20px;
+
+/* Coupon pill */
+.avw-coupon-wrap {
+    display: flex;
+    align-items: center;
+    border: 1.5px solid rgba(19,62,35,0.15);
+    border-radius: 9999px;
+    overflow: hidden;
+    background: #fff;
+}
+.avw-coupon-wrap input {
+    padding: 9px 16px;
     border: none;
     outline: none;
-    font-size: 14px;
-    min-width: 180px;
+    font-size: 13px;
+    width: 140px;
+    color: #133E23;
+    font-family: 'DM Sans', sans-serif;
 }
-.avw-coupon-btn {
-    background: #133E23 !important;
-    color: white !important;
-    padding: 12px 24px;
+.avw-coupon-wrap button {
+    background: #133E23;
+    color: #fff;
     border: none;
+    padding: 9px 18px;
+    font-size: 11px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     cursor: pointer;
+    transition: background 0.2s;
+    font-family: 'DM Sans', sans-serif;
 }
-.avw-update-btn {
-    padding: 14px 32px;
-    border: 2px solid #133E23;
+.avw-coupon-wrap button:hover { background: #0a2415; }
+
+/* Update cart button */
+.avw-update-cart-btn {
+    padding: 9px 22px;
+    border: 1.5px solid rgba(19,62,35,0.3);
     border-radius: 9999px;
     background: transparent;
     color: #133E23;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: all 0.25s;
+}
+.avw-update-cart-btn:hover {
+    background: #133E23;
+    color: #fff;
+    border-color: #133E23;
+}
+
+/* ---- Totals Panel (sticky sidebar) ---- */
+.avw-totals-sidebar {
+    background: #133E23;
+    border-radius: 24px;
+    padding: 36px 32px;
+    color: #fff;
+    box-shadow: 0 20px 60px rgba(19,62,35,0.25);
+    position: sticky;
+    top: 100px;
+}
+
+.avw-totals-sidebar-title {
+    font-family: 'Kurversbrug', serif;
+    font-size: 20px;
+    color: #cdbca6;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-weight: normal;
+    margin: 0 0 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.avw-totals-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.avw-totals-row:last-of-type { border-bottom: none; }
+
+.avw-totals-label {
+    font-size: 11px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.12em;
-    cursor: pointer;
-    transition: all 0.3s;
+    color: rgba(255,255,255,0.5);
 }
-.avw-update-btn:hover { background: #133E23; color: white; }
 
-/* TOTALS */
-.avw-totals-panel {
-    background: #133E23 !important;
-    border-radius: 32px !important;
-    padding: 40px !important;
-    margin-left: auto;
-    max-width: 480px;
-    color: white;
-    box-shadow: 0 40px 100px rgba(0,0,0,0.15) !important;
+.avw-totals-value {
+    font-size: 15px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.9);
+    text-align: right;
 }
-.avw-totals-panel h2 {
-    font-family: 'Kurversbrug', serif !important;
-    font-size: 24px !important;
-    color: #cdbca6 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.2em !important;
-    margin-bottom: 30px !important;
-    border-bottom: 1px solid rgba(255,255,255,0.1) !important;
-    padding-bottom: 20px !important;
-}
-.avw-totals-panel table { width: 100%; border: none !important; }
-.avw-totals-panel th, .avw-totals-panel td {
-    padding: 15px 0 !important;
-    border: none !important;
-    border-top: 1px solid rgba(255,255,255,0.08) !important;
-    color: rgba(255,255,255,0.8) !important;
-}
-.avw-totals-panel .order-total th { font-family: 'Kurversbrug', serif; color: white; font-size: 18px; }
-.avw-totals-panel .order-total td { font-size: 32px; font-weight: 800; color: #cdbca6; text-align: right; }
-.avw-totals-panel .order-total td .woocommerce-Price-amount { color: #cdbca6; }
 
-.checkout-button {
-    display: block !important;
-    background: #cdbca6 !important;
+.avw-totals-total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 22px 0 0;
+    margin-top: 8px;
+    border-top: 1px solid rgba(255,255,255,0.12);
+}
+
+.avw-totals-total-label {
+    font-family: 'Kurversbrug', serif;
+    font-size: 18px;
+    color: #cdbca6;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-weight: normal;
+}
+
+.avw-totals-total-amount {
+    font-size: 28px;
+    font-weight: 800;
+    color: #cdbca6;
+    text-align: right;
+    line-height: 1;
+}
+
+.avw-totals-total-amount .woocommerce-Price-amount { color: #cdbca6 !important; }
+
+.avw-totals-tax-note {
+    font-size: 10px;
+    color: rgba(255,255,255,0.35);
+    margin-top: 6px;
+    text-align: right;
+    line-height: 1.5;
+}
+
+/* Checkout button */
+.avw-checkout-btn {
+    display: block;
+    margin-top: 28px;
+    padding: 18px 24px;
+    background: #cdbca6;
     color: #133E23 !important;
-    padding: 22px !important;
-    border-radius: 9999px !important;
-    font-family: 'Kurversbrug', serif !important;
-    font-size: 18px !important;
-    text-align: center !important;
+    text-align: center;
+    border-radius: 9999px;
+    font-family: 'Kurversbrug', serif;
+    font-size: 16px;
+    font-weight: normal;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
     text-decoration: none !important;
-    margin-top: 30px;
-    transition: all 0.3s;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
 }
-.checkout-button:hover { background: white !important; transform: translateY(-3px); }
+.avw-checkout-btn:hover {
+    background: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 16px 48px rgba(0,0,0,0.25);
+    color: #133E23 !important;
+}
 
-/* MOBILE */
+/* Security trust badge */
+.avw-trust-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 18px;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.3);
+}
+
+/* ---- Mobile responsive ---- */
 @media (max-width: 768px) {
-    .avw-cart-table thead { display: none !important; }
-    .avw-cart-table, .avw-cart-table tbody, .avw-cart-table tr, .avw-cart-table td { display: block; width: 100%; }
-    .avw-cart-table tr { margin-bottom: 20px; border-radius: 20px; background: white; padding: 15px; }
-    .avw-cart-table td { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0,0,0,0.05) !important; padding: 10px 5px !important; }
-    .avw-cart-table td::before { content: attr(data-title); font-weight: 700; text-transform: uppercase; font-size: 10px; color: #133E23; opacity: 0.5; }
+    .avw-cart-table thead { display: none; }
+    .avw-cart-table, .avw-cart-table tbody,
+    .avw-cart-table tr, .avw-cart-table td {
+        display: block;
+        width: 100%;
+    }
+    .avw-cart-table tr {
+        margin-bottom: 16px;
+        border: 1px solid rgba(19,62,35,0.08);
+        border-radius: 18px;
+        overflow: hidden;
+        background: #fff;
+    }
+    .avw-cart-table td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 16px !important;
+        border-bottom: 1px solid rgba(19,62,35,0.05) !important;
+    }
+    .avw-cart-table td::before {
+        content: attr(data-title);
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: rgba(19,62,35,0.4);
+    }
+    .avw-cart-table td.product-remove,
+    .avw-cart-table td.product-thumbnail { justify-content: flex-end; }
+    .avw-cart-table td.product-remove::before,
     .avw-cart-table td.product-thumbnail::before { display: none; }
-    .avw-cart-actions { flex-direction: column; }
+
+    .avw-cart-actions-bar { border-radius: 18px; }
+    .avw-totals-sidebar { position: static; }
 }
 </style>
 
-<div class="avw-cart-wrap">
-    <h1 class="avw-cart-title"><?php esc_html_e( 'Cart', 'woocommerce' ); ?></h1>
+<div class="avw-cart-page">
 
-    <form class="woocommerce-cart-form" action="<?php echo esc_url( wc_get_cart_url() ); ?>" method="post">
-        <?php do_action( 'woocommerce_before_cart_table' ); ?>
+    <?php do_action( 'woocommerce_before_cart_table' ); ?>
 
-        <table class="avw-cart-table shop_table shop_table_responsive cart woocommerce-cart-form__contents" cellspacing="0">
-            <thead>
-                <tr>
-                    <th class="product-remove">&nbsp;</th>
-                    <th class="product-thumbnail">&nbsp;</th>
-                    <th class="product-name"><?php esc_html_e( 'Product', 'woocommerce' ); ?></th>
-                    <th class="product-price"><?php esc_html_e( 'Price', 'woocommerce' ); ?></th>
-                    <th class="product-quantity"><?php esc_html_e( 'Quantity', 'woocommerce' ); ?></th>
-                    <th class="product-subtotal"><?php esc_html_e( 'Subtotal', 'woocommerce' ); ?></th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php do_action( 'woocommerce_before_cart_contents' ); ?>
+    <!-- Two-column layout -->
+    <div class="avw-cart-layout">
 
-                <?php foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) :
-                    $_product   = apply_filters( 'woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key );
-                    $product_id = apply_filters( 'woocommerce_cart_item_product_id', $cart_item['product_id'], $cart_item, $cart_item_key );
+        <!-- LEFT: Product Table + Actions -->
+        <div>
+            <form class="woocommerce-cart-form" action="<?php echo esc_url( wc_get_cart_url() ); ?>" method="post">
 
-                    if ( $_product && $_product->exists() && $cart_item['quantity'] > 0 ) :
-                        $product_permalink = apply_filters( 'woocommerce_cart_item_permalink', $_product->is_visible() ? $_product->get_permalink( $cart_item ) : '', $cart_item, $cart_item_key );
-                ?>
-                <tr class="woocommerce-cart-form__cart-item <?php echo esc_attr( apply_filters( 'woocommerce_cart_item_class', 'cart_item', $cart_item, $cart_item_key ) ); ?>">
+                <table class="avw-cart-table shop_table shop_table_responsive cart woocommerce-cart-form__contents" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th class="product-remove">&nbsp;</th>
+                            <th class="product-thumbnail">&nbsp;</th>
+                            <th class="product-name"><?php esc_html_e( 'Product', 'woocommerce' ); ?></th>
+                            <th class="product-price"><?php esc_html_e( 'Price', 'woocommerce' ); ?></th>
+                            <th class="product-quantity"><?php esc_html_e( 'Quantity', 'woocommerce' ); ?></th>
+                            <th class="product-subtotal"><?php esc_html_e( 'Subtotal', 'woocommerce' ); ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php do_action( 'woocommerce_before_cart_contents' ); ?>
 
-                    <td class="product-remove" data-title="<?php esc_attr_e( 'Remove', 'woocommerce' ); ?>">
-                        <?php echo apply_filters( 'woocommerce_cart_item_remove_link', sprintf(
-                            '<a href="%s" class="remove" aria-label="%s" data-product_id="%s" data-product_sku="%s">&times;</a>',
-                            esc_url( wc_get_cart_remove_url( $cart_item_key ) ),
-                            esc_attr( sprintf( __( 'Remove %s from cart', 'woocommerce' ), $_product->get_name() ) ),
-                            esc_attr( $product_id ),
-                            esc_attr( $_product->get_sku() )
-                        ), $cart_item_key ); ?>
-                    </td>
+                        <?php foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) :
+                            $_product   = apply_filters( 'woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key );
+                            $product_id = apply_filters( 'woocommerce_cart_item_product_id', $cart_item['product_id'], $cart_item, $cart_item_key );
 
-                    <td class="product-thumbnail" data-title="<?php esc_attr_e( 'Image', 'woocommerce' ); ?>">
-                        <?php $thumbnail = apply_filters( 'woocommerce_cart_item_thumbnail', $_product->get_image(), $cart_item, $cart_item_key );
-                        if ( ! $product_permalink ) {
-                            echo $thumbnail;
-                        } else {
-                            printf( '<a href="%s">%s</a>', esc_url( $product_permalink ), $thumbnail );
-                        } ?>
-                    </td>
+                            if ( $_product && $_product->exists() && $cart_item['quantity'] > 0 ) :
+                                $product_permalink = apply_filters( 'woocommerce_cart_item_permalink', $_product->is_visible() ? $_product->get_permalink( $cart_item ) : '', $cart_item, $cart_item_key );
+                        ?>
+                        <tr class="woocommerce-cart-form__cart-item <?php echo esc_attr( apply_filters( 'woocommerce_cart_item_class', 'cart_item', $cart_item, $cart_item_key ) ); ?>">
 
-                    <td class="product-name" data-title="<?php esc_attr_e( 'Product', 'woocommerce' ); ?>">
-                        <?php if ( ! $product_permalink ) {
-                            echo wp_kses_post( apply_filters( 'woocommerce_cart_item_name', $_product->get_name(), $cart_item, $cart_item_key ) . '&nbsp;' );
-                        } else {
-                            echo wp_kses_post( apply_filters( 'woocommerce_cart_item_name', sprintf( '<a href="%s">%s</a>', esc_url( $product_permalink ), $_product->get_name() ), $cart_item, $cart_item_key ) );
-                        }
-                        do_action( 'woocommerce_after_cart_item_name', $cart_item, $cart_item_key );
-                        echo wc_get_formatted_cart_item_data( $cart_item );
-                        if ( $_product->backorders_require_notification() && $_product->is_on_backorder( $cart_item['quantity'] ) ) {
-                            echo wp_kses_post( apply_filters( 'woocommerce_cart_item_backorder_notification', '<p class="backorder_notification">' . esc_html__( 'Available on backorder', 'woocommerce' ) . '</p>', $product_id ) );
-                        } ?>
-                    </td>
+                            <td class="product-remove" data-title="<?php esc_attr_e( 'Remove', 'woocommerce' ); ?>">
+                                <?php echo apply_filters( 'woocommerce_cart_item_remove_link', sprintf(
+                                    '<a href="%s" class="remove" aria-label="%s" data-product_id="%s" data-product_sku="%s">&times;</a>',
+                                    esc_url( wc_get_cart_remove_url( $cart_item_key ) ),
+                                    esc_attr( sprintf( __( 'Remove %s from cart', 'woocommerce' ), $_product->get_name() ) ),
+                                    esc_attr( $product_id ),
+                                    esc_attr( $_product->get_sku() )
+                                ), $cart_item_key ); ?>
+                            </td>
 
-                    <td class="product-price" data-title="<?php esc_attr_e( 'Price', 'woocommerce' ); ?>">
-                        <?php echo apply_filters( 'woocommerce_cart_item_price', WC()->cart->get_product_price( $_product ), $cart_item, $cart_item_key ); ?>
-                    </td>
+                            <td class="product-thumbnail" data-title="<?php esc_attr_e( 'Image', 'woocommerce' ); ?>">
+                                <?php $thumbnail = apply_filters( 'woocommerce_cart_item_thumbnail', $_product->get_image(), $cart_item, $cart_item_key );
+                                if ( ! $product_permalink ) {
+                                    echo $thumbnail;
+                                } else {
+                                    printf( '<a href="%s">%s</a>', esc_url( $product_permalink ), $thumbnail );
+                                } ?>
+                            </td>
 
-                    <td class="product-quantity" data-title="<?php esc_attr_e( 'Quantity', 'woocommerce' ); ?>">
-                        <?php if ( $_product->is_sold_individually() ) {
-                            $product_quantity = sprintf( '1 <input type="hidden" name="cart[%s][qty]" value="1" />', $cart_item_key );
-                        } else {
-                            $product_quantity = woocommerce_quantity_input( array(
-                                'input_name'   => "cart[{$cart_item_key}][qty]",
-                                'input_value'  => $cart_item['quantity'],
-                                'max_value'    => $_product->get_max_purchase_quantity(),
-                                'min_value'    => '0',
-                                'product_name' => $_product->get_name(),
-                            ), $_product, false );
-                        }
-                        echo apply_filters( 'woocommerce_cart_item_quantity', $product_quantity, $cart_item_key, $cart_item ); ?>
-                    </td>
+                            <td class="product-name" data-title="<?php esc_attr_e( 'Product', 'woocommerce' ); ?>">
+                                <?php if ( ! $product_permalink ) {
+                                    echo wp_kses_post( apply_filters( 'woocommerce_cart_item_name', $_product->get_name(), $cart_item, $cart_item_key ) . '&nbsp;' );
+                                } else {
+                                    echo wp_kses_post( apply_filters( 'woocommerce_cart_item_name', sprintf( '<a href="%s">%s</a>', esc_url( $product_permalink ), $_product->get_name() ), $cart_item, $cart_item_key ) );
+                                }
+                                do_action( 'woocommerce_after_cart_item_name', $cart_item, $cart_item_key );
+                                echo wc_get_formatted_cart_item_data( $cart_item );
+                                if ( $_product->backorders_require_notification() && $_product->is_on_backorder( $cart_item['quantity'] ) ) {
+                                    echo wp_kses_post( apply_filters( 'woocommerce_cart_item_backorder_notification', '<p class="backorder_notification">' . esc_html__( 'Available on backorder', 'woocommerce' ) . '</p>', $product_id ) );
+                                } ?>
+                            </td>
 
-                    <td class="product-subtotal" data-title="<?php esc_attr_e( 'Subtotal', 'woocommerce' ); ?>">
-                        <?php echo apply_filters( 'woocommerce_cart_item_subtotal', WC()->cart->get_product_subtotal( $_product, $cart_item['quantity'] ), $cart_item, $cart_item_key ); ?>
-                    </td>
-                </tr>
-                <?php endif; endforeach; ?>
+                            <td class="product-price" data-title="<?php esc_attr_e( 'Price', 'woocommerce' ); ?>">
+                                <?php echo apply_filters( 'woocommerce_cart_item_price', WC()->cart->get_product_price( $_product ), $cart_item, $cart_item_key ); ?>
+                            </td>
 
-                <?php do_action( 'woocommerce_cart_contents' ); ?>
+                            <td class="product-quantity" data-title="<?php esc_attr_e( 'Quantity', 'woocommerce' ); ?>">
+                                <?php if ( $_product->is_sold_individually() ) {
+                                    $product_quantity = sprintf( '1 <input type="hidden" name="cart[%s][qty]" value="1" />', $cart_item_key );
+                                } else {
+                                    $product_quantity = woocommerce_quantity_input( array(
+                                        'input_name'   => "cart[{$cart_item_key}][qty]",
+                                        'input_value'  => $cart_item['quantity'],
+                                        'max_value'    => $_product->get_max_purchase_quantity(),
+                                        'min_value'    => '0',
+                                        'product_name' => $_product->get_name(),
+                                    ), $_product, false );
+                                }
+                                echo apply_filters( 'woocommerce_cart_item_quantity', $product_quantity, $cart_item_key, $cart_item ); ?>
+                            </td>
 
-                <!-- Actions Row -->
-                <tr>
-                    <td colspan="6" class="actions" style="padding: 16px 26px !important; border-bottom: 1px solid rgba(19,62,35,0.08) !important;">
-                        <div class="avw-cart-actions flex flex-wrap justify-between items-center gap-4">
-                            <a href="<?php echo esc_url( apply_filters( 'woocommerce_return_to_shop_redirect', wc_get_page_permalink( 'shop' ) ) ); ?>" class="text-[12px] uppercase tracking-widest font-bold text-[#133E23] hover:text-[#9c8a74]">
-                                &#8592; <?php esc_html_e( 'Continue shopping', 'woocommerce' ); ?>
-                            </a>
+                            <td class="product-subtotal" data-title="<?php esc_attr_e( 'Subtotal', 'woocommerce' ); ?>">
+                                <?php echo apply_filters( 'woocommerce_cart_item_subtotal', WC()->cart->get_product_subtotal( $_product, $cart_item['quantity'] ), $cart_item, $cart_item_key ); ?>
+                            </td>
+                        </tr>
+                        <?php endif; endforeach; ?>
 
-                            <div class="flex flex-wrap items-center gap-3">
-                                <?php if ( wc_coupons_enabled() ) : ?>
-                                    <div class="coupon avw-coupon flex border border-[#133E23]/20 rounded-full overflow-hidden bg-white">
-                                        <input type="text" name="coupon_code" class="px-4 py-2 text-sm outline-none w-32 sm:w-48" id="coupon_code" value="" placeholder="<?php esc_attr_e( 'Coupon code', 'woocommerce' ); ?>" />
-                                        <button type="submit" class="bg-[#133E23] text-white px-4 py-2 text-xs font-bold uppercase tracking-widest" name="apply_coupon" value="<?php esc_attr_e( 'Apply coupon', 'woocommerce' ); ?>"><?php esc_attr_e( 'Apply', 'woocommerce' ); ?></button>
-                                    </div>
-                                <?php endif; ?>
+                        <?php do_action( 'woocommerce_cart_contents' ); ?>
+                        <?php do_action( 'woocommerce_after_cart_contents' ); ?>
+                    </tbody>
+                </table>
 
-                                <button type="submit" class="border-2 border-[#133E23] text-[#133E23] px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-[#133E23] hover:text-white transition-all" name="update_cart" value="<?php esc_attr_e( 'Update cart', 'woocommerce' ); ?>"><?php esc_html_e( 'Update cart', 'woocommerce' ); ?></button>
+                <!-- Actions bar below table -->
+                <div class="avw-cart-actions-bar">
+                    <a href="<?php echo esc_url( apply_filters( 'woocommerce_return_to_shop_redirect', wc_get_page_permalink( 'shop' ) ) ); ?>" class="avw-continue-link">
+                        &#8592; <?php esc_html_e( 'Continue shopping', 'woocommerce' ); ?>
+                    </a>
+
+                    <div class="avw-actions-right">
+                        <?php if ( wc_coupons_enabled() ) : ?>
+                            <div class="coupon avw-coupon-wrap">
+                                <label for="coupon_code" class="screen-reader-text"><?php esc_html_e( 'Coupon:', 'woocommerce' ); ?></label>
+                                <input type="text" name="coupon_code" id="coupon_code" value="" placeholder="<?php esc_attr_e( 'Coupon code', 'woocommerce' ); ?>" />
+                                <button type="submit" name="apply_coupon" value="<?php esc_attr_e( 'Apply coupon', 'woocommerce' ); ?>"><?php esc_html_e( 'Apply', 'woocommerce' ); ?></button>
                             </div>
+                        <?php endif; ?>
 
-                            <?php do_action( 'woocommerce_cart_actions' ); ?>
-                            <?php wp_nonce_field( 'woocommerce-cart', 'woocommerce-cart-nonce' ); ?>
+                        <button type="submit" class="avw-update-cart-btn" name="update_cart" value="<?php esc_attr_e( 'Update cart', 'woocommerce' ); ?>">
+                            <?php esc_html_e( 'Update cart', 'woocommerce' ); ?>
+                        </button>
+                    </div>
+
+                    <?php do_action( 'woocommerce_cart_actions' ); ?>
+                    <?php wp_nonce_field( 'woocommerce-cart', 'woocommerce-cart-nonce' ); ?>
+                </div>
+
+            </form>
+        </div>
+
+        <!-- RIGHT: Order Summary Panel -->
+        <div class="avw-totals-sidebar">
+            <h2 class="avw-totals-sidebar-title"><?php esc_html_e( 'Order Summary', 'woocommerce' ); ?></h2>
+
+            <!-- Subtotal -->
+            <div class="avw-totals-row">
+                <span class="avw-totals-label"><?php esc_html_e( 'Subtotal', 'woocommerce' ); ?></span>
+                <span class="avw-totals-value"><?php wc_cart_totals_subtotal_html(); ?></span>
+            </div>
+
+            <!-- Coupons -->
+            <?php foreach ( WC()->cart->get_coupons() as $code => $coupon ) : ?>
+                <div class="avw-totals-row coupon-<?php echo esc_attr( sanitize_title( $code ) ); ?>">
+                    <span class="avw-totals-label"><?php wc_cart_totals_coupon_label( $coupon ); ?></span>
+                    <span class="avw-totals-value"><?php wc_cart_totals_coupon_html( $coupon ); ?></span>
+                </div>
+            <?php endforeach; ?>
+
+            <!-- Shipping -->
+            <?php if ( WC()->cart->needs_shipping() && WC()->cart->show_shipping() ) : ?>
+                <div class="avw-totals-row" style="flex-direction: column; align-items: flex-start; gap: 10px;">
+                    <span class="avw-totals-label"><?php esc_html_e( 'Shipping', 'woocommerce' ); ?></span>
+                    <div style="width:100%; font-size:12px; color: rgba(255,255,255,0.6);">
+                        <?php woocommerce_shipping_calculator(); ?>
+                    </div>
+                </div>
+            <?php endif; ?>
+
+            <!-- Fees -->
+            <?php foreach ( WC()->cart->get_fees() as $fee ) : ?>
+                <div class="avw-totals-row">
+                    <span class="avw-totals-label"><?php echo esc_html( $fee->name ); ?></span>
+                    <span class="avw-totals-value"><?php wc_cart_totals_fee_html( $fee ); ?></span>
+                </div>
+            <?php endforeach; ?>
+
+            <?php do_action( 'woocommerce_cart_totals_before_order_total' ); ?>
+
+            <!-- Grand Total -->
+            <div class="avw-totals-total-row">
+                <span class="avw-totals-total-label"><?php esc_html_e( 'Total', 'woocommerce' ); ?></span>
+                <div>
+                    <div class="avw-totals-total-amount"><?php wc_cart_totals_order_total_html(); ?></div>
+                    <?php if ( wc_tax_enabled() && WC()->cart->display_prices_including_tax() ) : ?>
+                        <div class="avw-totals-tax-note">
+                            <?php if ( 'itemized' === get_option( 'woocommerce_tax_display_cart' ) ) :
+                                foreach ( WC()->cart->get_tax_totals() as $code => $tax ) :
+                                    echo '<span>' . esc_html( $tax->label ) . ': ' . wp_kses_post( $tax->formatted_amount ) . '</span><br>';
+                                endforeach;
+                            else :
+                                printf(
+                                    esc_html__( 'incl. %s %s', 'woocommerce' ),
+                                    WC()->countries->tax_or_vat(),
+                                    '<span>' . wc_price( WC()->cart->get_taxes_total( true, true ) ) . '</span>'
+                                );
+                            endif; ?>
                         </div>
-                    </td>
-                </tr>
+                    <?php endif; ?>
+                </div>
+            </div>
 
-                <!-- Integrated Totals -->
-                <tr class="avw-cart-totals-row">
-                    <td colspan="4" class="hidden md:table-cell border-none!"></td>
-                    <td colspan="2" class="p-0 border-none!">
-                        <div class="bg-[#133E23] text-white p-6 sm:p-10 md:rounded-br-[28px] space-y-5">
-                            <h3 class="font-kurversbrug text-[#cdbca6] text-lg uppercase tracking-[0.2em] mb-4 border-b border-white/10 pb-4">
-                                <?php esc_html_e( 'Cart totals', 'woocommerce' ); ?>
-                            </h3>
+            <?php do_action( 'woocommerce_cart_totals_after_order_total' ); ?>
 
-                            <div class="flex justify-between items-center border-b border-white/10 pb-3">
-                                <span class="text-[11px] uppercase tracking-widest opacity-60"><?php esc_html_e( 'Subtotal', 'woocommerce' ); ?></span>
-                                <span class="text-base font-bold"><?php wc_cart_totals_subtotal_html(); ?></span>
-                            </div>
+            <!-- Checkout button -->
+            <a href="<?php echo esc_url( wc_get_checkout_url() ); ?>" class="avw-checkout-btn wc-forward checkout-button">
+                <?php esc_html_e( 'Proceed to checkout', 'woocommerce' ); ?>
+            </a>
 
-                            <?php foreach ( WC()->cart->get_coupons() as $code => $coupon ) : ?>
-                                <div class="flex justify-between items-center border-b border-white/10 pb-3">
-                                    <span class="text-[11px] uppercase tracking-widest opacity-60"><?php wc_cart_totals_coupon_label( $coupon ); ?></span>
-                                    <span class="text-base font-bold"><?php wc_cart_totals_coupon_html( $coupon ); ?></span>
-                                </div>
-                            <?php endforeach; ?>
+            <!-- Trust badge -->
+            <div class="avw-trust-badge">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                <span><?php esc_html_e( 'Secure checkout', 'woocommerce' ); ?></span>
+            </div>
+        </div>
 
-                            <?php if ( WC()->cart->needs_shipping() && WC()->cart->show_shipping() ) : ?>
-                                <div class="border-b border-white/10 pb-3">
-                                    <div class="flex justify-between items-center mb-2">
-                                        <span class="text-[11px] uppercase tracking-widest opacity-60"><?php esc_html_e( 'Shipping', 'woocommerce' ); ?></span>
-                                    </div>
-                                    <div class="text-xs text-white/80">
-                                        <?php woocommerce_shipping_calculator(); ?>
-                                    </div>
-                                </div>
-                            <?php endif; ?>
+    </div><!-- .avw-cart-layout -->
 
-                            <div class="pt-2">
-                                <div class="flex justify-between items-end mb-1">
-                                    <span class="font-kurversbrug text-xl uppercase tracking-widest text-[#cdbca6]"><?php esc_html_e( 'Total', 'woocommerce' ); ?></span>
-                                    <span class="text-3xl font-bold text-[#cdbca6]"><?php wc_cart_totals_order_total_html(); ?></span>
-                                </div>
-                                
-                                <?php if ( wc_tax_enabled() && WC()->cart->display_prices_including_tax() ) : ?>
-                                    <div class="text-right">
-                                        <?php if ( 'itemized' === get_option( 'woocommerce_tax_display_cart' ) ) : ?>
-                                            <?php foreach ( WC()->cart->get_tax_totals() as $code => $tax ) : ?>
-                                                <small class="text-[10px] opacity-50 block"><?php printf( esc_html__( '(includes %s)', 'woocommerce' ), $tax->label ); ?>: <?php echo wp_kses_post( $tax->formatted_amount ); ?></small>
-                                            <?php endforeach; ?>
-                                        <?php else : ?>
-                                            <small class="text-[10px] opacity-50 block"><?php printf( esc_html__( '(includes %s)', 'woocommerce' ), WC()->countries->tax_or_vat() ); ?>: <?php wc_cart_totals_taxes_total_html(); ?></small>
-                                        <?php endif; ?>
-                                    </div>
-                                <?php endif; ?>
-                            </div>
-                            
-                            <div class="pt-6">
-                                <a href="<?php echo esc_url( wc_get_checkout_url() ); ?>" class="checkout-button block bg-[#cdbca6] text-[#133E23] py-5 rounded-full font-kurversbrug text-base text-center uppercase tracking-[0.2em] hover:bg-white transition-all transform hover:-translate-y-1 shadow-2xl">
-                                    <?php esc_html_e( 'Proceed to checkout', 'woocommerce' ); ?>
-                                </a>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
+    <?php do_action( 'woocommerce_after_cart_table' ); ?>
 
-                <?php do_action( 'woocommerce_after_cart_contents' ); ?>
-            </tbody>
-        </table>
-
-        <?php do_action( 'woocommerce_after_cart_table' ); ?>
-    </form>
-</div>
+</div><!-- .avw-cart-page -->
 
 <?php do_action( 'woocommerce_after_cart' ); ?>
