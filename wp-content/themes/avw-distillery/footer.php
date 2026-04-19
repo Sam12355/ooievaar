@@ -223,12 +223,23 @@
                     // Only update badge on true success
                     if (response && response.success) {
                         const serverCount = response.data.count;
+                        const status = response.data.status;
+                        
                         $badge.text(serverCount);
                         if (serverCount > 0) {
                             $badge.removeClass('scale-0 opacity-0').addClass('scale-100 opacity-100');
                         } else {
                             $badge.addClass('scale-0 opacity-0').removeClass('scale-100 opacity-100');
                         }
+
+                        // Success Toast
+                        if (status === 'added') {
+                            showAvwToast('Toegevoegd aan favorieten!');
+                        } else {
+                            showAvwToast('Verwijderd uit favorieten');
+                        }
+                    } else {
+                        showAvwToast('Oeps! Er ging iets mis.', true);
                     }
                 },
                 error: function() {
