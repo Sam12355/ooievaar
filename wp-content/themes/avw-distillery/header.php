@@ -168,14 +168,31 @@
 
     <nav class="bg-black shadow-[0px_4px_4px_0px_rgba(0,0,0,0.13)] sticky top-0 z-50">
         <div class="max-w-[1440px] mx-auto px-4 py-3 flex items-center justify-between gap-4">
+            
+            <!-- Dynamic Nav Menu Logic -->
+            <?php
+            $locations = get_nav_menu_locations();
+            $menu_items = false;
+            if (isset($locations['primary'])) {
+                $menu = wp_get_nav_menu_object($locations['primary']);
+                if ($menu) {
+                    $menu_items = wp_get_nav_menu_items($menu->term_id);
+                }
+            }
+            ?>
+
             <!-- Left: Nav links (desktop only) -->
             <div id="desktop-nav-links" class="flex items-center gap-6">
-                <a href="#" class="font-kurversbrug font-light text-[#cdbca6] text-[14px] uppercase tracking-wider hover:text-white transition-colors whitespace-nowrap">de distilleerderij</a>
-                <a href="#" class="font-kurversbrug font-light text-[#cdbca6] text-[14px] uppercase tracking-wider hover:text-white transition-colors whitespace-nowrap">Producten</a>
-                <a href="#" class="font-kurversbrug font-light text-[#cdbca6] text-[14px] uppercase tracking-wider hover:text-white transition-colors whitespace-nowrap">Beleef</a>
-                <a href="#" class="font-kurversbrug font-light text-[#cdbca6] text-[14px] uppercase tracking-wider hover:text-white transition-colors whitespace-nowrap">Kennis</a>
-                <a href="#" class="font-kurversbrug font-light text-[#cdbca6] text-[14px] uppercase tracking-wider hover:text-white transition-colors whitespace-nowrap">Webwinkel</a>
-                <a href="#" class="font-kurversbrug font-light text-[#cdbca6] text-[14px] uppercase tracking-wider hover:text-white transition-colors whitespace-nowrap">Blog &amp; Nieuws</a>
+                <?php if ($menu_items) : ?>
+                    <?php foreach ($menu_items as $item) : ?>
+                        <a href="<?php echo esc_url($item->url); ?>" class="font-kurversbrug font-light text-[#cdbca6] text-[14px] uppercase tracking-wider hover:text-white transition-colors whitespace-nowrap">
+                            <?php echo esc_html($item->title); ?>
+                        </a>
+                    <?php endforeach; ?>
+                <?php else : ?>
+                    <!-- Fallback: Instructions for user -->
+                    <span class="text-[#cdbca6] text-[10px] uppercase opacity-50">Please assign a menu to "Primary Menu"</span>
+                <?php endif; ?>
             </div>
 
             <!-- Right: Action buttons -->
@@ -223,11 +240,12 @@
 
         <!-- Mobile dropdown menu -->
         <div id="mobile-menu">
-            <a href="#">De Distilleerderij</a>
-            <a href="#">Producten</a>
-            <a href="#">Beleef</a>
-            <a href="#">Kennis</a>
-            <a href="#">Webwinkel</a>
-            <a href="#">Blog &amp; Nieuws</a>
+            <?php if ($menu_items) : ?>
+                <?php foreach ($menu_items as $item) : ?>
+                    <a href="<?php echo esc_url($item->url); ?>">
+                        <?php echo esc_html($item->title); ?>
+                    </a>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </div>
     </nav>
