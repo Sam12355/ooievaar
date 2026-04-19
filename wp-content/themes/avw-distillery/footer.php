@@ -104,23 +104,25 @@
 
     <style>
     .avw-toast {
-        background: rgba(0, 0, 0, 0.85);
-        backdrop-filter: blur(8px);
-        border: 1px solid rgba(205, 188, 166, 0.2);
+        background: rgba(0, 0, 0, 0.9);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(205, 188, 166, 0.3);
         color: #cdbca6;
         padding: 16px 24px;
         border-radius: 16px;
         font-family: 'DM Sans', sans-serif;
         font-size: 14px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         transform: translateX(120%);
         transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         pointer-events: auto;
         display: flex;
         align-items: center;
         gap: 12px;
+        min-width: 250px;
     }
     .avw-toast.show { transform: translateX(0); }
+    .avw-toast.error { border-left: 4px solid #ef4444; }
     .avw-toast a { color: #fff; text-decoration: underline; font-weight: 600; }
     
     /* Hide WooCommerce default AJAX labels */
@@ -134,6 +136,33 @@
     </style>
 
     <script>
+    function showAvwToast(message, isError = false, link = '') {
+        const toastId = 'toast-' + Date.now();
+        const icon = isError 
+            ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>'
+            : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#cdbca6" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>';
+
+        let content = `<span>${message}</span>`;
+        if (link) {
+            content = `<span>${message} <a href="${link}">Bekijk</a></span>`;
+        }
+
+        const toastHtml = `
+            <div id="${toastId}" class="avw-toast ${isError ? 'error' : ''}">
+                ${icon}
+                ${content}
+            </div>
+        `;
+        
+        jQuery('#avw-toast-container').append(toastHtml);
+        setTimeout(() => { jQuery('#' + toastId).addClass('show'); }, 100);
+        
+        setTimeout(() => {
+            jQuery('#' + toastId).removeClass('show');
+            setTimeout(() => { jQuery('#' + toastId).remove(); }, 600);
+        }, 7000);
+    }
+
     jQuery(document).ready(function($) {
         // Show Spinner on click
         $(document.body).on('adding_to_cart', function(e, $btn, data) {
@@ -141,31 +170,13 @@
             $btn.find('.loading-spinner').removeClass('hidden').addClass('flex');
         });
 
-        // Show Toast on Success
+        // Show Toast on Success Add to Cart
         $(document.body).on('added_to_cart', function(e, fragments, cart_hash, $btn) {
-            // Restore button icon
-            $btn.find('.loading-spinner').addClass('hidden').removeClass('flex');
-            $btn.find('.cart-icon-wrapper').removeClass('hidden');
-
-            // Show Toast
-            const toastId = 'toast-' + Date.now();
-            const toastHtml = `
-                <div id="${toastId}" class="avw-toast">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#cdbca6" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-                    <span>Product toegevoegd! <a href="<?php echo wc_get_cart_url(); ?>">Bekijk mandje</a></span>
-                </div>
-            `;
-            
-            $('#avw-toast-container').append(toastHtml);
-            
-            // Slide in
-            setTimeout(() => { $('#' + toastId).addClass('show'); }, 100);
-            
-            // Remove after 7 seconds
-            setTimeout(() => {
-                $('#' + toastId).removeClass('show');
-                setTimeout(() => { $('#' + toastId).remove(); }, 600);
-            }, 7000);
+            if ($btn) {
+                $btn.find('.loading-spinner').addClass('hidden').removeClass('flex');
+                $btn.find('.cart-icon-wrapper').removeClass('hidden');
+            }
+            showAvwToast('Product toegevoegd aan mandje!', false, '<?php echo wc_get_cart_url(); ?>');
         });
 
         // Wishlist / Favorite Interaction
@@ -176,11 +187,10 @@
             const productId = $btn.data('product_id');
             const $badge = $('#fav-badge');
             
-            // 1. INSTANT FEEDBACK (Optimistic UI)
+            // 1. INSTANT FEEDBACK
             const isAdding = !$btn.hasClass('filled');
             let currentCount = parseInt($badge.text()) || 0;
 
-            // Animate Heart
             $svg.css('transform', 'scale(1.3)');
             setTimeout(() => { $svg.css('transform', 'scale(1)'); }, 200);
 
@@ -194,7 +204,6 @@
                 currentCount = Math.max(0, currentCount - 1);
             }
 
-            // Update Badge Instantly
             $badge.text(currentCount);
             if (currentCount > 0) {
                 $badge.removeClass('scale-0 opacity-0').addClass('scale-100 opacity-100');
@@ -212,7 +221,6 @@
                 },
                 success: function(response) {
                     if (response.success) {
-                        // Double check count with server reality
                         const serverCount = response.data.count;
                         $badge.text(serverCount);
                         if (serverCount > 0) {
@@ -221,10 +229,11 @@
                             $badge.addClass('scale-0 opacity-0').removeClass('scale-100 opacity-100');
                         }
                     } else {
-                        // Revert on serious failure
-                        alert('Er ging iets mis bij het opslaan van uw favoriet.');
-                        location.reload(); 
+                        showAvwToast('Oeps! Er ging iets mis bij het opslaan.', true);
                     }
+                },
+                error: function() {
+                    showAvwToast('Server fout. Probeer het later opnieuw.', true);
                 }
             });
         });

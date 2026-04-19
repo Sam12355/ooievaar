@@ -350,12 +350,13 @@ function avw_add_mobile_menu_link_class( $atts, $item, $args ) {
  */
 function avw_header_add_to_cart_fragment( $fragments ) {
     ob_start();
+    $cart_count = WC()->cart->get_cart_contents_count();
     ?>
-    <span class="header-cart-count font-bold text-[#133E23] text-[14px]">
-        (<?php echo WC()->cart->get_cart_contents_count(); ?>)
-    </span>
+    <div id="cart-badge" class="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-md transition-all <?php echo $cart_count > 0 ? 'scale-100 opacity-100' : 'scale-0 opacity-0'; ?>">
+        <?php echo $cart_count; ?>
+    </div>
     <?php
-    $fragments['span.header-cart-count'] = ob_get_clean();
+    $fragments['div#cart-badge'] = ob_get_clean();
     return $fragments;
 }
 add_filter( 'woocommerce_add_to_cart_fragments', 'avw_header_add_to_cart_fragment' );
