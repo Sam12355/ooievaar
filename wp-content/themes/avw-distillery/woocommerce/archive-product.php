@@ -425,8 +425,9 @@ defined( 'ABSPATH' ) || exit;
                                         </div>
                                     </a>
                                     <!-- Heart Icon (Favorieten) -->
-                                    <a href="#" class="bg-[#eedfcb] rounded-full w-10 h-10 flex items-center justify-center hover:opacity-90 transition-all shadow-sm wishlist-btn group/heart" data-product_id="<?php echo esc_attr( $product->get_id() ); ?>" title="Voeg toe aan favorieten">
-                                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" class="heart-svg transition-transform group-active/heart:scale-125">
+                                    <?php $is_fav = avw_is_favorited(get_the_ID()); ?>
+                                    <a href="#" class="bg-[#eedfcb] rounded-full w-10 h-10 flex items-center justify-center hover:opacity-90 transition-all shadow-sm wishlist-btn group/heart <?php echo $is_fav ? 'active filled' : ''; ?>" data-product_id="<?php echo esc_attr( $product->get_id() ); ?>" title="Voeg toe aan favorieten">
+                                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" class="heart-svg transition-transform group-active/heart:scale-125" style="<?php echo $is_fav ? 'fill:#36221d;' : ''; ?>">
                                             <path d="M9 15.75C9 15.75 1.6875 11.8125 1.6875 7.17188C1.6875 6.16488 2.08753 5.19913 2.79958 4.48708C3.51163 3.77503 4.47738 3.375 5.48438 3.375C7.07273 3.375 8.43328 4.24055 9 5.625C9.56672 4.24055 10.9273 3.375 12.5156 3.375C13.5226 3.375 14.4884 3.77503 15.2004 4.48708C15.9125 5.19913 16.3125 6.16488 16.3125 7.17188C16.3125 11.8125 9 15.75 9 15.75Z" stroke="black" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
                                         </svg>
                                     </a>

@@ -360,4 +360,60 @@ function avw_header_add_to_cart_fragment( $fragments ) {
 }
 add_filter( 'woocommerce_add_to_cart_fragments', 'avw_header_add_to_cart_fragment' );
 
+/**
+ * BOUTIQUE FAVORITES SYSTEM
+ */
+
+// Toggle Favorite via AJAX
+add_action('wp_ajax_avw_toggle_favorite', 'avw_toggle_favorite');
+add_action('wp_ajax_nopriv_avw_toggle_favorite', 'avw_toggle_favorite');
+
+function avw_toggle_favorite() {
+    $product_id = isset($_POST['product_id']) ? intval($_POST['product_id']) : 0;
+    if (!$product_id) wp_send_json_error('No ID');
+
+    $favorites = avw_get_favorites();
+    $key = array_search($product_id, $favorites);
+
+    if ($key !== false) {
+        unset($favorites[$key]);
+        $status = 'removed';
+    } else {
+        $favorites[] = $product_id;
+        $status = 'added';
+    }
+
+    $favorites = array_values(array_unique($favorites));
+
+    // Save to Cookie (for guests) - 30 days
+    setcookie('avw_favorites', json_encode($favorites), time() + (30 * 86400), COOKIEPATH, COOKIE_DOMAIN);
+
+    // Save to User Meta (if logged in)
+    if (is_user_logged_in()) {
+        update_user_meta(get_current_user_id(), 'avw_favorites', $favorites);
+    }
+
+    wp_send_json_success(array(
+        'status' => $status,
+        'count'  => count($favorites)
+    ));
+}
+
+// Get raw favorites array
+function avw_get_favorites() {
+    if (is_user_logged_in()) {
+        $favs = get_user_meta(get_current_user_id(), 'avw_favorites', true);
+        if (is_array($favs)) return $favs;
+    }
+
+    $cookie = isset($_COOKIE['avw_favorites']) ? stripslashes($_COOKIE['avw_favorites']) : '';
+    $favs = json_decode($cookie, true);
+    return is_array($favs) ? $favs : array();
+}
+
+// Helper to check if product is favorited
+function avw_is_favorited($product_id) {
+    return in_array($product_id, avw_get_favorites());
+}
+
 

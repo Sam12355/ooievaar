@@ -173,20 +173,45 @@
             e.preventDefault();
             const $btn = $(this);
             const $svg = $btn.find('svg');
+            const productId = $btn.data('product_id');
             
-            // Premium Pulse & Fill Animation
-            $btn.addClass('active');
-            $svg.css({
-                'fill': '#36221d',
-                'transform': 'scale(1.3)'
-            });
-            
-            setTimeout(() => {
-                $svg.css('transform', 'scale(1)');
-            }, 200);
+            // Premium Pulse Animation
+            $svg.css('transform', 'scale(1.3)');
+            setTimeout(() => { $svg.css('transform', 'scale(1)'); }, 200);
 
-            // Optional: You can link this to a Wishlist plugin AJAX later
-            console.log('Product added to favorites:', $btn.data('product_id'));
+            // AJAX Toggle
+            $.ajax({
+                url: '<?php echo admin_url('admin-ajax.php'); ?>',
+                type: 'POST',
+                data: {
+                    action: 'avw_toggle_favorite',
+                    product_id: productId
+                },
+                success: function(response) {
+                    if (response.success) {
+                        const count = response.data.count;
+                        const status = response.data.status;
+                        
+                        // Update Header Badge
+                        const $badge = $('#fav-badge');
+                        $badge.text(count);
+                        if (count > 0) {
+                            $badge.removeClass('scale-0 opacity-0').addClass('scale-100 opacity-100');
+                        } else {
+                            $badge.addClass('scale-0 opacity-0').removeClass('scale-100 opacity-100');
+                        }
+
+                        // Update Toggle UI (Fill/Empty)
+                        if (status === 'added') {
+                            $svg.css('fill', '#36221d');
+                            $btn.addClass('active filled');
+                        } else {
+                            $svg.css('fill', 'none');
+                            $btn.removeClass('active filled');
+                        }
+                    }
+                }
+            });
         });
     });
     </script>

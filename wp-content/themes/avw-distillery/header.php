@@ -235,10 +235,16 @@
             <!-- Right: Action buttons -->
             <div class="flex items-center gap-3 flex-shrink-0 ml-auto">
                 <!-- Wishlist (Heart) -->
-                <a href="#" class="bg-white rounded-full p-2.5 flex items-center justify-center hover:opacity-90 transition-all active:scale-95 shadow-sm">
+                <a href="#" class="bg-white rounded-full p-2.5 flex items-center justify-center hover:opacity-90 transition-all active:scale-95 shadow-sm relative group/fav">
                     <svg width="20" height="20" viewBox="0 0 18 18" fill="none">
                         <path d="M9 15.75C9 15.75 1.6875 11.8125 1.6875 7.17188C1.6875 6.16488 2.08753 5.19913 2.79958 4.48708C3.51163 3.77503 4.47738 3.375 5.48438 3.375C7.07273 3.375 8.43328 4.24055 9 5.625C9.56672 4.24055 10.9273 3.375 12.5156 3.375C13.5226 3.375 14.4884 3.77503 15.2004 4.48708C15.9125 5.19913 16.3125 6.16488 16.3125 7.17188C16.3125 11.8125 9 15.75 9 15.75Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
+                    <?php 
+                    $fav_count = count(avw_get_favorites());
+                    ?>
+                    <div id="fav-badge" class="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-md transition-all <?php echo $fav_count > 0 ? 'scale-100 opacity-100' : 'scale-0 opacity-0'; ?>">
+                        <?php echo $fav_count; ?>
+                    </div>
                 </a>
                 <!-- Cart -->
                 <a href="<?php echo wc_get_cart_url(); ?>" class="bg-white rounded-full px-4 py-2 flex items-center gap-2 hover:bg-gray-100 transition-all active:scale-95 shadow-sm">
