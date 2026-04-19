@@ -255,23 +255,6 @@ function avw_auto_create_menu() {
             )
         );
 
-        // Helper function for recursive menu creation
-        function avw_build_menu_recursive($items, $menu_id, $parent_id = 0) {
-            foreach ($items as $title => $data) {
-                $url = is_array($data) ? $data['url'] : $data;
-                $item_id = wp_update_nav_menu_item($menu_id, 0, array(
-                    'menu-item-title'     => $title,
-                    'menu-item-url'       => $url,
-                    'menu-item-status'    => 'publish',
-                    'menu-item-type'      => 'custom',
-                    'menu-item-parent-id' => $parent_id,
-                ));
-                if (is_array($data) && isset($data['children'])) {
-                    avw_build_menu_recursive($data['children'], $menu_id, $item_id);
-                }
-            }
-        }
-        
         avw_build_menu_recursive($full_structure, $menu_id);
 
         $locations = get_theme_mod('nav_menu_locations');
@@ -280,6 +263,27 @@ function avw_auto_create_menu() {
     }
 }
 add_action('init', 'avw_auto_create_menu');
+
+/**
+ * Helper function for recursive menu creation
+ */
+if (!function_exists('avw_build_menu_recursive')) {
+    function avw_build_menu_recursive($items, $menu_id, $parent_id = 0) {
+        foreach ($items as $title => $data) {
+            $url = is_array($data) ? $data['url'] : $data;
+            $item_id = wp_update_nav_menu_item($menu_id, 0, array(
+                'menu-item-title'     => $title,
+                'menu-item-url'       => $url,
+                'menu-item-status'    => 'publish',
+                'menu-item-type'      => 'custom',
+                'menu-item-parent-id' => $parent_id,
+            ));
+            if (is_array($data) && isset($data['children'])) {
+                avw_build_menu_recursive($data['children'], $menu_id, $item_id);
+            }
+        }
+    }
+}
 
 /**
  * Boutique Menu Styling: Inject Tailwind & Kurversbrug classes into native WP Menu links
