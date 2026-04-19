@@ -167,6 +167,27 @@
                 setTimeout(() => { $('#' + toastId).remove(); }, 600);
             }, 7000);
         });
+
+        // Wishlist / Favorite Interaction
+        $(document.body).on('click', '.wishlist-btn', function(e) {
+            e.preventDefault();
+            const $btn = $(this);
+            const $svg = $btn.find('svg');
+            
+            // Premium Pulse & Fill Animation
+            $btn.addClass('active');
+            $svg.css({
+                'fill': '#36221d',
+                'transform': 'scale(1.3)'
+            });
+            
+            setTimeout(() => {
+                $svg.css('transform', 'scale(1)');
+            }, 200);
+
+            // Optional: You can link this to a Wishlist plugin AJAX later
+            console.log('Product added to favorites:', $btn.data('product_id'));
+        });
     });
     </script>
     <?php wp_footer(); ?>
