@@ -167,10 +167,7 @@
 <body <?php body_class(); ?>>
 
     <nav class="bg-black shadow-[0px_4px_4px_0px_rgba(0,0,0,0.13)] sticky top-0 z-50">
-        <div class="max-w-[1440px] mx-auto px-4 py-3 flex items-center justify-between gap-4">
-            
-    <nav class="bg-black shadow-[0px_4px_4px_0px_rgba(0,0,0,0.13)] sticky top-0 z-50">
-        <div class="max-w-[1440px] mx-auto px-4 py-3 flex items-center justify-between gap-4">
+        <div class="max-w-[1440px] mx-auto px-4 py-4 flex items-center justify-between gap-4">
             
             <!-- Dynamic Nav Menu Logic (Hierarchy Aware) -->
             <?php
@@ -257,8 +254,6 @@
                             <?php endif; ?>
                         </div>
                     <?php endforeach; ?>
-                <?php else : ?>
-                    <span class="text-[#cdbca6] text-[10px] uppercase opacity-50 italic">Admin: Setup your menu in Appearance -> Menus</span>
                 <?php endif; ?>
             </div>
 
