@@ -293,14 +293,17 @@ if (!function_exists('avw_render_dropdown')) {
     function avw_render_dropdown($children, $level = 1) {
         $z_index = 100 + $level;
         $is_first_level = ($level === 1);
+        
+        // Use unique group names for each level to avoid recursive hover bleed
+        $group_name = 'lvl-' . $level;
         $panel_pos = $is_first_level ? 'top-full left-0 pt-4 translate-y-2' : 'left-full top-0 ml-4 translate-x-2';
-        $hover_pos = $is_first_level ? 'group-hover:translate-y-0' : 'group-hover/sub:translate-x-0';
+        $hover_trigger = $is_first_level ? 'group-hover:opacity-100 group-hover:visible group-hover:translate-y-0' : 'group-hover/' . $group_name . ':opacity-100 group-hover/' . $group_name . ':visible group-hover/' . $group_name . ':translate-x-0';
         ?>
-        <div class="dropdown-panel absolute <?php echo $panel_pos; ?> opacity-0 invisible <?php echo $hover_pos; ?> group-hover:opacity-100 group-hover:visible transition-all duration-300 z-[<?php echo $z_index; ?>]">
+        <div class="dropdown-panel absolute <?php echo $panel_pos; ?> opacity-0 invisible transition-all duration-300 z-[<?php echo $z_index; ?>] <?php echo $hover_trigger; ?>">
             <div class="bg-black border border-[#cdbca6]/10 rounded-xl shadow-2xl p-6 min-w-[240px]">
                 <div class="flex flex-col gap-4">
                     <?php foreach ($children as $child) : ?>
-                        <div class="relative group">
+                        <div class="relative group/<?php echo 'lvl-' . ($level + 1); ?>">
                             <a href="<?php echo esc_url($child->url); ?>" class="font-kurversbrug text-[#cdbca6]/80 text-[13px] uppercase tracking-wider hover:text-white flex items-center justify-between gap-4">
                                 <?php echo esc_html($child->title); ?>
                                 <?php if (!empty($child->children)) : ?>
