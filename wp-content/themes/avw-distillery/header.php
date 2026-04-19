@@ -234,12 +234,17 @@
 
             <!-- Right: Action buttons -->
             <div class="flex items-center gap-3 flex-shrink-0 ml-auto">
-                <!-- Heart -->
-                <button class="bg-[#cdbca6] rounded-full p-2.5 flex items-center justify-center hover:opacity-90 transition-all active:scale-95 shadow-sm">
-                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                        <path d="M9 15.75C9 15.75 1.6875 11.8125 1.6875 7.17188C1.6875 6.16488 2.08753 5.19913 2.79958 4.48708C3.51163 3.77503 4.47738 3.375 5.48438 3.375C7.07273 3.375 8.43328 4.24055 9 5.625C9.56672 4.24055 10.9273 3.375 12.5156 3.375C13.5226 3.375 14.4884 3.77503 15.2004 4.48708C15.9125 5.19913 16.3125 6.16488 16.3125 7.17188C16.3125 11.8125 9 15.75 9 15.75Z" stroke="#133E23" stroke-linecap="round" stroke-linejoin="round" />
+                <!-- Shopping Cart -->
+                <a href="<?php echo wc_get_cart_url(); ?>" class="bg-[#cdbca6] rounded-full px-3 py-2.5 flex items-center justify-center gap-2 hover:opacity-90 transition-all active:scale-95 shadow-sm group/cart">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#133E23" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
                     </svg>
-                </button>
+                    <span class="header-cart-count font-bold text-[#133E23] text-[14px]">
+                        (<?php echo WC()->cart->get_cart_contents_count(); ?>)
+                    </span>
+                </a>
                 <!-- User -->
                 <button class="bg-[#cdbca6] rounded-full p-2.5 flex items-center justify-center hover:opacity-90 transition-all active:scale-95 shadow-sm">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none">

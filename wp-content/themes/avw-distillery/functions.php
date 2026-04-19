@@ -345,4 +345,19 @@ function avw_add_mobile_menu_link_class( $atts, $item, $args ) {
 }
 // Note: We are using 'primary' for both for now, but filtered by the items_wrap in header.
 
+/**
+ * AJAX Cart Update: Update the header count when items are added to cart
+ */
+function avw_header_add_to_cart_fragment( $fragments ) {
+    ob_start();
+    ?>
+    <span class="header-cart-count font-bold text-[#133E23] text-[14px]">
+        (<?php echo WC()->cart->get_cart_contents_count(); ?>)
+    </span>
+    <?php
+    $fragments['span.header-cart-count'] = ob_get_clean();
+    return $fragments;
+}
+add_filter( 'woocommerce_add_to_cart_fragments', 'avw_header_add_to_cart_fragment' );
+
 
