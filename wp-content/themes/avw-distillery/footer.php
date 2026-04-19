@@ -99,6 +99,73 @@
             </div>
         </div>
     </footer>
+    <!-- Premium AJAX Cart Feedback & Toast System -->
+    <div id="avw-toast-container" class="fixed top-24 right-6 z-[1000] flex flex-col gap-4 pointer-events-none"></div>
+
+    <style>
+    .avw-toast {
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(205, 188, 166, 0.2);
+        color: #cdbca6;
+        padding: 16px 24px;
+        border-radius: 16px;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 14px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        transform: translateX(120%);
+        transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        pointer-events: auto;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    .avw-toast.show { transform: translateX(0); }
+    .avw-toast a { color: #fff; text-decoration: underline; font-weight: 600; }
+    
+    /* Spinner Animation */
+    @keyframes avw-spin {
+        to { transform: rotate(360deg); }
+    }
+    .animate-spin-fast { animation: avw-spin 0.6s linear infinite; }
+    </style>
+
+    <script>
+    jQuery(document).ready(function($) {
+        // Show Spinner on click
+        $(document.body).on('adding_to_cart', function(e, $btn, data) {
+            $btn.find('.cart-icon-wrapper').addClass('hidden');
+            $btn.find('.loading-spinner').removeClass('hidden').addClass('flex');
+        });
+
+        // Show Toast on Success
+        $(document.body).on('added_to_cart', function(e, fragments, cart_hash, $btn) {
+            // Restore button icon
+            $btn.find('.loading-spinner').addClass('hidden').removeClass('flex');
+            $btn.find('.cart-icon-wrapper').removeClass('hidden');
+
+            // Show Toast
+            const toastId = 'toast-' + Date.now();
+            const toastHtml = `
+                <div id="${toastId}" class="avw-toast">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#cdbca6" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                    <span>Product toegevoegd! <a href="<?php echo wc_get_cart_url(); ?>">Bekijk mandje</a></span>
+                </div>
+            `;
+            
+            $('#avw-toast-container').append(toastHtml);
+            
+            // Slide in
+            setTimeout(() => { $('#' + toastId).addClass('show'); }, 100);
+            
+            // Remove after 7 seconds
+            setTimeout(() => {
+                $('#' + toastId).removeClass('show');
+                setTimeout(() => { $('#' + toastId).remove(); }, 600);
+            }, 7000);
+        });
+    });
+    </script>
     <?php wp_footer(); ?>
 </body>
 
