@@ -377,9 +377,11 @@ function avw_toggle_favorite() {
 
     $favorites = avw_get_favorites();
     
-    // Ensure we have an array
+    // Ensure we have an array and strict integers
     if (!is_array($favorites)) {
         $favorites = array();
+    } else {
+        $favorites = array_map('intval', $favorites);
     }
 
     $key = array_search($product_id, $favorites);

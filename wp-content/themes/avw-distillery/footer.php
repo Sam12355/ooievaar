@@ -213,7 +213,7 @@
 
             // 2. SILENT BACKGROUND SAVE
             $.ajax({
-                url: ajaxurl || '<?php echo admin_url('admin-ajax.php', 'relative'); ?>',
+                url: '<?php echo admin_url('admin-ajax.php'); ?>',
                 type: 'POST',
                 data: {
                     action: 'avw_toggle_favorite',
