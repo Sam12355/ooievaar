@@ -422,6 +422,14 @@ function avw_get_favorites() {
     $favs = json_decode($cookie, true);
     return is_array($favs) ? $favs : array();
 }
+// Force Cart Title to change for verification
+add_filter('the_title', function($title, $id = null) {
+    if (is_cart() && in_the_loop()) {
+        return 'Winkelmand - updated so i ll check if it can be seen in ui';
+    }
+    return $title;
+}, 100, 2);
+
 // Helper to check if product is favorited
 function avw_is_favorited($product_id) {
     return in_array($product_id, avw_get_favorites());
