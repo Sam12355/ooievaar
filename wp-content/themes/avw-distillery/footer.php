@@ -189,6 +189,13 @@
             var formData = new FormData($form[0]);
             formData.append('action', 'avw_ajax_add_to_cart');
 
+            // CRITICAL FIX: FormData does NOT include the button that was clicked. 
+            // We must manually add the button's value (which is the product ID).
+            var productId = $btn.val();
+            if (productId) {
+                formData.append('add-to-cart', productId);
+            }
+
             // Handle variations
             if ($form.find('input[name="variation_id"]').val()) {
                 formData.append('variation_id', $form.find('input[name="variation_id"]').val());

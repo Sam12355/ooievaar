@@ -137,11 +137,11 @@ if ( post_password_required() ) {
                             </div>
                         </div>
                         <!-- Navigation Buttons (ULTRA VISIBLE & ICONIC) -->
-                        <div class="swiper-button-next !text-[#36221d] !w-8 !h-8 !right-2 sm:!right-4 z-20 flex items-center justify-center opacity-50 hover:opacity-100 transition-opacity">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        <div class="swiper-button-next !text-[#36221d] !w-10 !h-10 !-right-2 sm:!-right-6 z-20 flex items-center justify-center opacity-50 hover:opacity-100 transition-opacity">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
                         </div>
-                        <div class="swiper-button-prev !text-[#36221d] !w-8 !h-8 !left-2 sm:!left-4 z-20 flex items-center justify-center opacity-50 hover:opacity-100 transition-opacity">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                        <div class="swiper-button-prev !text-[#36221d] !w-10 !h-10 !-left-2 sm:!-left-6 z-20 flex items-center justify-center opacity-50 hover:opacity-100 transition-opacity">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
                         </div>
                     </div>
                 </div>
