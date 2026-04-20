@@ -19,7 +19,7 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 
 <style>
 /* ============================================================
-   BOUTIQUE CHECKOUT — Final Polished Design
+   BOUTIQUE CHECKOUT — Advanced Design System
    ============================================================ */
 
 .avw-checkout-container {
@@ -98,6 +98,7 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 .form-row input[type="text"],
 .form-row input[type="email"],
 .form-row input[type="tel"],
+.form-row input[type="number"],
 .form-row input[type="password"],
 .form-row textarea {
     padding: 15px 20px !important;
@@ -129,7 +130,6 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
     flex: 1 !important;
     margin-bottom: 0 !important;
 }
-/* Force them to be inline even if WC styles try to stack them */
 .avw-date-row .form-row-wide { width: auto !important; flex: 1 !important; }
 
 /* ---- SELECT2 CUSTOM STYLING (ALWAYS SEARCHABLE) ---- */
@@ -138,9 +138,11 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
     border: 1.5px solid rgba(19,62,35,0.12) !important;
     border-radius: 12px !important;
     background: #fdfdfd !important;
+    display: flex !important;
+    align-items: center !important;
 }
 .select2-container--default .select2-selection--single .select2-selection__rendered {
-    line-height: 52px !important;
+    line-height: normal !important;
     padding-left: 20px !important;
     color: #133E23 !important;
 }
@@ -151,19 +153,20 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 /* ---- RADIO BUTTON ALIGNMENT ---- */
 #payment ul.payment_methods li label {
     display: flex !important;
-    align-items: flex-start !important; /* Changed from center to top-aligned for long text */
+    align-items: flex-start !important;
     gap: 15px !important;
     padding: 20px !important;
     cursor: pointer !important;
 }
 
 #payment ul.payment_methods li input[type="radio"] {
-    margin-top: 4px !important; /* Nudge it down to align with first line of text */
+    margin-top: 4px !important;
+    width: 18px !important;
+    height: 18px !important;
 }
 
-/* Payment box (text details) */
 #payment div.payment_box {
-    margin: 0 20px 20px 55px !important; /* Align with label text */
+    margin: 0 20px 20px 55px !important;
     background: rgba(19,62,35,0.03) !important;
     padding: 15px !important;
     border-radius: 8px !important;
@@ -171,13 +174,8 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 }
 
 /* ---- RIGHT SECTION: ORDER SUMMARY WHITE BACKGROUND ---- */
-.avw-order-review-sidebar {
-    position: sticky;
-    top: 100px;
-}
-
 #order_review {
-    background: #fff !important; /* Pure white as requested */
+    background: #fff !important;
     border-radius: 20px !important;
     padding: 40px !important;
     border: 1px solid rgba(19,62,35,0.08) !important;
@@ -191,47 +189,11 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
     padding-bottom: 12px !important;
 }
 
-/* Order Table Styling */
-table.woocommerce-checkout-review-order-table {
-    width: 100% !important;
-}
+/* Order Table */
 table.woocommerce-checkout-review-order-table tr td,
 table.woocommerce-checkout-review-order-table tr th {
     padding: 15px 0 !important;
     border-bottom: 1px solid rgba(19,62,35,0.06) !important;
-    font-size: 14px !important;
-}
-
-table.woocommerce-checkout-review-order-table .product-name { color: #133E23 !important; font-weight: 500 !important; }
-table.woocommerce-checkout-review-order-table .product-total { text-align: right !important; font-weight: 700 !important; }
-
-/* Totals section */
-table.woocommerce-checkout-review-order-table tfoot th { text-transform: uppercase !important; letter-spacing: 0.1em !important; font-size: 12px !important; color: rgba(19,62,35,0.6) !important; }
-table.woocommerce-checkout-review-order-table tfoot td { text-align: right !important; font-weight: 700 !important; font-size: 16px !important; }
-
-table.woocommerce-checkout-review-order-table .order-total th { font-family: 'Kurversbrug', serif !important; font-size: 18px !important; color: #133E23 !important; border-top: 2px solid rgba(19,62,35,0.1) !important; }
-table.woocommerce-checkout-review-order-table .order-total td { font-size: 24px !important; font-weight: 800 !important; color: #133E23 !important; border-top: 2px solid rgba(19,62,35,0.1) !important; }
-
-/* Tax line */
-table.woocommerce-checkout-review-order-table .order-total small {
-    display: block !important;
-    font-size: 11px !important;
-    color: rgba(19,62,35,0.4) !important;
-    font-weight: 400 !important;
-    margin-top: 5px !important;
-}
-
-/* Place Order Button */
-#place_order {
-    background: #133E23 !important;
-    color: #cdbca6 !important;
-    border-radius: 999px !important;
-    padding: 20px !important;
-    font-family: 'Kurversbrug', serif !important;
-    font-size: 16px !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.2em !important;
-    margin-top: 30px !important;
 }
 </style>
 
@@ -289,47 +251,85 @@ table.woocommerce-checkout-review-order-table .order-total small {
 <script>
 jQuery(function($) {
 
-    // ── 1. GROUP DATE FIELDS (Day / Month / Year) INTO ONE LINE ──────────────────
-    function fixDateLayout() {
-        // Find fields ending in _day, _month, _year
-        var $day = $('[id$="_day_field"]');
-        var $month = $('[id$="_month_field"]');
-        var $year = $('[id$="_year_field"]');
+    // ── 1. TRANSFORM NUMBER INPUTS INTO SELECTS AND GROUP THEM ──────────────────
+    function transformAndGroupDates() {
+        var $dayInput   = $('#min_age_woo_dob_day');
+        var $monthInput = $('#min_age_woo_dob_month');
+        var $yearInput  = $('#min_age_woo_dob_year');
 
-        if ($day.length && $month.length && $year.length) {
-            if (!$day.parent('.avw-date-row').length) {
-                var $row = $('<div class="avw-date-row"></div>');
-                $day.before($row);
-                $row.append($day).append($month).append($year);
+        // Helper to convert input to select
+        function convertToSelect($input, start, end, placeholder) {
+            if (!$input.length || $input.is('select')) return $('#' + $input.attr('id') + '_select');
+            
+            var val = $input.val();
+            var id = $input.attr('id');
+            var $select = $('<select id="' + id + '_select" class="avw-transformed-date-select"></select>');
+            
+            $select.append('<option value="">' + placeholder + '</option>');
+            if (start < end) {
+                for (var i = start; i <= end; i++) {
+                    $select.append('<option value="' + i + '" ' + (val == i ? 'selected' : '') + '>' + i + '</option>');
+                }
+            } else {
+                for (var i = start; i >= end; i--) {
+                    $select.append('<option value="' + i + '" ' + (val == i ? 'selected' : '') + '>' + i + '</option>');
+                }
+            }
+
+            $input.hide().after($select);
+            
+            $select.on('change', function() {
+                $input.val($(this).val()).trigger('change');
+            });
+
+            return $select;
+        }
+
+        if ($dayInput.length) {
+            var $daySel = convertToSelect($dayInput, 1, 31, 'Day');
+            var $monthSel = convertToSelect($monthInput, 1, 12, 'Month');
+            var $yearSel = convertToSelect($yearInput, new Date().getFullYear(), 1900, 'Year');
+
+            // Group into Row
+            var $dayRow = $dayInput.closest('.form-row');
+            var $monthRow = $monthInput.closest('.form-row');
+            var $yearRow = $yearInput.closest('.form-row');
+
+            if ($dayRow.length && $monthRow.length && $yearRow.length) {
+                if (!$dayRow.parent('.avw-date-row').length) {
+                    var $row = $('<div class="avw-date-row"></div>');
+                    $dayRow.before($row);
+                    $row.append($dayRow).append($monthRow).append($yearRow);
+                    
+                    // Force the rows to be visible even if plugin tries to hide them
+                    $dayRow.show(); $monthRow.show(); $yearRow.show();
+                }
             }
         }
     }
 
-    // ── 2. INITIALIZE SELECT2 WITH SEARCH ENABLED FOR ALL ────────────────────────
+    // ── 2. INITIALIZE SELECT2 ON ALL (INCLUDING TRANSFORMED) ────────────────────
     function initPerfectSelect2() {
         if (typeof $.fn.select2 === 'undefined') return;
 
-        $('form.woocommerce-checkout select').each(function() {
+        // Target all selects, including our new ones
+        $('form.woocommerce-checkout select, .avw-transformed-date-select').each(function() {
             var $sel = $(this);
-            // Re-init if needed to ensure search is ALWAYS ON
-            if ($sel.data('select2')) {
-                $sel.select2('destroy');
-            }
+            if ($sel.data('select2')) $sel.select2('destroy');
             
             $sel.select2({
                 width: '100%',
-                minimumResultsForSearch: 0 // ALWAYS SHOW SEARCH
+                minimumResultsForSearch: 0 // FORCE SEARCH BOX
             });
         });
     }
 
-    // Run on load
-    fixDateLayout();
+    // Run
+    transformAndGroupDates();
     initPerfectSelect2();
 
-    // Re-run when WC triggers updates
     $(document.body).on('updated_checkout', function() {
-        fixDateLayout();
+        transformAndGroupDates();
         initPerfectSelect2();
     });
 
