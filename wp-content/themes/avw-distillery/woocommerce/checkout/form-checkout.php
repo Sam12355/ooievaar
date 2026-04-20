@@ -479,17 +479,21 @@ jQuery(function($) {
         }
     }
 
-    // ── 2. INITIALIZE SELECT2 ON ALL (INCLUDING TRANSFORMED) ────────────────────
+    // ── 2. INITIALIZE SELECT2 ON TRANSFORMED DATE SELECTS ONLY ────────────────
     function initPerfectSelect2() {
         if (typeof $.fn.select2 === 'undefined') return;
 
-        // Target all selects, including our new ones
+        // ONLY target our custom date selects — NOT payment_box selects (WC handles those)
+        // Also skip selects already initialized by WooCommerce (country, state, payment bank)
         $('form.woocommerce-checkout select, .avw-transformed-date-select').each(function() {
             var $sel = $(this);
-            
-            // If already initialized, skip
+
+            // SKIP selects inside .payment_box (iDEAL bank, etc.) — WC manages these
+            if ($sel.closest('.payment_box').length) return;
+
+            // SKIP if already initialized
             if ($sel.data('select2')) return;
-            
+
             $sel.select2({
                 width: '100%',
                 minimumResultsForSearch: 0 // FORCE SEARCH BOX
@@ -505,6 +509,26 @@ jQuery(function($) {
     $(document.body).on('updated_checkout', function() {
         transformAndGroupDates();
         initPerfectSelect2();
+    });
+
+    // ── 3. FIX SELECT2 SCROLL (stop wheel events bubbling to page) ──────────────
+    $(document).on('select2:open', function() {
+        // Small delay to ensure dropdown is in DOM
+        setTimeout(function() {
+            var $results = $('.select2-results__options:visible');
+            $results.off('wheel.avw').on('wheel.avw', function(e) {
+                var el = this;
+                var atTop    = el.scrollTop === 0 && e.originalEvent.deltaY < 0;
+                var atBottom = el.scrollTop + el.offsetHeight >= el.scrollHeight && e.originalEvent.deltaY > 0;
+                // Only prevent page scroll if the list itself can still scroll
+                if (!atTop && !atBottom) {
+                    e.stopPropagation();
+                } else {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+            });
+        }, 50);
     });
 
     // ── 3. Clear prefilled email ───────────────────────────────────────────────
