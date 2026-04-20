@@ -259,11 +259,16 @@ jQuery(function($) {
 
         // Helper to convert input to select
         function convertToSelect($input, start, end, placeholder) {
-            if (!$input.length || $input.is('select')) return $('#' + $input.attr('id') + '_select');
+            if (!$input.length) return;
+            
+            var id = $input.attr('id');
+            var selectId = id + '_select';
+            
+            // If the select already exists, don't create it again
+            if ($('#' + selectId).length) return $('#' + selectId);
             
             var val = $input.val();
-            var id = $input.attr('id');
-            var $select = $('<select id="' + id + '_select" class="avw-transformed-date-select"></select>');
+            var $select = $('<select id="' + selectId + '" class="avw-transformed-date-select"></select>');
             
             $select.append('<option value="">' + placeholder + '</option>');
             if (start < end) {
@@ -276,6 +281,7 @@ jQuery(function($) {
                 }
             }
 
+            // Hide original and add select
             $input.hide().after($select);
             
             $select.on('change', function() {
@@ -286,9 +292,9 @@ jQuery(function($) {
         }
 
         if ($dayInput.length) {
-            var $daySel = convertToSelect($dayInput, 1, 31, 'Day');
-            var $monthSel = convertToSelect($monthInput, 1, 12, 'Month');
-            var $yearSel = convertToSelect($yearInput, new Date().getFullYear(), 1900, 'Year');
+            convertToSelect($dayInput, 1, 31, 'Day');
+            convertToSelect($monthInput, 1, 12, 'Month');
+            convertToSelect($yearInput, new Date().getFullYear(), 1900, 'Year');
 
             // Group into Row
             var $dayRow = $dayInput.closest('.form-row');
@@ -300,10 +306,9 @@ jQuery(function($) {
                     var $row = $('<div class="avw-date-row"></div>');
                     $dayRow.before($row);
                     $row.append($dayRow).append($monthRow).append($yearRow);
-                    
-                    // Force the rows to be visible even if plugin tries to hide them
-                    $dayRow.show(); $monthRow.show(); $yearRow.show();
                 }
+                // Ensure they stay visible regardless of plugin toggle logic
+                $dayRow.show(); $monthRow.show(); $yearRow.show();
             }
         }
     }
@@ -315,7 +320,9 @@ jQuery(function($) {
         // Target all selects, including our new ones
         $('form.woocommerce-checkout select, .avw-transformed-date-select').each(function() {
             var $sel = $(this);
-            if ($sel.data('select2')) $sel.select2('destroy');
+            
+            // If already initialized, skip
+            if ($sel.data('select2')) return;
             
             $sel.select2({
                 width: '100%',
@@ -324,10 +331,11 @@ jQuery(function($) {
         });
     }
 
-    // Run
+    // Run on initial load
     transformAndGroupDates();
     initPerfectSelect2();
 
+    // Re-run when WC triggers updates (like changing shipping)
     $(document.body).on('updated_checkout', function() {
         transformAndGroupDates();
         initPerfectSelect2();
