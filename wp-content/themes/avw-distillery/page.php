@@ -216,7 +216,7 @@ get_header();
         <div class="avw-page-content">
             <?php 
             if ( is_page('business-registration') || is_page('zakelijke-registratie') || is_page('business-registration-en') ) {
-                include get_template_directory() . '/inc-business-registration.php';
+                include get_template_directory() . '/template-registration.php';
             } else {
                 the_content(); 
             }

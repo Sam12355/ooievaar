@@ -1,4 +1,8 @@
-﻿<?php
+<?php
+/**
+ * Template Name: Registration
+ */
+get_header(); ?>
 
 
 <style>
@@ -272,3 +276,4 @@
     </div>
 </div>
 
+<?php get_footer(); ?>
