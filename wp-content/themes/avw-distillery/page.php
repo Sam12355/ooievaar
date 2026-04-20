@@ -170,7 +170,8 @@ get_header();
     text-transform: uppercase;
     letter-spacing: 0.15em;
     font-weight: normal;
-    margin-bottom: 24px;
+    margin-bottom: 12px;
+    padding-bottom: 0 !important;
 }
 
 /* WooCommerce notices */
