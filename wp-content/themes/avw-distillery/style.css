@@ -1,4 +1,4 @@
-﻿/*
+/*
 Theme Name: A. van Wees Distillery
 Author: Antigravity
 Version: 1.0.0
@@ -49,6 +49,7 @@ Text Domain: avw-distillery
     display: flex !important;
     gap: 30px !important;
     width: 100% !important;
+    margin-top: 20px !important;
 }
 
 .woocommerce-account .woocommerce-Addresses .col-1,
