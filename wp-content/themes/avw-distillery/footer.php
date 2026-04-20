@@ -164,14 +164,70 @@
     }
 
     jQuery(document).ready(function($) {
-        // Show Spinner on click
+        // Show Spinner on click (Archives)
         $(document.body).on('adding_to_cart', function(e, $btn, data) {
             $btn.find('.cart-icon-wrapper').addClass('hidden');
             $btn.find('.loading-spinner').removeClass('hidden').addClass('flex');
         });
 
+        // single product AJAX add to cart
+        $(document).on('submit', 'form.cart', function(e) {
+            var $form = $(this);
+            
+            // If it's a single product page and not some other cart form
+            if (!$form.closest('.product').length) return; 
+
+            e.preventDefault();
+
+            var $btn = $form.find('.single_add_to_cart_button');
+            var originalHtml = $btn.html();
+
+            // Add spinner to the button if not already there
+            $btn.html('<span class="flex items-center justify-center gap-2"><svg class="animate-spin h-5 w-5 text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> <span>Laden...</span></span>');
+            $btn.addClass('opacity-75 pointer-events-none');
+
+            var formData = new FormData($form[0]);
+            formData.append('action', 'avw_ajax_add_to_cart');
+
+            // Handle variations
+            if ($form.find('input[name="variation_id"]').val()) {
+                formData.append('variation_id', $form.find('input[name="variation_id"]').val());
+            }
+
+            $.ajax({
+                url: '<?php echo admin_url('admin-ajax.php'); ?>',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    $btn.html(originalHtml);
+                    $btn.removeClass('opacity-75 pointer-events-none');
+
+                    if (response.error && response.product_url) {
+                        window.location.href = response.product_url;
+                        return;
+                    }
+
+                    $(document.body).trigger('added_to_cart', [response.fragments, response.cart_hash, $btn]);
+                },
+                error: function() {
+                    $btn.html(originalHtml);
+                    $btn.removeClass('opacity-75 pointer-events-none');
+                    showAvwToast('Fout bij toevoegen. Probeer opnieuw.', true);
+                }
+            });
+        });
+
         // Show Toast on Success Add to Cart
         $(document.body).on('added_to_cart', function(e, fragments, cart_hash, $btn) {
+            // Update fragments (badge etc)
+            if (fragments) {
+                $.each(fragments, function(key, value) {
+                    $(key).replaceWith(value);
+                });
+            }
+
             if ($btn) {
                 $btn.find('.loading-spinner').addClass('hidden').removeClass('flex');
                 $btn.find('.cart-icon-wrapper').removeClass('hidden');

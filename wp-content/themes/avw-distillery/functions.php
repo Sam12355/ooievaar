@@ -520,3 +520,47 @@ add_filter( 'woocommerce_my_account_my_address_edit_address_link_text', 'avw_edi
 function avw_edit_address_pencil_icon( $text, $load_address ) {
     return '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>';
 }
+
+/**
+ * AJAX Add to Cart for Single Product
+ */
+add_action('wp_ajax_avw_ajax_add_to_cart', 'avw_ajax_add_to_cart');
+add_action('wp_ajax_nopriv_avw_ajax_add_to_cart', 'avw_ajax_add_to_cart');
+
+function avw_ajax_add_to_cart() {
+    $product_id = isset($_POST['product_id']) ? absint($_POST['product_id']) : 0;
+    $quantity = isset($_POST['quantity']) ? absint($_POST['quantity']) : 1;
+    $variation_id = isset($_POST['variation_id']) ? absint($_POST['variation_id']) : 0;
+    $passed_validation = apply_filters('woocommerce_add_to_cart_validation', true, $product_id, $quantity);
+
+    if ($passed_validation && WC()->cart->add_to_cart($product_id, $quantity, $variation_id)) {
+        do_action('woocommerce_ajax_added_to_cart', $product_id);
+        if (get_option('woocommerce_cart_redirect_after_add') == 'yes') {
+            wc_add_to_cart_message(array($product_id => $quantity), true);
+        }
+        WC_AJAX::get_refreshed_fragments();
+    } else {
+        $data = array(
+            'error' => true,
+            'product_url' => get_permalink($product_id)
+        );
+        wp_send_json($data);
+    }
+    wp_die();
+}
+
+/**
+ * Add Cart Badge to AJAX Fragments
+ */
+add_filter('woocommerce_add_to_cart_fragments', 'avw_cart_badge_fragment');
+function avw_cart_badge_fragment($fragments) {
+    ob_start();
+    $count = WC()->cart->get_cart_contents_count();
+    ?>
+    <div id="cart-badge" class="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-md transition-all <?php echo $count > 0 ? 'scale-100 opacity-100' : 'scale-0 opacity-0'; ?>">
+        <?php echo $count; ?>
+    </div>
+    <?php
+    $fragments['#cart-badge'] = ob_get_clean();
+    return $fragments;
+}
