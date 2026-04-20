@@ -172,11 +172,15 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <style>
+/* FORM CART ALIGNMENT */
+.cart { display: flex !important; align-items: stretch !important; gap: 12px !important; }
+
 /* PREMIUM BUTTON STYLING */
 .single_add_to_cart_button {
     background-color: #36221d !important;
     color: #eedfcb !important;
-    padding: 18px 45px !important;
+    padding: 0 35px !important;
+    height: 54px !important; 
     border-radius: 12px !important;
     font-family: 'DM Sans', sans-serif !important;
     font-weight: 700 !important;
@@ -185,14 +189,18 @@ document.addEventListener('DOMContentLoaded', function() {
     transition: all 0.3s ease !important;
     border: none !important;
     cursor: pointer !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: auto !important;
 }
 .single_add_to_cart_button:hover { background-color: #000 !important; box-shadow: 0 8px 25px rgba(0,0,0,0.1) !important; transform: translateY(-1px); }
 
 /* QUANTITY BOX REDESIGN */
-.quantity { display: inline-flex !important; margin-right: 15px !important; }
+.quantity { display: inline-flex !important; margin: 0 !important; height: 54px !important; }
 .quantity .qty {
     width: 65px !important;
-    height: 60px !important;
+    height: 100% !important;
     border-radius: 12px !important;
     border: 2px solid #36221d !important;
     background: transparent !important;
