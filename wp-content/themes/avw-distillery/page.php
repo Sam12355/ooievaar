@@ -170,7 +170,7 @@ get_header();
     text-transform: uppercase;
     letter-spacing: 0.15em;
     font-weight: normal;
-    margin-bottom: 12px;
+    margin-bottom: 0 !important;
     padding-bottom: 0 !important;
 }
 
