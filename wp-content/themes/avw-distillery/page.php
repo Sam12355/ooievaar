@@ -214,7 +214,13 @@ get_header();
         <?php endif; ?>
 
         <div class="avw-page-content">
-            <?php the_content(); ?>
+            <?php 
+            if ( is_page('business-registration') || is_page('zakelijke-registratie') || is_page('business-registration-en') ) {
+                include get_template_directory() . '/inc-business-registration.php';
+            } else {
+                the_content(); 
+            }
+            ?>
         </div>
 
     <?php endwhile; ?>

@@ -1,17 +1,9 @@
-<?php
-/**
- * Template Name: Business Registration
- * 
- * Custom template for the Business Registration / Wholesale application page.
- * Boutique design matching the A. van Wees distillery brand.
- */
+﻿<?php
 
-get_header(); ?>
 
 <style>
 /* ============================================================
    BUSINESS REGISTRATION PAGE STYLES
-   ============================================================ */
 
 .avw-biz-reg {
     min-height: 80vh;
@@ -25,7 +17,6 @@ get_header(); ?>
     margin: 0 auto;
 }
 
-/* Header Section */
 .avw-biz-header {
     text-align: center;
     margin-bottom: 64px;
@@ -49,7 +40,6 @@ get_header(); ?>
     line-height: 1.7;
 }
 
-/* Information Cards Style for the Form */
 .avw-biz-form-wrap {
     background: #fff;
     border: 1px solid rgba(19,62,35,0.08);
@@ -91,7 +81,6 @@ get_header(); ?>
     font-weight: 700;
 }
 
-/* Grid Layout */
 .avw-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -154,7 +143,6 @@ get_header(); ?>
     resize: vertical;
 }
 
-/* Button */
 .avw-biz-submit-btn {
     display: block;
     width: 100%;
@@ -181,7 +169,6 @@ get_header(); ?>
     color: #fff;
 }
 
-/* Icons / Visual Touches */
 .avw-biz-footer-note {
     text-align: center;
     margin-top: 40px;
@@ -285,4 +272,3 @@ get_header(); ?>
     </div>
 </div>
 
-<?php get_footer(); ?>
