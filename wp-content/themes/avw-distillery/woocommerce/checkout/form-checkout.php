@@ -162,19 +162,37 @@ body.woocommerce-checkout {
     height: 50px !important;
 }
 
-/* ---- RADIO BUTTON ALIGNMENT ---- */
+/* ---- RADIO BUTTON & CHECKBOX ALIGNMENT ---- */
+.woocommerce-input-wrapper,
+.woocommerce-form__label-for-checkbox,
+label.checkbox,
+label.radio,
 #payment ul.payment_methods li label {
     display: flex !important;
-    align-items: flex-start !important;
-    gap: 15px !important;
+    align-items: center !important;
+    gap: 12px !important;
+    cursor: pointer !important;
+    line-height: 1.2 !important;
+}
+
+/* Specific for payment methods container */
+#payment ul.payment_methods li label {
     padding: 20px !important;
+}
+
+/* Ensure the radio/checkbox itself is sized correctly and has no distracting margins */
+input[type="radio"],
+input[type="checkbox"] {
+    margin: 0 !important;
+    flex-shrink: 0 !important;
+    width: 18px !important;
+    height: 18px !important;
     cursor: pointer !important;
 }
 
 #payment ul.payment_methods li input[type="radio"] {
-    margin-top: 4px !important;
-    width: 18px !important;
-    height: 18px !important;
+    /* Reset any previously added top margins */
+    margin-top: 0 !important;
 }
 
 #payment div.payment_box {
