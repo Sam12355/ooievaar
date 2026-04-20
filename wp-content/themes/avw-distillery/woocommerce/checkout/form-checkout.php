@@ -297,25 +297,27 @@ body.woocommerce-checkout {
     cursor: pointer !important;
 }
 
-/* For Payment Methods: input + label are siblings inside <li>, so the <li> must be the flex parent */
+/* For Payment Methods: CSS Grid ensures radio, label, and payment_box are precisely placed */
 #payment ul.payment_methods li {
-    display: flex !important;
-    flex-wrap: wrap !important;
+    display: grid !important;
+    grid-template-columns: 20px 1fr !important;
+    grid-template-rows: auto auto !important;
     align-items: center !important;
-    gap: 0 !important;
     padding: 0 !important;
+    gap: 0 !important;
 }
 #payment ul.payment_methods li > input[type="radio"] {
-    flex-shrink: 0 !important;
-    order: 0 !important;
+    grid-column: 1 !important;
+    grid-row: 1 !important;
     width: 18px !important;
     height: 18px !important;
     margin: 0 0 0 16px !important;
     cursor: pointer !important;
+    justify-self: center !important;
 }
 #payment ul.payment_methods li > label {
-    flex: 1 !important;
-    order: 1 !important;
+    grid-column: 2 !important;
+    grid-row: 1 !important;
     display: flex !important;
     align-items: center !important;
     padding: 18px 16px !important;
@@ -326,17 +328,21 @@ body.woocommerce-checkout {
     color: #133E23 !important;
     line-height: 1 !important;
 }
-/* Payment box spans full width on its own row */
-#payment ul.payment_methods li > .payment_box,
-#payment div.payment_box {
-    order: 2 !important;
-    width: 100% !important;
-    flex-basis: 100% !important;
+/* Payment box always on its own full-width row below radio+label */
+#payment ul.payment_methods li > .payment_box {
+    grid-column: 1 / -1 !important;
+    grid-row: 2 !important;
     margin: 0 16px 16px 16px !important;
     background: rgba(19,62,35,0.04) !important;
     padding: 14px !important;
     border-radius: 8px !important;
     font-size: 13px !important;
+    color: rgba(19,62,35,0.7) !important;
+}
+
+/* Hide Mollie's text-only payment_box (no actual bank selector — bank chosen on redirect page) */
+.payment_box.payment_method_mollie_wc_gateway_ideal:not(:has(select)):not(:has(input)) {
+    display: none !important;
 }
 
 /* ---- RIGHT SECTION: ORDER SUMMARY WHITE BACKGROUND ---- */
