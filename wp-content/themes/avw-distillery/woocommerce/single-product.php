@@ -17,7 +17,7 @@ get_header( 'shop' ); ?>
 ?>
 
 <!-- PRODUCT HERO (PARALLAX) -->
-<section class="relative bg-[#36221d] pt-32 pb-20 sm:pt-40 sm:pb-24 px-4 sm:px-6 overflow-hidden">
+<section class="relative bg-[#36221d] pt-24 pb-10 sm:pt-28 sm:pb-14 px-4 sm:px-6 overflow-hidden">
     <!-- Background Image with Parallax & Huge Scale buffer -->
     <div class="absolute inset-0 z-0">
         <img id="product-hero-img" src="<?php echo get_template_directory_uri(); ?>/assets/assortment-hero-v2.png" alt="A. van Wees Distilleerderij" class="w-full h-[120%] object-cover opacity-60 scale-125" style="object-position: center 30%; transform-origin: center center;" />
