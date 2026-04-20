@@ -40,6 +40,98 @@ body.woocommerce-checkout {
     border-spacing: 0 !important;
 }
 
+/* ---- TOAST NOTIFICATION SYSTEM ---- */
+#avw-toast-container {
+    position: fixed;
+    top: 90px;
+    right: 24px;
+    z-index: 99999;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    pointer-events: none;
+    max-width: 380px;
+    width: calc(100vw - 48px);
+}
+
+.avw-toast {
+    background: #fff;
+    border-radius: 16px;
+    padding: 18px 20px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.15);
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    pointer-events: all;
+    border-left: 4px solid #dc2626;
+    transform: translateX(120%);
+    opacity: 0;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+}
+
+.avw-toast.avw-toast--show {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.avw-toast.avw-toast--success {
+    border-left-color: #133E23;
+}
+
+.avw-toast__icon {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #fef2f2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+}
+.avw-toast--success .avw-toast__icon {
+    background: rgba(19,62,35,0.08);
+}
+
+.avw-toast__body {
+    flex: 1;
+}
+
+.avw-toast__title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.avw-toast__msg {
+    font-size: 13px;
+    color: rgba(0,0,0,0.6);
+    line-height: 1.5;
+}
+
+.avw-toast__close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    color: rgba(0,0,0,0.3);
+    flex-shrink: 0;
+    line-height: 1;
+    font-size: 18px;
+    margin-top: -2px;
+    transition: color 0.2s;
+}
+.avw-toast__close:hover { color: #000; }
+
+/* Hide original WC error notices inline */
+.woocommerce-checkout .woocommerce-error,
+.woocommerce-checkout .woocommerce-notices-wrapper .woocommerce-error {
+    display: none !important;
+}
+
 /* Page Header */
 .avw-checkout-header {
     margin-bottom: 64px;
@@ -417,6 +509,104 @@ jQuery(function($) {
 
     // ── 3. Clear prefilled email ───────────────────────────────────────────────
     $('#billing_email').val('');
+
+    // ── 4. TOAST NOTIFICATION SYSTEM ─────────────────────────────────────────────
+
+    // Create the toast container once
+    if (!$('#avw-toast-container').length) {
+        $('body').append('<div id="avw-toast-container"></div>');
+    }
+
+    function showToast(message, type) {
+        type = type || 'error';
+        var isError = type === 'error';
+
+        var iconSvg = isError
+            ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>'
+            : '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#133E23" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+
+        var $toast = $(
+            '<div class="avw-toast ' + (isError ? '' : 'avw-toast--success') + '">' +
+                '<div class="avw-toast__icon">' + iconSvg + '</div>' +
+                '<div class="avw-toast__body">' +
+                    '<div class="avw-toast__title">' + (isError ? 'Let op' : 'Gelukt') + '</div>' +
+                    '<div class="avw-toast__msg">' + message + '</div>' +
+                '</div>' +
+                '<button class="avw-toast__close" aria-label="Sluiten">&times;</button>' +
+            '</div>'
+        );
+
+        $('#avw-toast-container').append($toast);
+
+        // Animate in
+        setTimeout(function() { $toast.addClass('avw-toast--show'); }, 20);
+
+        // Auto dismiss after 6 seconds
+        var timer = setTimeout(function() { dismissToast($toast); }, 6000);
+
+        $toast.find('.avw-toast__close').on('click', function() {
+            clearTimeout(timer);
+            dismissToast($toast);
+        });
+    }
+
+    function dismissToast($toast) {
+        $toast.removeClass('avw-toast--show');
+        setTimeout(function() { $toast.remove(); }, 400);
+    }
+
+    function checkAndToastErrors() {
+        var shown = [];
+        // Collect all WC error li items
+        $('.woocommerce-error li, ul.woocommerce-error').each(function() {
+            var $el = $(this);
+            var msg = $el.is('li') ? $el.text().trim() : '';
+            if ($el.is('ul')) {
+                // If it's the ul itself with no li children, get its text
+                msg = $el.children('li').map(function(){ return $(this).text().trim(); }).get().join(' ');
+            }
+            if (msg && shown.indexOf(msg) === -1) {
+                shown.push(msg);
+                showToast(msg, 'error');
+            }
+        });
+
+        // Also check WC notices wrapper
+        $('.woocommerce-notices-wrapper').each(function() {
+            $(this).find('.woocommerce-error li').each(function() {
+                var msg = $(this).text().trim();
+                if (msg && shown.indexOf(msg) === -1) {
+                    shown.push(msg);
+                    showToast(msg, 'error');
+                }
+            });
+        });
+    }
+
+    // Check on page load (for server-rendered errors)
+    checkAndToastErrors();
+
+    // Also intercept AJAX-triggered WC notices
+    $(document.body).on('checkout_error wc_checkout_failed_loading_notice', function() {
+        setTimeout(checkAndToastErrors, 200);
+    });
+
+    // Watch for dynamically added WC error elements
+    if (typeof MutationObserver !== 'undefined') {
+        var observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(m) {
+                if (m.addedNodes.length) {
+                    $(m.addedNodes).each(function() {
+                        var $node = $(this);
+                        if ($node.hasClass('woocommerce-error') || $node.find('.woocommerce-error').length) {
+                            setTimeout(checkAndToastErrors, 100);
+                        }
+                    });
+                }
+            });
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
+    }
 
 });
 </script>
