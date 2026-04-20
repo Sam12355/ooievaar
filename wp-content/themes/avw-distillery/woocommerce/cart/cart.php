@@ -516,7 +516,7 @@ do_action( 'woocommerce_before_cart' );
         </div>
 
         <!-- RIGHT: Order Summary Panel -->
-        <div class="avw-totals-sidebar">
+        <div class="avw-totals-sidebar" id="avw-cart-totals-sidebar">
             <h2 class="avw-totals-sidebar-title"><?php esc_html_e( 'Order Summary', 'woocommerce' ); ?></h2>
 
             <!-- Subtotal -->
@@ -611,7 +611,6 @@ do_action( 'woocommerce_before_cart' );
 jQuery(function($) {
 
     // 1. Enable "Update cart" button immediately when any qty changes.
-    //    WC's wc-cart.js does this too but loads deferred — this is a safety net.
     $(document.body).on('change input', '.woocommerce-cart-form input.qty', function() {
         $('[name="update_cart"]')
             .prop('disabled', false)
@@ -619,25 +618,45 @@ jQuery(function($) {
             .css({'opacity': '1', 'cursor': 'pointer'});
     });
 
-    // 2. On "Update cart" click: show loading state, then let the native
-    //    form POST happen (WooCommerce processes it server-side and redirects back).
-    $(document.body).on('click', '[name="update_cart"]', function() {
+    // 2. AJAX Cart Update — Real-time update without reload
+    $(document.body).on('click', 'button[name="update_cart"]', function(e) {
+        e.preventDefault();
+        
         var $btn = $(this);
-        if ($btn.prop('disabled')) return false;
-        $btn.html('&bull; &bull; &bull;').addClass('loading');
-        // Native form submit continues — no preventDefault()
+        var $form = $btn.closest('form');
+        
+        $btn.html('Updating...').prop('disabled', true);
+        $('.avw-cart-page').css('opacity', '0.5');
+
+        $.ajax({
+            type: 'POST',
+            url: wc_cart_params.wc_ajax_url.replace('%%endpoint%%', 'update_order_review'),
+            data: $form.serialize() + '&action=update_shipping_method', 
+            success: function(response) {
+                // Refresh the fragments (sidebar and badge)
+                if (response && response.fragments) {
+                    $.each(response.fragments, function(key, value) {
+                        $(key).replaceWith(value);
+                    });
+                }
+                
+                // Reload only the cart content area to show new quantity values/prices
+                $('.avw-cart-page').load(window.location.href + ' .avw-cart-page > *', function() {
+                    $('.avw-cart-page').css('opacity', '1');
+                    // Ensure the badge is absolutely fresh
+                    $(document.body).trigger('wc_fragment_refresh');
+                    $(document.body).trigger('updated_wc_div');
+                });
+            },
+            error: function() {
+                // If AJAX fails for any reason, do a clean reload
+                window.location.reload();
+            }
+        });
     });
 
-    // 3. After a page reload caused by form submit, WooCommerce triggers
-    //    wc_fragment_refresh on load. Our fragment hook updates div#cart-badge.
-    //    Manually trigger it to be sure:
-    if (typeof wc_cart_params !== 'undefined') {
-        $(document.body).trigger('wc_fragment_refresh');
-    }
-
-    // 4. When the remove (×) link is clicked, WC handles it via its own
-    //    AJAX and fires removed_from_cart. Our fragment hook updates the badge.
-    $(document.body).on('removed_from_cart', function(e, fragments) {
+    // 3. Keep Badge in sync after any WC fragment update (like remove item)
+    $(document.body).on('wc_fragments_refreshed removed_from_cart updated_wc_div', function(e, fragments) {
         if (fragments) {
             $.each(fragments, function(key, value) {
                 try { $(key).replaceWith(value); } catch(err) {}

@@ -348,7 +348,11 @@ function avw_add_mobile_menu_link_class( $atts, $item, $args ) {
 /**
  * AJAX Cart Update: Update the header count when items are added to cart
  */
-function avw_header_add_to_cart_fragment( $fragments ) {
+/**
+ * AJAX Cart Update: Update the header count and sidebar totals
+ */
+function avw_cart_fragments( $fragments ) {
+    // 1. Cart Badge Count
     ob_start();
     $cart_count = (isset(WC()->cart) && WC()->cart) ? WC()->cart->get_cart_contents_count() : 0;
     ?>
@@ -357,9 +361,85 @@ function avw_header_add_to_cart_fragment( $fragments ) {
     </div>
     <?php
     $fragments['div#cart-badge'] = ob_get_clean();
+
+    // 2. Totals Sidebar Panel (This is crucial for real-time updates)
+    if ( is_cart() ) {
+        ob_start();
+        ?>
+        <div class="avw-totals-sidebar" id="avw-cart-totals-sidebar">
+            <h2 class="avw-totals-sidebar-title"><?php esc_html_e( 'Order Summary', 'woocommerce' ); ?></h2>
+
+            <div class="avw-totals-row">
+                <span class="avw-totals-label"><?php esc_html_e( 'Subtotal', 'woocommerce' ); ?></span>
+                <span class="avw-totals-value"><?php wc_cart_totals_subtotal_html(); ?></span>
+            </div>
+
+            <?php foreach ( WC()->cart->get_coupons() as $code => $coupon ) : ?>
+                <div class="avw-totals-row coupon-<?php echo esc_attr( sanitize_title( $code ) ); ?>">
+                    <span class="avw-totals-label"><?php wc_cart_totals_coupon_label( $coupon ); ?></span>
+                    <span class="avw-totals-value"><?php wc_cart_totals_coupon_html( $coupon ); ?></span>
+                </div>
+            <?php endforeach; ?>
+
+            <?php if ( WC()->cart->needs_shipping() && WC()->cart->show_shipping() ) : ?>
+                <div class="avw-totals-row" style="flex-direction: column; align-items: flex-start; gap: 10px;">
+                    <span class="avw-totals-label"><?php esc_html_e( 'Shipping', 'woocommerce' ); ?></span>
+                    <div style="width:100%; font-size:12px; color: rgba(19,62,35,0.55);">
+                        <?php woocommerce_shipping_calculator(); ?>
+                    </div>
+                </div>
+            <?php endif; ?>
+
+            <?php foreach ( WC()->cart->get_fees() as $fee ) : ?>
+                <div class="avw-totals-row">
+                    <span class="avw-totals-label"><?php echo esc_html( $fee->name ); ?></span>
+                    <span class="avw-totals-value"><?php wc_cart_totals_fee_html( $fee ); ?></span>
+                </div>
+            <?php endforeach; ?>
+
+            <?php do_action( 'woocommerce_cart_totals_before_order_total' ); ?>
+
+            <div class="avw-totals-total-row">
+                <span class="avw-totals-total-label"><?php esc_html_e( 'Total', 'woocommerce' ); ?></span>
+                <div style="text-align: right;">
+                    <?php $total_price = wc_price( WC()->cart->get_total( 'edit' ) ); ?>
+                    <div class="avw-totals-total-amount"><?php echo $total_price; ?></div>
+                    <?php if ( wc_tax_enabled() && WC()->cart->display_prices_including_tax() ) :
+                        $tax_totals = WC()->cart->get_tax_totals();
+                        if ( ! empty( $tax_totals ) ) : ?>
+                        <div class="avw-totals-tax-note">
+                            <?php if ( 'itemized' === get_option( 'woocommerce_tax_display_cart' ) ) :
+                                foreach ( $tax_totals as $code => $tax ) :
+                                    echo esc_html( $tax->label ) . ': ' . wp_kses_post( $tax->formatted_amount ) . '<br>';
+                                endforeach;
+                            else :
+                                $tax_total_amount = wc_price( array_sum( wp_list_pluck( $tax_totals, 'amount' ) ) );
+                                printf( esc_html__( 'incl. %1$s %2$s', 'woocommerce' ), WC()->countries->tax_or_vat(), $tax_total_amount );
+                            endif; ?>
+                        </div>
+                    <?php endif; endif; ?>
+                </div>
+            </div>
+
+            <?php do_action( 'woocommerce_cart_totals_after_order_total' ); ?>
+
+            <a href="<?php echo esc_url( wc_get_checkout_url() ); ?>" class="avw-checkout-btn wc-forward checkout-button">
+                <?php esc_html_e( 'Proceed to checkout', 'woocommerce' ); ?>
+            </a>
+
+            <div class="avw-trust-badge">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                <span><?php esc_html_e( 'Secure checkout', 'woocommerce' ); ?></span>
+            </div>
+        </div>
+        <?php
+        $fragments['#avw-cart-totals-sidebar'] = ob_get_clean();
+    }
+
     return $fragments;
 }
-add_filter( 'woocommerce_add_to_cart_fragments', 'avw_header_add_to_cart_fragment' );
+add_filter( 'woocommerce_add_to_cart_fragments', 'avw_cart_fragments' );
+add_filter( 'woocommerce_update_order_review_fragments', 'avw_cart_fragments' );
 
 /**
  * BOUTIQUE FAVORITES SYSTEM
