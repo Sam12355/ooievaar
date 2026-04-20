@@ -454,10 +454,11 @@ label.checkbox input[type="checkbox"]:checked::after,
 }
 
 #order_review {
-    background: rgba(19,62,35,0.03);
+    background: #fff;
     border-radius: 20px;
-    padding: 32px;
-    border: 1px solid rgba(19,62,35,0.08);
+    padding: 36px 32px;
+    border: 1px solid rgba(19,62,35,0.07);
+    box-shadow: 0 4px 40px rgba(0,0,0,0.06);
 }
 
 /* "Your Order" heading */
@@ -470,9 +471,31 @@ label.checkbox input[type="checkbox"]:checked::after,
     color: #133E23;
     font-weight: normal;
     text-align: center;
-    margin-bottom: 24px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid rgba(19,62,35,0.1);
+    margin-bottom: 28px;
+    padding-bottom: 18px;
+    border-bottom: 2px solid rgba(19,62,35,0.08);
+}
+
+/* ---------- Date fields inline (Day / Month / Year) ---------- */
+/* Target date field rows — make them sit side-by-side in a 3-col row */
+#billing_birth_date_day_field,
+#billing_birth_date_month_field,
+#billing_birth_date_year_field,
+[id$="_day_field"],
+[id$="_month_field"],
+[id$="_year_field"] {
+    min-width: 0;
+}
+/* Force the billing wrapper area that contains date selects into a 3-col row */
+.avw-date-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    grid-column: span 2;
+    margin-bottom: 18px;
+}
+.avw-date-row .form-row {
+    margin-bottom: 0 !important;
 }
 
 /* Order Review Table */
@@ -884,3 +907,94 @@ ul#shipping_method li label {
     <?php do_action( 'woocommerce_after_checkout_form', $checkout ); ?>
 
 </div>
+
+<script>
+jQuery(function($) {
+
+    // ── 1. Group Date Fields (Day/Month/Year) into a single inline row ──────────
+    function groupDateFields() {
+        // Look for any three consecutive form-rows whose IDs end in _day, _month, _year
+        var patterns = [
+            ['[id$="_day_field"]', '[id$="_month_field"]', '[id$="_year_field"]'],
+            ['[id*="birth"][id$="_dd_field"]', '[id*="birth"][id$="_mm_field"]', '[id*="birth"][id$="_yyyy_field"]']
+        ];
+
+        patterns.forEach(function(group) {
+            var $day   = $(group[0]);
+            var $month = $(group[1]);
+            var $year  = $(group[2]);
+
+            if ($day.length && $month.length && $year.length) {
+                // Only wrap once
+                if ($day.parent('.avw-date-row').length) return;
+
+                var $wrapper = $('<div class="avw-date-row"></div>');
+                $day.before($wrapper);
+                $wrapper.append($day).append($month).append($year);
+            }
+        });
+
+        // Also handle adjacent form-rows that contain selects for day/month/year
+        // by checking select options for numeric day values (1-31)
+        $('.woocommerce-billing-fields__field-wrapper .form-row select, .woocommerce-shipping-fields__field-wrapper .form-row select').each(function() {
+            var $sel = $(this);
+            var $row = $sel.closest('.form-row');
+            if ($row.parent('.avw-date-row').length) return;
+
+            var opts = $sel.find('option').map(function(){ return $(this).val(); }).get();
+            var isDayField   = opts.includes('1')  && opts.includes('31') && opts.length <= 33;
+            var isMonthField = opts.includes('1')  && opts.includes('12') && opts.length <= 14;
+            var isYearField  = opts.length > 50 && !isNaN(parseInt(opts[1])) && parseInt(opts[1]) > 1900;
+
+            if (isDayField || isMonthField || isYearField) {
+                $row.addClass('avw-date-candidate');
+            }
+        });
+
+        // Group consecutive date candidates
+        var $candidates = $('.avw-date-candidate');
+        if ($candidates.length >= 2) {
+            var $parent = $candidates.first().parent();
+            var $wrapper = $('<div class="avw-date-row"></div>');
+            $candidates.first().before($wrapper);
+            $candidates.each(function() {
+                $wrapper.append($(this));
+            });
+        }
+    }
+
+    groupDateFields();
+
+    // ── 2. Force Select2 on ALL select fields in checkout form ──────────────────
+    function initSelect2OnAll() {
+        if (typeof $.fn.select2 === 'undefined') return;
+
+        $('form.woocommerce-checkout select').each(function() {
+            var $sel = $(this);
+            // Skip if already select2, skip hidden inputs
+            if ($sel.hasClass('select2-hidden-accessible')) return;
+            if ($sel.attr('id') === 'billing_country' || $sel.attr('id') === 'shipping_country') return; // WC handles these
+            if ($sel.attr('id') === 'billing_state'   || $sel.attr('id') === 'shipping_state')   return;
+
+            // Check if it's a date-type field
+            var opts   = $sel.find('option').map(function(){ return $(this).val(); }).get();
+            var isDate = opts.length <= 34 || (opts.length <= 14 && opts.includes('12'));
+
+            $sel.select2({
+                minimumResultsForSearch: isDate ? Infinity : 5, // no search for small lists like day/month
+                width: '100%',
+                placeholder: $sel.find('option:first').text() || ''
+            });
+        });
+    }
+
+    initSelect2OnAll();
+
+    // Re-run when WC updates checkout (e.g. shipping change)
+    $(document.body).on('updated_checkout', function() {
+        groupDateFields();
+        initSelect2OnAll();
+    });
+
+});
+</script>
