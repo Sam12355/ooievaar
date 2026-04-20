@@ -629,23 +629,28 @@ jQuery(function($) {
         $btn.html('Updating...').prop('disabled', true);
         $cartPage.css('opacity', '0.5');
 
-        // We POST to the current URL so WC processes the standard form update
         $.ajax({
             type: 'POST',
             url: window.location.href,
             data: $form.serialize() + '&update_cart=1', 
             success: function(response) {
-                // Use a temporary div to parse the response
                 var $temp = $('<div>').append($.parseHTML(response));
-                var $newContent = $temp.find('.avw-cart-page');
                 
+                // Update Cart Page Content
+                var $newContent = $temp.find('.avw-cart-page');
                 if ($newContent.length) {
                     $cartPage.html($newContent.html());
                 }
                 
+                // Update Cart Badge in Header (Manual extraction from response)
+                var $newBadge = $temp.find('#cart-badge');
+                if ($newBadge.length) {
+                    $('#cart-badge').replaceWith($newBadge);
+                }
+                
                 $cartPage.css('opacity', '1');
                 
-                // Refresh fragments (badge, etc.)
+                // Trigger standard WC refresh just in case other things need it
                 $(document.body).trigger('wc_fragment_refresh');
                 $(document.body).trigger('updated_wc_div');
             },
