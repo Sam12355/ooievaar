@@ -618,44 +618,44 @@ jQuery(function($) {
             .css({'opacity': '1', 'cursor': 'pointer'});
     });
 
-    // 2. AJAX Cart Update — Real-time update without reload
+    // 2. AJAX Cart Update — Reliable save and refresh
     $(document.body).on('click', 'button[name="update_cart"]', function(e) {
         e.preventDefault();
         
         var $btn = $(this);
         var $form = $btn.closest('form');
+        var $cartPage = $('.avw-cart-page');
         
         $btn.html('Updating...').prop('disabled', true);
-        $('.avw-cart-page').css('opacity', '0.5');
+        $cartPage.css('opacity', '0.5');
 
+        // We POST to the current URL so WC processes the standard form update
         $.ajax({
             type: 'POST',
-            url: wc_cart_params.wc_ajax_url.replace('%%endpoint%%', 'update_order_review'),
-            data: $form.serialize() + '&action=update_shipping_method', 
+            url: window.location.href,
+            data: $form.serialize() + '&update_cart=1', 
             success: function(response) {
-                // Refresh the fragments (sidebar and badge)
-                if (response && response.fragments) {
-                    $.each(response.fragments, function(key, value) {
-                        $(key).replaceWith(value);
-                    });
+                // Use a temporary div to parse the response
+                var $temp = $('<div>').append($.parseHTML(response));
+                var $newContent = $temp.find('.avw-cart-page');
+                
+                if ($newContent.length) {
+                    $cartPage.html($newContent.html());
                 }
                 
-                // Reload only the cart content area to show new quantity values/prices
-                $('.avw-cart-page').load(window.location.href + ' .avw-cart-page > *', function() {
-                    $('.avw-cart-page').css('opacity', '1');
-                    // Ensure the badge is absolutely fresh
-                    $(document.body).trigger('wc_fragment_refresh');
-                    $(document.body).trigger('updated_wc_div');
-                });
+                $cartPage.css('opacity', '1');
+                
+                // Refresh fragments (badge, etc.)
+                $(document.body).trigger('wc_fragment_refresh');
+                $(document.body).trigger('updated_wc_div');
             },
             error: function() {
-                // If AJAX fails for any reason, do a clean reload
                 window.location.reload();
             }
         });
     });
 
-    // 3. Keep Badge in sync after any WC fragment update (like remove item)
+    // 3. Keep everything in sync after fragments update
     $(document.body).on('wc_fragments_refreshed removed_from_cart updated_wc_div', function(e, fragments) {
         if (fragments) {
             $.each(fragments, function(key, value) {
