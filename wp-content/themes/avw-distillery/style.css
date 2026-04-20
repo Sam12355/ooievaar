@@ -1,4 +1,4 @@
-/*
+﻿/*
 Theme Name: A. van Wees Distillery
 Theme URI: https://distilleerderijdeooievaar.nl/
 Author: Antigravity
@@ -7,7 +7,7 @@ Version: 1.0.0
 Text Domain: avw-distillery
 */
 
-/* WooCommerce Custom Sidebar Styles */
+/* --- WOOCOMMERCE CUSTOM SIDEBAR STYLES --- */
 .woo-custom-sidebar .widget-title, .woo-custom-sidebar h2.widgettitle {
     font-family: 'Kurversbrug', serif;
     font-size: 26px;
@@ -26,6 +26,7 @@ Text Domain: avw-distillery
     outline: none;
     transition: border-color 0.3s;
 }
+
 .woo-custom-sidebar input[type="search"]:focus, .woo-custom-sidebar input.search-field:focus {
     border-color: #36221d;
 }
@@ -35,17 +36,20 @@ Text Domain: avw-distillery
     padding: 0;
     margin: 0;
 }
+
 .woo-custom-sidebar ul.product-categories li {
     margin-bottom: 12px;
     font-family: 'DM Sans', sans-serif;
     color: #36221d;
     font-size: 16px;
 }
+
 .woo-custom-sidebar ul.product-categories li a {
     text-decoration: none;
     color: inherit;
     transition: opacity 0.2s;
 }
+
 .woo-custom-sidebar ul.product-categories li a:hover {
     opacity: 0.7;
     text-decoration: underline;
@@ -59,11 +63,13 @@ Text Domain: avw-distillery
     margin-bottom: 20px;
     position: relative;
 }
+
 .woo-custom-sidebar .price_slider_wrapper .ui-slider-range {
     background: #36221d;
     height: 100%;
     position: absolute;
 }
+
 .woo-custom-sidebar .price_slider_wrapper .ui-slider-handle {
     background: #36221d;
     width: 16px;
@@ -74,6 +80,7 @@ Text Domain: avw-distillery
     cursor: grab;
     margin-left: -8px;
 }
+
 .woo-custom-sidebar .price_slider_amount {
     display: flex;
     justify-content: space-between;
@@ -81,6 +88,7 @@ Text Domain: avw-distillery
     font-family: 'DM Sans', sans-serif;
     font-size: 14px;
 }
+
 .woo-custom-sidebar .price_slider_amount .button {
     background: #36221d;
     color: white;
@@ -91,6 +99,7 @@ Text Domain: avw-distillery
     font-family: 'DM Sans', sans-serif;
     transition: opacity 0.3s;
 }
+
 .woo-custom-sidebar .price_slider_amount .button:hover {
     opacity: 0.9;
 }
@@ -104,6 +113,7 @@ Text Domain: avw-distillery
     margin: 0;
     justify-content: center;
 }
+
 .woo-pagination ul li a, .woo-pagination ul li span {
     display: block;
     padding: 10px 16px;
@@ -114,65 +124,111 @@ Text Domain: avw-distillery
     font-weight: 500;
     transition: opacity 0.2s;
 }
+
 .woo-pagination ul li span.current {
     background: #36221d;
     color: white;
 }
+
 .woo-pagination ul li a:hover {
     opacity: 0.8;
 }
 
 /* ============================================================
+   CART PAGE LAYOUT
+   ============================================================ */
+@media (max-width: 768px) {
+    .woocommerce-cart table.shop_table {
+        display: block !important;
+        border: none !important;
+    }
+    .woocommerce-cart table.shop_table thead {
+        display: none !important;
+    }
+    .woocommerce-cart table.shop_table tbody {
+        display: block !important;
+    }
+    .woocommerce-cart table.shop_table tr {
+        display: block !important;
         background: white !important;
         border-radius: 20px !important;
-        margin-bottom: 16px !important;
-        padding: 16px !important;
+        margin-bottom: 20px !important;
+        padding: 24px !important;
         box-shadow: 0 4px 20px rgba(0,0,0,0.06) !important;
-        border: none !important;
+        border: 1px solid rgba(19,62,35,0.05) !important;
     }
     .woocommerce-cart table.shop_table td {
         display: flex !important;
         justify-content: space-between !important;
         align-items: center !important;
-        padding: 10px 8px !important;
+        padding: 12px 0 !important;
         border-bottom: 1px solid rgba(0,0,0,0.04) !important;
+        text-align: right !important;
+    }
+    .woocommerce-cart table.shop_table td:last-child {
+        border-bottom: none !important;
     }
     .woocommerce-cart table.shop_table td:before {
         content: attr(data-title);
-        font-weight: 700; font-size: 11px;
-        text-transform: uppercase; letter-spacing: 0.1em;
-        color: #133E23; opacity: 0.5;
+        font-weight: 700;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: #133E23;
+        opacity: 0.5;
+        text-align: left !important;
+        margin-right: 20px;
     }
-    .woocommerce-cart table.shop_table td.product-remove { justify-content: flex-end !important; border-bottom: none !important; }
-    .woocommerce-cart table.shop_table td.product-thumbnail { justify-content: center !important; }
-    .woocommerce-cart table.shop_table td.product-thumbnail:before { display: none !important; }
-    .cart-collaterals { max-width: 100% !important; }
-    .cart-collaterals .cart_totals { padding: 28px !important; }
-    .woocommerce-cart-form .actions { flex-direction: column !important; }
+    .woocommerce-cart table.shop_table td.product-remove {
+        justify-content: flex-end !important;
+        border-bottom: none !important;
+    }
+    .woocommerce-cart table.shop_table td.product-thumbnail {
+        justify-content: center !important;
+        padding-bottom: 20px !important;
+    }
+    .woocommerce-cart table.shop_table td.product-thumbnail:before {
+        display: none !important;
+    }
+    .cart-collaterals {
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+    .cart-collaterals .cart_totals {
+        width: 100% !important;
+        padding: 32px !important;
+    }
+    .woocommerce-cart-form .actions {
+        flex-direction: column !important;
+        gap: 15px !important;
+    }
 }
 
 /* ============================================================
-   MY ACCOUNT � GLOBAL SIDEBAR + CONTENT LAYOUT
-   Applies to all my-account sub-pages (orders, addresses, etc.)
+   MY ACCOUNT — GLOBAL SIDEBAR + CONTENT LAYOUT
    ============================================================ */
-
 .woocommerce-account .woocommerce {
     display: flex !important;
     align-items: flex-start !important;
-    gap: 28px !important;
+    gap: 32px !important;
+    width: 100% !important;
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+    padding: 40px 24px !important;
+    box-sizing: border-box !important;
 }
 
 .woocommerce-account .woocommerce-MyAccount-navigation {
     flex-shrink: 0 !important;
-    width: 220px !important;
+    width: 260px !important;
     background: #fff !important;
-    border-radius: 16px !important;
-    border: 1px solid rgba(19,62,35,0.07) !important;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.04) !important;
-    padding: 16px 0 !important;
-    overflow: hidden !important;
+    border-radius: 20px !important;
+    border: 1px solid rgba(19,62,35,0.08) !important;
+    box-shadow: 0 4px 30px rgba(0,0,0,0.03) !important;
+    padding: 24px 0 !important;
     position: sticky !important;
     top: 100px !important;
+    float: none !important;
 }
 
 .woocommerce-account .woocommerce-MyAccount-navigation ul {
@@ -184,32 +240,31 @@ Text Domain: avw-distillery
 .woocommerce-account .woocommerce-MyAccount-navigation ul li {
     margin: 0 !important;
     padding: 0 !important;
-    border: none !important;
     float: none !important;
-    width: auto !important;
+    width: 100% !important;
+    border: none !important;
 }
 
 .woocommerce-account .woocommerce-MyAccount-navigation ul li a {
     display: block !important;
-    padding: 13px 20px !important;
-    font-size: 13px !important;
+    padding: 16px 28px !important;
+    font-size: 14px !important;
     font-weight: 600 !important;
-    color: rgba(19,62,35,0.55) !important;
+    color: rgba(19,62,35,0.5) !important;
     text-decoration: none !important;
-    letter-spacing: 0.03em !important;
-    transition: all 0.15s !important;
-    border-left: 3px solid transparent !important;
+    transition: all 0.2s !important;
+    border-left: 4px solid transparent !important;
 }
 
 .woocommerce-account .woocommerce-MyAccount-navigation ul li a:hover {
     color: #133E23 !important;
-    background: rgba(19,62,35,0.04) !important;
+    background: rgba(19,62,35,0.03) !important;
     border-left-color: rgba(19,62,35,0.2) !important;
 }
 
 .woocommerce-account .woocommerce-MyAccount-navigation ul li.is-active a {
     color: #133E23 !important;
-    background: rgba(19,62,35,0.06) !important;
+    background: rgba(19,62,35,0.05) !important;
     border-left-color: #133E23 !important;
     font-weight: 700 !important;
 }
@@ -217,41 +272,51 @@ Text Domain: avw-distillery
 .woocommerce-account .woocommerce-MyAccount-content {
     flex: 1 !important;
     min-width: 0 !important;
-}
-
-/* Reset WooCommerce floated layout */
-.woocommerce-account .woocommerce-MyAccount-navigation,
-.woocommerce-account .woocommerce-MyAccount-content {
     float: none !important;
 }
 
 /* ---- Addresses page ---- */
-.woocommerce-account .woocommerce-MyAccount-content .woocommerce-Addresses {
+.woocommerce-account .woocommerce-MyAccount-content .woocommerce-Addresses,
+.woocommerce-account .woocommerce-MyAccount-content .addresses {
     display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
-    gap: 24px !important;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
+    gap: 30px !important;
+    margin-top: 24px !important;
+}
+
+.woocommerce-account .woocommerce-Addresses .col-1,
+.woocommerce-account .woocommerce-Addresses .col-2,
+.woocommerce-account .addresses .u-column1,
+.woocommerce-account .addresses .u-column2 {
+    width: 100% !important;
+    max-width: 100% !important;
+    float: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 .woocommerce-account .woocommerce-Address {
     background: #fff !important;
-    border-radius: 16px !important;
+    border-radius: 20px !important;
     border: 1px solid rgba(19,62,35,0.08) !important;
-    padding: 28px !important;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.04) !important;
+    padding: 32px !important;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.03) !important;
+    display: flex !important;
+    flex-direction: column !important;
 }
 
 .woocommerce-account .woocommerce-Address-title {
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
-    margin-bottom: 16px !important;
-    padding-bottom: 14px !important;
-    border-bottom: 1.5px solid rgba(19,62,35,0.07) !important;
+    margin-bottom: 20px !important;
+    padding-bottom: 16px !important;
+    border-bottom: 1px solid rgba(19,62,35,0.08) !important;
 }
 
 .woocommerce-account .woocommerce-Address-title h3 {
     font-family: 'Kurversbrug', serif !important;
-    font-size: 15px !important;
+    font-size: 18px !important;
     letter-spacing: 0.1em !important;
     text-transform: uppercase !important;
     color: #133E23 !important;
@@ -264,39 +329,34 @@ Text Domain: avw-distillery
     font-weight: 700 !important;
     text-transform: uppercase !important;
     letter-spacing: 0.1em !important;
-    color: rgba(19,62,35,0.4) !important;
+    color: #133E23 !important;
     text-decoration: none !important;
-    padding: 6px 14px !important;
-    border: 1.5px solid rgba(19,62,35,0.12) !important;
+    padding: 8px 18px !important;
+    border: 1.5px solid rgba(19,62,35,0.15) !important;
     border-radius: 999px !important;
     transition: all 0.2s !important;
 }
 
 .woocommerce-account .woocommerce-Address-title .edit:hover {
-    color: #133E23 !important;
+    background: #133E23 !important;
+    color: #cdbca6 !important;
     border-color: #133E23 !important;
-    background: rgba(19,62,35,0.04) !important;
+    text-decoration: none !important;
 }
 
 .woocommerce-account .woocommerce-Address address {
-    font-size: 14px !important;
-    line-height: 1.8 !important;
-    color: rgba(19,62,35,0.65) !important;
+    font-size: 15px !important;
+    line-height: 1.9 !important;
+    color: rgba(19,62,35,0.7) !important;
     font-style: normal !important;
+    margin-bottom: 0 !important;
 }
 
-/* No address set message */
-.woocommerce-account .woocommerce-Address p {
-    font-size: 14px !important;
-    color: rgba(19,62,35,0.4) !important;
-    font-style: italic !important;
-}
-
-/* ---- My Account content general card ---- */
+/* ---- Generic Content Styles ---- */
 .woocommerce-account .woocommerce-MyAccount-content > h2,
 .woocommerce-account .woocommerce-MyAccount-content > h3 {
     font-family: 'Kurversbrug', serif !important;
-    font-size: 20px !important;
+    font-size: 24px !important;
     letter-spacing: 0.12em !important;
     text-transform: uppercase !important;
     color: #133E23 !important;
@@ -306,11 +366,49 @@ Text Domain: avw-distillery
     border-bottom: 1.5px solid rgba(19,62,35,0.08) !important;
 }
 
-/* Responsive */
-@media (max-width: 880px) {
+/* Form fields within My Account */
+.woocommerce-account .form-row label {
+    font-weight: 700 !important;
+    font-size: 12px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.08em !important;
+    color: rgba(19,62,35,0.6) !important;
+    margin-bottom: 8px !important;
+    display: block !important;
+}
+
+.woocommerce-account .form-row input.input-text,
+.woocommerce-account .form-row select,
+.woocommerce-account .form-row textarea {
+    padding: 14px 18px !important;
+    border: 1.5px solid rgba(19,62,35,0.1) !important;
+    border-radius: 12px !important;
+    width: 100% !important;
+    font-family: 'DM Sans', sans-serif !important;
+    transition: border-color 0.2s !important;
+}
+
+.woocommerce-account .form-row input.input-text:focus {
+    border-color: #133E23 !important;
+    outline: none !important;
+}
+
+/* Button scaling */
+.woocommerce-account .button {
+    font-family: 'Kurversbrug', serif !important;
+    letter-spacing: 0.15em !important;
+    text-transform: uppercase !important;
+    padding: 16px 32px !important;
+    border-radius: 9999px !important;
+    transition: all 0.3s !important;
+}
+
+/* Responsiveness */
+@media (max-width: 900px) {
     .woocommerce-account .woocommerce {
         flex-direction: column !important;
-        gap: 20px !important;
+        gap: 40px !important;
+        padding: 40px 20px !important;
     }
     .woocommerce-account .woocommerce-MyAccount-navigation {
         width: 100% !important;
@@ -319,16 +417,21 @@ Text Domain: avw-distillery
     .woocommerce-account .woocommerce-MyAccount-navigation ul {
         display: flex !important;
         flex-wrap: wrap !important;
+        justify-content: center !important;
+    }
+    .woocommerce-account .woocommerce-MyAccount-navigation ul li {
+        width: auto !important;
     }
     .woocommerce-account .woocommerce-MyAccount-navigation ul li a {
         border-left: none !important;
         border-bottom: 3px solid transparent !important;
-        padding: 10px 14px !important;
+        padding: 12px 18px !important;
     }
     .woocommerce-account .woocommerce-MyAccount-navigation ul li.is-active a {
         border-bottom-color: #133E23 !important;
     }
-    .woocommerce-account .woocommerce-Addresses {
+    .woocommerce-account .woocommerce-Addresses,
+    .woocommerce-account .addresses {
         grid-template-columns: 1fr !important;
     }
 }
