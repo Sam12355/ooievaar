@@ -345,6 +345,16 @@ body.woocommerce-checkout {
     display: none !important;
 }
 
+/* ---- SUPPRESS blockUI OVERLAY ON PAYMENT SECTION ---- */
+#payment .blockOverlay,
+.woocommerce-checkout-payment .blockOverlay,
+.woocommerce-checkout #payment .blockUI.blockOverlay {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
 /* ---- RIGHT SECTION: ORDER SUMMARY WHITE BACKGROUND ---- */
 #order_review {
     background: #fff !important;
