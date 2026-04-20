@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * PURGE CACHE ON EVERY LOAD (TEMPORARY)
+ */
+if ( class_exists( 'LiteSpeed\Purge' ) ) {
+    \LiteSpeed\Purge::purge_all();
+}
+
 function avw_distillery_scripts() {
     // Enqueue Main Style with dynamic version to kill cache
     wp_enqueue_style('avw-style', get_stylesheet_uri(), array(), time());
