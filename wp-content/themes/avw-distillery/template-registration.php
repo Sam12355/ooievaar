@@ -8,7 +8,7 @@ get_header(); ?>
 <style>
 /* ============================================================
    BUSINESS REGISTRATION PAGE STYLES
-
+   ============================================================ */
 .avw-biz-reg {
     min-height: 80vh;
     padding: 80px 24px 120px;
