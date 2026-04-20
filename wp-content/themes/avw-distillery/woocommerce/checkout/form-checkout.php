@@ -95,9 +95,14 @@ body.woocommerce-checkout {
 /* ---- FORM FIELDS REFINEMENT ---- */
 .form-row {
     margin-bottom: 24px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
 }
 
-.form-row label {
+/* Outer field description label — full width, stacked on top */
+.form-row > label:first-child,
+.form-row > label.avw-outer-label {
     font-size: 12px !important;
     font-weight: 700 !important;
     text-transform: uppercase !important;
@@ -105,6 +110,21 @@ body.woocommerce-checkout {
     color: #133E23 !important;
     margin-bottom: 8px !important;
     display: block !important;
+    width: 100% !important;
+}
+
+/* Radio/Checkbox labels INSIDE woocommerce-input-wrapper must NOT be block */
+.woocommerce-input-wrapper label,
+.form-row label.radio,
+.form-row label.checkbox {
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+    color: #133E23 !important;
+    margin-bottom: 0 !important;
+    display: inline !important;
+    cursor: pointer !important;
 }
 
 .form-row input[type="text"],
