@@ -14,88 +14,8 @@ $current_user = wp_get_current_user();
 
 <style>
 /* ============================================================
-   BOUTIQUE MY ACCOUNT — GLOBAL LAYOUT (sidebar + content)
-   ============================================================ */
-
-.woocommerce-account .woocommerce {
-    display: flex !important;
-    align-items: flex-start !important;
-    gap: 28px !important;
-}
-
-/* Sidebar navigation */
-.woocommerce-account .woocommerce-MyAccount-navigation {
-    flex-shrink: 0 !important;
-    width: 220px !important;
-    background: #fff !important;
-    border-radius: 16px !important;
-    border: 1px solid rgba(19,62,35,0.07) !important;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.04) !important;
-    padding: 16px 0 !important;
-    overflow: hidden !important;
-}
-
-.woocommerce-account .woocommerce-MyAccount-navigation ul {
-    list-style: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
-}
-
-.woocommerce-account .woocommerce-MyAccount-navigation ul li {
-    margin: 0 !important;
-    padding: 0 !important;
-    border: none !important;
-}
-
-.woocommerce-account .woocommerce-MyAccount-navigation ul li a {
-    display: flex !important;
-    align-items: center !important;
-    gap: 10px !important;
-    padding: 13px 20px !important;
-    font-size: 13px !important;
-    font-weight: 600 !important;
-    color: rgba(19,62,35,0.6) !important;
-    text-decoration: none !important;
-    letter-spacing: 0.03em !important;
-    transition: all 0.15s !important;
-    border-left: 3px solid transparent !important;
-}
-
-.woocommerce-account .woocommerce-MyAccount-navigation ul li a:hover {
-    color: #133E23 !important;
-    background: rgba(19,62,35,0.04) !important;
-    border-left-color: rgba(19,62,35,0.2) !important;
-}
-
-.woocommerce-account .woocommerce-MyAccount-navigation ul li.is-active a,
-.woocommerce-account .woocommerce-MyAccount-navigation ul li.woocommerce-MyAccount-navigation-link--dashboard.is-active a {
-    color: #133E23 !important;
-    background: rgba(19,62,35,0.06) !important;
-    border-left-color: #133E23 !important;
-    font-weight: 700 !important;
-}
-
-/* Content area */
-.woocommerce-account .woocommerce-MyAccount-content {
-    flex: 1 !important;
-    min-width: 0 !important;
-}
-
-/* Responsive: stack on mobile */
-@media (max-width: 768px) {
-    .woocommerce-account .woocommerce {
-        flex-direction: column !important;
-        gap: 20px !important;
-    }
-    .woocommerce-account .woocommerce-MyAccount-navigation {
-        width: 100% !important;
-    }
-}
-
-/* ============================================================
    BOUTIQUE MY ACCOUNT DASHBOARD
    ============================================================ */
-
 
 .avw-dashboard {
     font-family: 'DM Sans', sans-serif;
