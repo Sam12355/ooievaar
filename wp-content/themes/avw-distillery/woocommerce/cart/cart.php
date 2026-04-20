@@ -205,26 +205,8 @@ do_action( 'woocommerce_before_cart' );
 }
 .avw-coupon-wrap button:hover { background: #0a2415; }
 
-/* Update cart button */
-.avw-update-cart-btn {
-    padding: 9px 22px;
-    border: 1.5px solid rgba(19,62,35,0.3);
-    border-radius: 9999px;
-    background: transparent;
-    color: #133E23;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    cursor: pointer;
-    transition: all 0.25s;
-}
-.avw-update-cart-btn:hover {
-    background: #133E23;
-    color: #fff;
-    border-color: #133E23;
-}
+/* Update cart button — Hidden as updates are automatic */
+.avw-update-cart-btn { display: none !important; }
 
 /* ---- Totals Panel — white, attached to the left column ---- */
 .avw-totals-sidebar {
@@ -610,57 +592,50 @@ do_action( 'woocommerce_before_cart' );
 <script>
 jQuery(function($) {
 
-    // 1. Enable "Update cart" button immediately when any qty changes.
-    $(document.body).on('change input', '.woocommerce-cart-form input.qty', function() {
-        $('[name="update_cart"]')
-            .prop('disabled', false)
-            .removeClass('disabled')
-            .css({'opacity': '1', 'cursor': 'pointer'});
-    });
+    var updateTimer;
 
-    // 2. AJAX Cart Update — Reliable save and refresh
-    $(document.body).on('click', 'button[name="update_cart"]', function(e) {
-        e.preventDefault();
-        
-        var $btn = $(this);
-        var $form = $btn.closest('form');
+    // 1. Debounced Auto-Update on Quantity Change
+    $(document.body).on('change input', '.woocommerce-cart-form input.qty', function() {
+        var $form = $(this).closest('form');
         var $cartPage = $('.avw-cart-page');
         
-        $btn.html('Updating...').prop('disabled', true);
-        $cartPage.css('opacity', '0.5');
+        clearTimeout(updateTimer);
+        
+        updateTimer = setTimeout(function() {
+            $cartPage.css('opacity', '0.5');
 
-        $.ajax({
-            type: 'POST',
-            url: window.location.href,
-            data: $form.serialize() + '&update_cart=1', 
-            success: function(response) {
-                var $temp = $('<div>').append($.parseHTML(response));
-                
-                // Update Cart Page Content
-                var $newContent = $temp.find('.avw-cart-page');
-                if ($newContent.length) {
-                    $cartPage.html($newContent.html());
+            $.ajax({
+                type: 'POST',
+                url: window.location.href,
+                data: $form.serialize() + '&update_cart=1', 
+                success: function(response) {
+                    var $temp = $('<div>').append($.parseHTML(response));
+                    
+                    // Update Cart Page Content
+                    var $newContent = $temp.find('.avw-cart-page');
+                    if ($newContent.length) {
+                        $cartPage.html($newContent.html());
+                    }
+                    
+                    // Update Cart Badge in Header
+                    var $newBadge = $temp.find('#cart-badge');
+                    if ($newBadge.length) {
+                        $('#cart-badge').replaceWith($newBadge);
+                    }
+                    
+                    $cartPage.css('opacity', '1');
+                    
+                    $(document.body).trigger('wc_fragment_refresh');
+                    $(document.body).trigger('updated_wc_div');
+                },
+                error: function() {
+                    window.location.reload();
                 }
-                
-                // Update Cart Badge in Header (Manual extraction from response)
-                var $newBadge = $temp.find('#cart-badge');
-                if ($newBadge.length) {
-                    $('#cart-badge').replaceWith($newBadge);
-                }
-                
-                $cartPage.css('opacity', '1');
-                
-                // Trigger standard WC refresh just in case other things need it
-                $(document.body).trigger('wc_fragment_refresh');
-                $(document.body).trigger('updated_wc_div');
-            },
-            error: function() {
-                window.location.reload();
-            }
-        });
+            });
+        }, 600); // 600ms debounce
     });
 
-    // 3. Keep everything in sync after fragments update
+    // 2. Keep everything in sync after fragments update (item removal etc)
     $(document.body).on('wc_fragments_refreshed removed_from_cart updated_wc_div', function(e, fragments) {
         if (fragments) {
             $.each(fragments, function(key, value) {
