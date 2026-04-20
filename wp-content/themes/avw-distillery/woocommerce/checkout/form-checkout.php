@@ -163,42 +163,66 @@ body.woocommerce-checkout {
 }
 
 /* ---- RADIO BUTTON & CHECKBOX ALIGNMENT ---- */
-.woocommerce-input-wrapper,
-.woocommerce-form__label-for-checkbox,
-label.checkbox,
-label.radio,
-#payment ul.payment_methods li label {
+
+/* For VAT / shipping options: input + label are inside .woocommerce-input-wrapper */
+.woocommerce-input-wrapper {
     display: flex !important;
     align-items: center !important;
-    gap: 12px !important;
-    cursor: pointer !important;
-    line-height: 1.2 !important;
+    gap: 10px !important;
+    line-height: 1 !important;
 }
-
-/* Specific for payment methods container */
-#payment ul.payment_methods li label {
-    padding: 20px !important;
-}
-
-/* Ensure the radio/checkbox itself is sized correctly and has no distracting margins */
-input[type="radio"],
-input[type="checkbox"] {
-    margin: 0 !important;
+.woocommerce-input-wrapper input[type="radio"],
+.woocommerce-input-wrapper input[type="checkbox"] {
     flex-shrink: 0 !important;
+    width: 16px !important;
+    height: 16px !important;
+    margin: 0 !important;
+    vertical-align: middle !important;
+}
+.woocommerce-input-wrapper label {
+    margin: 0 !important;
+    line-height: 1.3 !important;
+    cursor: pointer !important;
+}
+
+/* For Payment Methods: input + label are siblings inside <li>, so the <li> must be the flex parent */
+#payment ul.payment_methods li {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    gap: 0 !important;
+    padding: 0 !important;
+}
+#payment ul.payment_methods li > input[type="radio"] {
+    flex-shrink: 0 !important;
+    order: 0 !important;
     width: 18px !important;
     height: 18px !important;
+    margin: 0 0 0 16px !important;
     cursor: pointer !important;
 }
-
-#payment ul.payment_methods li input[type="radio"] {
-    /* Reset any previously added top margins */
-    margin-top: 0 !important;
+#payment ul.payment_methods li > label {
+    flex: 1 !important;
+    order: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+    padding: 18px 16px !important;
+    margin: 0 !important;
+    cursor: pointer !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    color: #133E23 !important;
+    line-height: 1 !important;
 }
-
+/* Payment box spans full width on its own row */
+#payment ul.payment_methods li > .payment_box,
 #payment div.payment_box {
-    margin: 0 20px 20px 55px !important;
-    background: rgba(19,62,35,0.03) !important;
-    padding: 15px !important;
+    order: 2 !important;
+    width: 100% !important;
+    flex-basis: 100% !important;
+    margin: 0 16px 16px 16px !important;
+    background: rgba(19,62,35,0.04) !important;
+    padding: 14px !important;
     border-radius: 8px !important;
     font-size: 13px !important;
 }
