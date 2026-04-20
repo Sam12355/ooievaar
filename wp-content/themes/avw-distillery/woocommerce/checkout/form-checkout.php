@@ -479,24 +479,21 @@ jQuery(function($) {
         }
     }
 
-    // ── 2. INITIALIZE SELECT2 ON TRANSFORMED DATE SELECTS ONLY ────────────────
+    // ── 2. INITIALIZE SELECT2 ON DATE SELECTS ONLY ──────────────────────────────
     function initPerfectSelect2() {
         if (typeof $.fn.select2 === 'undefined') return;
 
-        // ONLY target our custom date selects — NOT payment_box selects (WC handles those)
-        // Also skip selects already initialized by WooCommerce (country, state, payment bank)
-        $('form.woocommerce-checkout select, .avw-transformed-date-select').each(function() {
+        // ONLY target OUR custom transformed date selects.
+        // Leave ALL WooCommerce payment/country/state selects alone — WC manages those.
+        $('.avw-transformed-date-select').each(function() {
             var $sel = $(this);
 
-            // SKIP selects inside .payment_box (iDEAL bank, etc.) — WC manages these
-            if ($sel.closest('.payment_box').length) return;
-
-            // SKIP if already initialized
+            // Skip if already initialized
             if ($sel.data('select2')) return;
 
             $sel.select2({
                 width: '100%',
-                minimumResultsForSearch: 0 // FORCE SEARCH BOX
+                minimumResultsForSearch: 0 // Always show search box
             });
         });
     }
