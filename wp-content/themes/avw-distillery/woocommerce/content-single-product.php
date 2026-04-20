@@ -114,7 +114,7 @@ if ( post_password_required() ) {
             <?php
             $related_ids = wc_get_related_products( $product->get_id(), 9 );
             if ( ! empty( $related_ids ) ) : ?>
-                <div class="related-carousel-wrapper relative group p-6 sm:p-10 bg-[#eedfcb]/30 rounded-[32px] border border-[#36221d]/5">
+                <div class="related-carousel-wrapper relative group p-6 sm:p-10 rounded-[32px]">
                     <h4 class="font-kurversbrug text-[22px] text-[#36221d] mb-8 uppercase tracking-[0.2em] text-center">Inspiratie voor u</h4>
                     
                     <div class="relative px-4 sm:px-8">
@@ -179,11 +179,12 @@ document.addEventListener('DOMContentLoaded', function() {
 .single_add_to_cart_button {
     background-color: #36221d !important;
     color: #eedfcb !important;
-    padding: 0 35px !important;
+    padding: 0 24px !important;
     height: 54px !important; 
     border-radius: 12px !important;
     font-family: 'DM Sans', sans-serif !important;
     font-weight: 700 !important;
+    font-size: 13px !important;
     text-transform: uppercase !important;
     letter-spacing: 0.1em !important;
     transition: all 0.3s ease !important;
