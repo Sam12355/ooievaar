@@ -528,10 +528,15 @@ add_action('wp_ajax_avw_ajax_add_to_cart', 'avw_ajax_add_to_cart');
 add_action('wp_ajax_nopriv_avw_ajax_add_to_cart', 'avw_ajax_add_to_cart');
 
 function avw_ajax_add_to_cart() {
+    // Determine Product ID (WooCommerce forms often use 'add-to-cart' field name)
     $product_id = isset($_POST['product_id']) ? absint($_POST['product_id']) : 0;
+    if (!$product_id && isset($_POST['add-to-cart'])) {
+        $product_id = absint($_POST['add-to-cart']);
+    }
+
     $quantity = isset($_POST['quantity']) ? absint($_POST['quantity']) : 1;
     $variation_id = isset($_POST['variation_id']) ? absint($_POST['variation_id']) : 0;
-    $passed_validation = apply_filters('woocommerce_add_to_cart_validation', true, $product_id, $quantity);
+    $passed_validation = apply_filters('woocommerce_add_to_cart_validation', true, $product_id, $quantity, $variation_id);
 
     if ($passed_validation && WC()->cart->add_to_cart($product_id, $quantity, $variation_id)) {
         do_action('woocommerce_ajax_added_to_cart', $product_id);
