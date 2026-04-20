@@ -345,10 +345,14 @@ body.woocommerce-checkout {
     display: none !important;
 }
 
-/* ---- SUPPRESS blockUI OVERLAY ON PAYMENT SECTION ---- */
+/* ---- SUPPRESS blockUI OVERLAY EVERYWHERE IN CHECKOUT ---- */
 #payment .blockOverlay,
+#order_review .blockOverlay,
+.woocommerce-checkout-review-order .blockOverlay,
 .woocommerce-checkout-payment .blockOverlay,
-.woocommerce-checkout #payment .blockUI.blockOverlay {
+.woocommerce-checkout .blockUI.blockOverlay,
+.avw-order-review-sidebar .blockOverlay,
+.avw-checkout-container .blockOverlay {
     display: none !important;
     opacity: 0 !important;
     visibility: hidden !important;
