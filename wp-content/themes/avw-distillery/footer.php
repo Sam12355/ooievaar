@@ -189,11 +189,14 @@
             var formData = new FormData($form[0]);
             formData.append('action', 'avw_ajax_add_to_cart');
 
-            // CRITICAL FIX: FormData does NOT include the button that was clicked. 
-            // We must manually add the button's value (which is the product ID).
-            var productId = $btn.val();
+            // CRITICAL FIX: To prevent WooCommerce core from ALSO adding to cart during this AJAX request,
+            // we send "product_id" instead of "add-to-cart", and explicitly remove "add-to-cart" if it exists.
+            var productId = $btn.val() || $form.find('input[name="add-to-cart"]').val();
             if (productId) {
-                formData.append('add-to-cart', productId);
+                formData.append('product_id', productId);
+            }
+            if (formData.delete) {
+                formData.delete('add-to-cart');
             }
 
             // Handle variations
