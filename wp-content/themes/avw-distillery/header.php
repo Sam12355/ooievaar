@@ -260,11 +260,14 @@
                     </div>
                 </a>
                 <!-- User -->
-                <button class="bg-[#cdbca6] rounded-full p-2.5 flex items-center justify-center hover:opacity-90 transition-all active:scale-95 shadow-sm">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                        <path d="M18.0414 17.1875C17.9865 17.2825 17.9076 17.3614 17.8126 17.4163C17.7175 17.4712 17.6097 17.5 17.5 17.5H2.5C2.39034 17.4999 2.28265 17.4709 2.18772 17.416C2.0928 17.3611 2.01399 17.2822 1.95921 17.1872C1.90444 17.0922 1.87561 16.9845 1.87564 16.8748C1.87564 16.9845 1.90455 16.8767 1.87564 16.8748C1.87564 16.8748 1.87564 16.8748 1.87564 16.8748C1.87564 16.8748 1.87564 16.8748 1.87564 16.8748Z" fill="#000000" />
+                <a href="<?php echo esc_url( wc_get_account_endpoint_url( 'dashboard' ) ); ?>" 
+                   aria-label="<?php echo is_user_logged_in() ? esc_attr__( 'My Account', 'woocommerce' ) : esc_attr__( 'Sign In', 'woocommerce' ); ?>"
+                   class="bg-[#cdbca6] rounded-full p-2.5 flex items-center justify-center hover:opacity-90 transition-all active:scale-95 shadow-sm">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1a2e1a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
                     </svg>
-                </button>
+                </a>
                 <!-- Search -->
                 <button class="bg-white rounded-full px-4 py-2 flex items-center gap-2 hover:bg-gray-100 transition-all active:scale-95 shadow-sm">
                     <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
