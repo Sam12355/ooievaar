@@ -126,3 +126,90 @@ Text Domain: avw-distillery
     .woocommerce-account .woocommerce-Addresses { flex-direction: column !important; }
     .woocommerce-account .woocommerce-Addresses .col-1, .woocommerce-account .woocommerce-Addresses .col-2 { width: 100% !important; }
 }
+
+/* ============================================================
+   SINGLE PRODUCT PAGE
+   ============================================================ */
+
+/* Cart form: qty + button side by side, equal height */
+.single-product .cart {
+    display: flex !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+}
+
+/* Add to basket button */
+.single-product .single_add_to_cart_button {
+    background-color: #36221d !important;
+    color: #eedfcb !important;
+    padding: 0 24px !important;
+    height: 54px !important;
+    border-radius: 12px !important;
+    font-family: 'DM Sans', sans-serif !important;
+    font-weight: 700 !important;
+    font-size: 13px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.1em !important;
+    transition: all 0.3s ease !important;
+    border: none !important;
+    cursor: pointer !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: auto !important;
+}
+.single-product .single_add_to_cart_button:hover {
+    background-color: #000 !important;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1) !important;
+    transform: translateY(-1px);
+}
+
+/* Quantity box */
+.single-product .quantity {
+    display: inline-flex !important;
+    margin: 0 !important;
+    height: 54px !important;
+}
+.single-product .quantity .qty {
+    width: 65px !important;
+    height: 100% !important;
+    border-radius: 12px !important;
+    border: 2px solid #36221d !important;
+    background: transparent !important;
+    color: #36221d !important;
+    font-family: 'DM Sans', sans-serif !important;
+    font-weight: 700 !important;
+    font-size: 18px !important;
+    text-align: center !important;
+    outline: none !important;
+    transition: all 0.3s ease !important;
+}
+.single-product .quantity .qty:focus {
+    background: white !important;
+    box-shadow: 0 0 0 4px rgba(54, 34, 45, 0.05) !important;
+}
+
+/* Related carousel: no background, no border */
+.related-carousel-wrapper {
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* Hide Swiper default arrow pseudo-elements */
+.swiper-button-next:after, .swiper-button-prev:after { display: none !important; }
+
+/* Review area */
+.reviews-aesthetic { font-family: 'DM Sans', sans-serif; }
+.commentlist { padding: 0 !important; list-style: none !important; }
+.commentlist li { margin-bottom: 2rem !important; border-bottom: 1px solid rgba(54,34,29,0.1) !important; padding-bottom: 2rem !important; }
+.comment-text { background: white !important; padding: 2rem !important; border-radius: 20px !important; box-shadow: 0 4px 12px rgba(0,0,0,0.03) !important; }
+.star-rating { color: #36221d !important; font-size: 1.1em !important; margin-bottom: 0.5rem !important; }
+.comment-author { font-weight: bold !important; color: #36221d !important; text-transform: uppercase !important; font-size: 0.8em !important; }
+.comment-meta { margin-bottom: 1rem !important; opacity: 0.5; font-size: 0.8em; }
+#review_form_wrapper { background: white !important; padding: 2.5rem !important; border-radius: 24px !important; margin-top: 3rem !important; border: 1px solid rgba(54,34,29,0.1) !important; box-shadow: 0 10px 30px rgba(0,0,0,0.02); }
+#reply-title { font-family: 'Kurversbrug', serif !important; text-transform: uppercase !important; margin-bottom: 1.5rem !important; display: block; font-size: 1.2rem; }
+.comment-form input, .comment-form textarea { width: 100% !important; border-radius: 12px !important; padding: 14px !important; border: 1.5px solid rgba(54,34,29,0.1) !important; outline: none !important; background: #fdf8f1 !important; }
+.comment-form input:focus, .comment-form textarea:focus { border-color: #36221d !important; background: white !important; }
+#submit { background: #36221d !important; color: #eedfcb !important; padding: 14px 40px !important; border-radius: 12px !important; text-transform: uppercase !important; font-weight: bold !important; border: none !important; margin-top: 1rem !important; cursor: pointer; transition: all 0.3s ease; }
+#submit:hover { background: #000 !important; }
