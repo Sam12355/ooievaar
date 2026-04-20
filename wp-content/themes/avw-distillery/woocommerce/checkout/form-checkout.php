@@ -26,6 +26,18 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
     font-family: 'DM Sans', sans-serif;
     color: #133E23;
     padding-bottom: 100px;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+/* Force hiding horizontal scroll on checkout page */
+body.woocommerce-checkout {
+    overflow-x: hidden !important;
+}
+
+.woocommerce table.shop_table {
+    padding: 20px !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
 }
 
 /* Page Header */
@@ -340,6 +352,9 @@ jQuery(function($) {
         transformAndGroupDates();
         initPerfectSelect2();
     });
+
+    // ── 3. Clear prefilled email ───────────────────────────────────────────────
+    $('#billing_email').val('');
 
 });
 </script>
