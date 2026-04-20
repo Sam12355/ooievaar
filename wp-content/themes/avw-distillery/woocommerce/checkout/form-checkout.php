@@ -97,7 +97,7 @@ body.woocommerce-checkout {
     margin-bottom: 24px !important;
     display: flex !important;
     flex-direction: column !important;
-    align-items: flex-start !important;
+    align-items: stretch !important;
 }
 
 /* Outer field description label — full width, stacked on top */
