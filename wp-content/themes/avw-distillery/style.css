@@ -172,9 +172,6 @@ Text Domain: avw-distillery
 }
 .single-product .quantity .qty {
     width: 65px !important;
-    height: 100% !important;
-    border-radius: 12px !important;
-    border: 2px solid #36221d !important;
     background: transparent !important;
     color: #36221d !important;
     font-family: 'DM Sans', sans-serif !important;

@@ -81,7 +81,7 @@ foreach ( $tabs as $key => $tab ) {
     }
 }
 ?>
-<div class="max-w-[600px] mb-12">
+<div class="max-w-[600px] mt-12 mb-12">
     <h4 class="font-kurversbrug text-[18px] text-[#36221d] mb-4 uppercase tracking-widest opacity-80">Product Informatie</h4>
     <div class="prose prose-sm font-sans text-black/70 max-w-none">
         <?php if ( ! empty( $extra_tabs ) ) : ?>
