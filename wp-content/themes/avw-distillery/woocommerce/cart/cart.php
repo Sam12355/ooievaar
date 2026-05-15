@@ -126,7 +126,6 @@ do_action( 'woocommerce_before_cart' );
 /* Quantity input */
 .avw-cart-table .quantity input.qty {
     width: 60px !important;
-    height: 38px;
     border-radius: 0;
     border: 1.5px solid rgba(19,62,35,0.18) !important;
     text-align: center;
