@@ -20,7 +20,7 @@ get_header();
     min-height: 60vh;
     max-width: 900px;
     margin: 0 auto;
-    padding: 64px 24px 100px;
+    padding: 64px 24px 0;
     font-family: 'DM Sans', sans-serif;
 }
 
