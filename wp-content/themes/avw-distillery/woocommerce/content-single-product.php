@@ -68,27 +68,26 @@ if ( post_password_required() ) {
             woocommerce_template_single_add_to_cart();
 			?>
 		</div>
-
-        <!-- PRODUCT DETAILS (RESTORED TO TOP) -->
-        <div class="product-tabs pt-4">
-            <h4 class="font-kurversbrug text-[18px] text-[#36221d] mb-4 uppercase tracking-widest opacity-80">Product Informatie</h4>
-            <div class="prose prose-sm font-sans text-black/70 max-w-none">
-                <?php
-                $tabs = apply_filters( 'woocommerce_product_tabs', array() );
-                if ( ! empty( $tabs ) ) {
-                    foreach ( $tabs as $key => $tab ) {
-                        if ( $key !== 'description' && $key !== 'reviews' ) { 
-                            echo '<div class="mb-3 last:mb-0 text-[13px] border-l-2 border-[#36221d]/10 pl-4 py-0.5"><strong>' . esc_html( $tab['title'] ) . ':</strong> ';
-                            call_user_func( $tab['callback'], $key, $tab );
-                            echo '</div>';
-                        }
-                    }
-                }
-                ?>
-            </div>
-        </div>
 	</div>
 </div>
+
+<!-- PRODUCT INFORMATIE (below product, left-aligned) -->
+<?php
+$tabs = apply_filters( 'woocommerce_product_tabs', array() );
+$extra_tabs = array_filter( $tabs, fn( $key ) => $key !== 'description' && $key !== 'reviews', ARRAY_FILTER_USE_KEY );
+if ( ! empty( $extra_tabs ) ) : ?>
+<div class="max-w-[600px] mb-12">
+    <h4 class="font-kurversbrug text-[18px] text-[#36221d] mb-4 uppercase tracking-widest opacity-80">Product Informatie</h4>
+    <div class="prose prose-sm font-sans text-black/70 max-w-none">
+        <?php foreach ( $extra_tabs as $key => $tab ) : ?>
+            <div class="mb-3 last:mb-0 text-[13px] border-l-2 border-[#36221d]/10 pl-4 py-0.5">
+                <strong><?php echo esc_html( $tab['title'] ); ?>:</strong>
+                <?php call_user_func( $tab['callback'], $key, $tab ); ?>
+            </div>
+        <?php endforeach; ?>
+    </div>
+</div>
+<?php endif; ?>
 
 <!-- SEPARATOR LINE -->
 <div class="max-w-[1300px] mx-auto my-16 border-t border-[#36221d]/10"></div>

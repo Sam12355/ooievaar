@@ -62,8 +62,8 @@ if ( $max_value && $min_value === $max_value ) { ?>
             transition: background 0.2s, color 0.2s;
             user-select: none;
         }
-        .avw-qty-minus { border-radius: 8px 0 0 8px; }
-        .avw-qty-plus  { border-radius: 0 8px 8px 0; }
+        .avw-qty-minus { border-radius: 0; }
+        .avw-qty-plus  { border-radius: 0; }
         .avw-qty-btn:hover { background: #36221d; color: #eedfcb; }
     </style>
 
