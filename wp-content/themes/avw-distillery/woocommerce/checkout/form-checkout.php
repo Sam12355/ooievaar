@@ -132,6 +132,29 @@ body.woocommerce-checkout {
     display: none !important;
 }
 
+/* "Returning customer? Click here to login" notice */
+.woocommerce-checkout .woocommerce-info {
+    background: #fff !important;
+    border: 1px solid rgba(19,62,35,0.1) !important;
+    border-left: 4px solid #432B25 !important;
+    border-radius: 12px !important;
+    color: #133E23 !important;
+    font-family: 'DM Sans', sans-serif !important;
+    font-size: 14px !important;
+    padding: 16px 20px !important;
+    margin-bottom: 32px !important;
+    list-style: none !important;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04) !important;
+}
+.woocommerce-checkout .woocommerce-info::before {
+    display: none !important;
+}
+.woocommerce-checkout .woocommerce-info a {
+    color: #432B25 !important;
+    font-weight: 700 !important;
+    text-decoration: underline !important;
+}
+
 /* Page Header */
 .avw-checkout-header {
     margin-bottom: 64px;
