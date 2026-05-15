@@ -212,3 +212,23 @@ Text Domain: avw-distillery
 .comment-form input:focus, .comment-form textarea:focus { border-color: #36221d !important; background: white !important; }
 #submit { background: #36221d !important; color: #eedfcb !important; padding: 14px 40px !important; border-radius: 12px !important; text-transform: uppercase !important; font-weight: bold !important; border: none !important; margin-top: 1rem !important; cursor: pointer; transition: all 0.3s ease; }
 #submit:hover { background: #000 !important; }
+
+/* --- PLACE ORDER BUTTON --- */
+#place_order {
+    display: inline-block !important;
+    background: linear-gradient(90deg, rgba(0,0,0,0.2), rgba(0,0,0,0.2)), #432B25 !important;
+    color: #fff !important;
+    font-family: 'Kurversbrug', serif !important;
+    font-size: 18px !important;
+    padding: 14px 40px !important;
+    border-radius: 34px !important;
+    border: none !important;
+    cursor: pointer !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    transition: opacity 0.2s !important;
+    width: 100% !important;
+}
+#place_order:hover {
+    opacity: 0.88 !important;
+}
