@@ -193,6 +193,8 @@ Text Domain: avw-distillery
     box-shadow: none !important;
 }
 
+.swiper-wrapper { padding-bottom: 50px; }
+
 /* Hide Swiper default arrow pseudo-elements */
 .swiper-button-next:after, .swiper-button-prev:after { display: none !important; }
 
