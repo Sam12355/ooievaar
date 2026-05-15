@@ -19,7 +19,7 @@ do_action( 'woocommerce_before_cart' );
 /* Page wrapper */
 .avw-cart-page {
     font-family: 'DM Sans', sans-serif;
-    padding: 0 0 100px;
+    padding: 60px 0 60px;
 }
 
 /* Two-column layout — one unified card */
@@ -300,24 +300,22 @@ do_action( 'woocommerce_before_cart' );
 .avw-checkout-btn {
     display: block;
     margin-top: 24px;
-    padding: 17px 24px;
-    background: #133E23;
-    color: #cdbca6 !important;
+    padding: 14px 40px;
+    background: linear-gradient(90deg, rgba(0,0,0,0.2), rgba(0,0,0,0.2)), #432B25;
+    color: #fff !important;
     text-align: center;
-    border-radius: 9999px;
+    border-radius: 34px;
     font-family: 'Kurversbrug', serif;
-    font-size: 15px;
+    font-size: 18px;
     font-weight: normal;
     text-transform: uppercase;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.05em;
     text-decoration: none !important;
-    transition: all 0.3s ease;
-    box-shadow: 0 6px 20px rgba(19,62,35,0.2);
+    transition: opacity 0.2s ease;
+    border: none;
 }
 .avw-checkout-btn:hover {
-    background: #0a2415;
-    transform: translateY(-2px);
-    box-shadow: 0 12px 36px rgba(19,62,35,0.3);
+    opacity: 0.88;
     color: #fff !important;
 }
 
