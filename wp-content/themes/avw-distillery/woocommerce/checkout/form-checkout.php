@@ -9,8 +9,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-do_action( 'woocommerce_before_checkout_form', $checkout );
-
 if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_required() && ! is_user_logged_in() ) {
 	echo esc_html( apply_filters( 'woocommerce_checkout_must_be_logged_in_message', __( 'You must be logged in to checkout.', 'woocommerce' ) ) );
 	return;
@@ -392,9 +390,9 @@ table.woocommerce-checkout-review-order-table tr th {
 </style>
 
 <!-- CHECKOUT HERO -->
-<section class="relative bg-[#36221d] pt-24 pb-10 sm:pt-28 sm:pb-14 px-4 sm:px-6 overflow-hidden" style="width:100vw; position:relative; left:50%; transform:translateX(-50%); margin-top:0;">
+<section id="checkout-hero" class="relative bg-[#36221d] pt-24 pb-10 sm:pt-28 sm:pb-14 px-4 sm:px-6 overflow-hidden" style="width:100vw; position:relative; left:50%; transform:translateX(-50%); margin-top:0;">
     <div class="absolute inset-0 z-0">
-        <img src="<?php echo get_template_directory_uri(); ?>/assets/assortment-hero-v2.png" alt="" class="w-full object-cover opacity-60" style="position:absolute; top:-30%; height:160%; object-position:center 40%;" />
+        <img id="checkout-hero-img" src="<?php echo get_template_directory_uri(); ?>/assets/assortment-hero-v2.png" alt="" class="w-full object-cover opacity-60" style="position:absolute; top:-30%; height:160%; object-position:center 40%;" />
         <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-transparent"></div>
     </div>
     <div class="max-w-[1000px] mx-auto text-center relative z-10">
@@ -407,7 +405,7 @@ table.woocommerce-checkout-review-order-table tr th {
             <span class="mx-2">&bull;</span>
             <span class="text-white"><?php esc_html_e( 'Checkout', 'woocommerce' ); ?></span>
         </nav>
-        <h1 class="font-kurversbrug text-[#eedfcb] text-[36px] sm:text-[48px] md:text-[64px] mb-4 drop-shadow-lg leading-tight">
+        <h1 id="checkout-hero-title" class="font-kurversbrug text-[#eedfcb] text-[36px] sm:text-[48px] md:text-[64px] mb-4 drop-shadow-lg leading-tight">
             <?php esc_html_e( 'Checkout', 'woocommerce' ); ?>
         </h1>
         <p class="font-sans text-white text-[16px] sm:text-[18px] opacity-80 drop-shadow-md">
@@ -417,6 +415,10 @@ table.woocommerce-checkout-review-order-table tr th {
 </section>
 
 <div class="avw-checkout-container">
+
+    <div style="margin-top: 40px; margin-bottom: 8px;">
+        <?php do_action( 'woocommerce_before_checkout_form', $checkout ); ?>
+    </div>
 
     <form name="checkout" method="post" class="checkout woocommerce-checkout avw-checkout-layout" action="<?php echo esc_url( wc_get_checkout_url() ); ?>" enctype="multipart/form-data">
 
@@ -677,5 +679,25 @@ jQuery(function($) {
         observer.observe(document.body, { childList: true, subtree: true });
     }
 
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+        gsap.fromTo('#checkout-hero-img',
+            { yPercent: -15 },
+            {
+                yPercent: 15,
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: '#checkout-hero-title',
+                    start: 'top bottom',
+                    end: 'bottom top',
+                    scrub: true
+                }
+            }
+        );
+    }
 });
 </script>

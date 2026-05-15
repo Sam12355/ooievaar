@@ -372,9 +372,9 @@ do_action( 'woocommerce_before_cart' );
 </style>
 
 <!-- CART HERO -->
-<section class="relative bg-[#36221d] pt-24 pb-10 sm:pt-28 sm:pb-14 px-4 sm:px-6 overflow-hidden" style="width:100vw; position:relative; left:50%; transform:translateX(-50%); margin-top:0;">
+<section id="cart-hero" class="relative bg-[#36221d] pt-24 pb-10 sm:pt-28 sm:pb-14 px-4 sm:px-6 overflow-hidden" style="width:100vw; position:relative; left:50%; transform:translateX(-50%); margin-top:0;">
     <div class="absolute inset-0 z-0">
-        <img src="<?php echo get_template_directory_uri(); ?>/assets/assortment-hero-v2.png" alt="" class="w-full object-cover opacity-60" style="position:absolute; top:-30%; height:160%; object-position:center 40%;" />
+        <img id="cart-hero-img" src="<?php echo get_template_directory_uri(); ?>/assets/assortment-hero-v2.png" alt="" class="w-full object-cover opacity-60" style="position:absolute; top:-30%; height:160%; object-position:center 40%;" />
         <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-transparent"></div>
     </div>
     <div class="max-w-[1000px] mx-auto text-center relative z-10">
@@ -385,7 +385,7 @@ do_action( 'woocommerce_before_cart' );
             <span class="mx-2">&bull;</span>
             <span class="text-white"><?php esc_html_e( 'Cart', 'woocommerce' ); ?></span>
         </nav>
-        <h1 class="font-kurversbrug text-[#eedfcb] text-[36px] sm:text-[48px] md:text-[64px] mb-4 drop-shadow-lg leading-tight">
+        <h1 id="cart-hero-title" class="font-kurversbrug text-[#eedfcb] text-[36px] sm:text-[48px] md:text-[64px] mb-4 drop-shadow-lg leading-tight">
             <?php esc_html_e( 'Cart', 'woocommerce' ); ?>
         </h1>
     </div>
@@ -661,5 +661,25 @@ jQuery(function($) {
         }
     });
 
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+        gsap.fromTo('#cart-hero-img',
+            { yPercent: -15 },
+            {
+                yPercent: 15,
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: '#cart-hero-title',
+                    start: 'top bottom',
+                    end: 'bottom top',
+                    scrub: true
+                }
+            }
+        );
+    }
 });
 </script>
