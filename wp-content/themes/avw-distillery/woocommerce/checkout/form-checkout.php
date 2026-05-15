@@ -392,7 +392,7 @@ table.woocommerce-checkout-review-order-table tr th {
 </style>
 
 <!-- CHECKOUT HERO -->
-<section class="relative bg-[#36221d] pt-24 pb-10 sm:pt-28 sm:pb-14 px-4 sm:px-6 overflow-hidden">
+<section class="relative bg-[#36221d] pt-24 pb-10 sm:pt-28 sm:pb-14 px-4 sm:px-6 overflow-hidden" style="width:100vw; position:relative; left:50%; transform:translateX(-50%); margin-top:0;">
     <div class="absolute inset-0 z-0">
         <img src="<?php echo get_template_directory_uri(); ?>/assets/assortment-hero-v2.png" alt="" class="w-full object-cover opacity-60" style="position:absolute; top:-30%; height:160%; object-position:center 40%;" />
         <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-transparent"></div>

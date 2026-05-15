@@ -19,7 +19,7 @@ do_action( 'woocommerce_before_cart' );
 /* Page wrapper */
 .avw-cart-page {
     font-family: 'DM Sans', sans-serif;
-    padding: 60px 0 60px;
+    padding: 48px 0 60px;
 }
 
 /* Two-column layout — one unified card */
@@ -370,6 +370,26 @@ do_action( 'woocommerce_before_cart' );
     .avw-totals-sidebar { position: static; }
 }
 </style>
+
+<!-- CART HERO -->
+<section class="relative bg-[#36221d] pt-24 pb-10 sm:pt-28 sm:pb-14 px-4 sm:px-6 overflow-hidden" style="width:100vw; position:relative; left:50%; transform:translateX(-50%); margin-top:0;">
+    <div class="absolute inset-0 z-0">
+        <img src="<?php echo get_template_directory_uri(); ?>/assets/assortment-hero-v2.png" alt="" class="w-full object-cover opacity-60" style="position:absolute; top:-30%; height:160%; object-position:center 40%;" />
+        <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-transparent"></div>
+    </div>
+    <div class="max-w-[1000px] mx-auto text-center relative z-10">
+        <nav class="font-sans text-[#eedfcb]/70 text-[13px] uppercase tracking-widest mb-4">
+            <a href="<?php echo home_url(); ?>" class="hover:text-white transition-colors">Home</a>
+            <span class="mx-2">&bull;</span>
+            <a href="<?php echo get_permalink( wc_get_page_id( 'shop' ) ); ?>" class="hover:text-white transition-colors">Assortment</a>
+            <span class="mx-2">&bull;</span>
+            <span class="text-white"><?php esc_html_e( 'Cart', 'woocommerce' ); ?></span>
+        </nav>
+        <h1 class="font-kurversbrug text-[#eedfcb] text-[36px] sm:text-[48px] md:text-[64px] mb-4 drop-shadow-lg leading-tight">
+            <?php esc_html_e( 'Cart', 'woocommerce' ); ?>
+        </h1>
+    </div>
+</section>
 
 <div class="avw-cart-page">
 
