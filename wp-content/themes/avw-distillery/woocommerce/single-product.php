@@ -21,7 +21,7 @@ get_header( 'shop' ); ?>
     <!-- Background Image with Parallax & Huge Scale buffer -->
     <div class="absolute inset-0 z-0">
         <img id="product-hero-img" src="<?php echo get_template_directory_uri(); ?>/assets/assortment-hero-v2.png" alt="A. van Wees Distilleerderij" class="w-full h-[120%] object-cover opacity-60 scale-125" style="object-position: center 30%; transform-origin: center center;" />
-        <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-[#fdf8f1]"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-transparent"></div>
     </div>
 
     <div class="max-w-[1000px] mx-auto text-center relative z-10">
