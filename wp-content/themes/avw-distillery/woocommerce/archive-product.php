@@ -406,7 +406,7 @@ defined( 'ABSPATH' ) || exit;
                         $raw_price = wc_get_price_to_display( $product );
                         $formatted_price = $raw_price ? number_format_i18n( $raw_price, 2 ) : '';
                         ?>
-                        <div class="product-card bg-[#eedfcb] rounded-[24px] sm:rounded-[32px] p-5 sm:p-8 flex flex-col">
+                        <div class="product-card bg-[#eedfcb] rounded-[24px] sm:rounded-[32px] p-3 sm:p-4 flex flex-col">
                             <div class="relative rounded-[18px] sm:rounded-[24px] overflow-hidden mb-5 sm:mb-8 bg-white" style="aspect-ratio:289/203;">
                                 <a href="<?php the_permalink(); ?>">
                                     <img src="<?php echo esc_url( $img_url ); ?>" alt="<?php the_title_attribute(); ?>" class="w-full h-full object-cover transition-transform hover:scale-105 duration-500" />

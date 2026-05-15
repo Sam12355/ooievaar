@@ -28,7 +28,7 @@ get_header();
     max-width: 1400px;
     padding-left: 32px;
     padding-right: 32px;
-    padding-top: 20px;
+    padding-top: 0;
 }
 
 .avw-page-title {

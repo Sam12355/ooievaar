@@ -22,7 +22,7 @@ do_action( 'woocommerce_before_customer_login_form' );
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px 24px 60px;
+    padding: 0 24px 60px;
     font-family: 'DM Sans', sans-serif;
 }
 
