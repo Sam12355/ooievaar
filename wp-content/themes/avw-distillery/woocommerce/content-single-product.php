@@ -74,20 +74,28 @@ if ( post_password_required() ) {
 <!-- PRODUCT INFORMATIE (below product, left-aligned) -->
 <?php
 $tabs = apply_filters( 'woocommerce_product_tabs', array() );
-$extra_tabs = array_filter( $tabs, fn( $key ) => $key !== 'description' && $key !== 'reviews', ARRAY_FILTER_USE_KEY );
-if ( ! empty( $extra_tabs ) ) : ?>
+$extra_tabs = array();
+foreach ( $tabs as $key => $tab ) {
+    if ( $key !== 'description' && $key !== 'reviews' ) {
+        $extra_tabs[ $key ] = $tab;
+    }
+}
+?>
 <div class="max-w-[600px] mb-12">
     <h4 class="font-kurversbrug text-[18px] text-[#36221d] mb-4 uppercase tracking-widest opacity-80">Product Informatie</h4>
     <div class="prose prose-sm font-sans text-black/70 max-w-none">
-        <?php foreach ( $extra_tabs as $key => $tab ) : ?>
-            <div class="mb-3 last:mb-0 text-[13px] border-l-2 border-[#36221d]/10 pl-4 py-0.5">
-                <strong><?php echo esc_html( $tab['title'] ); ?>:</strong>
-                <?php call_user_func( $tab['callback'], $key, $tab ); ?>
-            </div>
-        <?php endforeach; ?>
+        <?php if ( ! empty( $extra_tabs ) ) : ?>
+            <?php foreach ( $extra_tabs as $key => $tab ) : ?>
+                <div class="mb-3 last:mb-0 text-[13px] border-l-2 border-[#36221d]/10 pl-4 py-0.5">
+                    <strong><?php echo esc_html( $tab['title'] ); ?>:</strong>
+                    <?php call_user_func( $tab['callback'], $key, $tab ); ?>
+                </div>
+            <?php endforeach; ?>
+        <?php else : ?>
+            <p class="text-[13px] text-black/40">Geen aanvullende productinformatie beschikbaar.</p>
+        <?php endif; ?>
     </div>
 </div>
-<?php endif; ?>
 
 <!-- SEPARATOR LINE -->
 <div class="max-w-[1300px] mx-auto my-16 border-t border-[#36221d]/10"></div>
