@@ -18,6 +18,7 @@ do_action( 'woocommerce_before_customer_login_form' );
    ============================================================ */
 
 .avw-login-page {
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -26,8 +27,11 @@ do_action( 'woocommerce_before_customer_login_form' );
 }
 
 .avw-login-wrap {
-    width: 100%;
-    max-width: 520px;
+    width: 70%;
+}
+
+@media (max-width: 768px) {
+    .avw-login-wrap { width: 100%; }
 }
 
 /* ---- Tabs ---- */
