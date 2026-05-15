@@ -18,11 +18,10 @@ do_action( 'woocommerce_before_customer_login_form' );
    ============================================================ */
 
 .avw-login-page {
-    min-height: 80vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 60px 24px 100px;
+    padding: 20px 24px 60px;
     font-family: 'DM Sans', sans-serif;
 }
 
