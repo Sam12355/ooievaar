@@ -606,6 +606,39 @@ function avw_register_recept_cpt() {
 add_action( 'init', 'avw_register_recept_cpt' );
 
 /**
+ * RECEPTEN: Seed default taxonomy terms (runs once per term, safe to re-run)
+ */
+function avw_seed_recept_terms() {
+    $products = array(
+        'Jonge genever', 'Oude genever', 'Korenwijn', 'Gin', 'Likeuren', 'Bitters',
+    );
+    foreach ( $products as $name ) {
+        if ( ! term_exists( $name, 'recept_product' ) ) {
+            wp_insert_term( $name, 'recept_product' );
+        }
+    }
+
+    $soorten = array(
+        'Cocktail', 'Longdrink', 'Shot', 'Mocktail', 'Warm drankje', 'Punch',
+    );
+    foreach ( $soorten as $name ) {
+        if ( ! term_exists( $name, 'recept_soort' ) ) {
+            wp_insert_term( $name, 'recept_soort' );
+        }
+    }
+
+    $gelegenheden = array(
+        'Zomer', 'Winter', 'Feest', 'Kerst', 'Verjaardag', 'Borrel',
+    );
+    foreach ( $gelegenheden as $name ) {
+        if ( ! term_exists( $name, 'recept_gelegenheid' ) ) {
+            wp_insert_term( $name, 'recept_gelegenheid' );
+        }
+    }
+}
+add_action( 'init', 'avw_seed_recept_terms', 20 );
+
+/**
  * RECEPTEN: AJAX search handler
  */
 add_action( 'wp_ajax_avw_recept_search', 'avw_recept_search' );
