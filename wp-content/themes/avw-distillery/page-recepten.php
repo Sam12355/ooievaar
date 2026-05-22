@@ -66,10 +66,13 @@ $gelegenheden = get_terms(array('taxonomy' => 'recept_gelegenheid', 'hide_empty'
 
 /* Single-line search bar */
 .avw-rec-filterbar {
-    display: flex; align-items: flex-end; gap: 12px; flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1.5fr auto;
+    gap: 12px;
+    align-items: end;
 }
 
-.avw-rec-filter-group { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 120px; }
+.avw-rec-filter-group { display: flex; flex-direction: column; gap: 5px; }
 
 .avw-rec-filter-group label {
     font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 700;
@@ -87,18 +90,18 @@ $gelegenheden = get_terms(array('taxonomy' => 'recept_gelegenheid', 'hide_empty'
     background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px;
 }
 
-.avw-rec-keyword-input { background-image: none !important; padding-right: 16px !important; flex: 1.5; }
+.avw-rec-keyword-input { background-image: none !important; padding-right: 16px !important; }
 
 .avw-rec-filter-group select:focus,
 .avw-rec-keyword-input:focus { border-color: #36221d; background: #fff; }
 
 .avw-rec-search-btn {
-    flex-shrink: 0; align-self: flex-end;
     background: linear-gradient(90deg, rgba(0,0,0,0.2), rgba(0,0,0,0.2)), #432B25;
     color: #fff; font-family: 'Kurversbrug', serif; font-size: 16px;
     text-transform: uppercase; letter-spacing: 0.12em;
-    padding: 11px 36px; border-radius: 34px; border: none;
+    padding: 11px 28px; border-radius: 34px; border: none;
     cursor: pointer; transition: opacity 0.2s; white-space: nowrap;
+    align-self: end;
 }
 .avw-rec-search-btn:hover { opacity: 0.88; }
 
@@ -154,13 +157,13 @@ $gelegenheden = get_terms(array('taxonomy' => 'recept_gelegenheid', 'hide_empty'
 
 @media (max-width: 900px) {
     .avw-rec-body { width: 92%; }
-    .avw-rec-filterbar { flex-wrap: wrap; }
-    .avw-rec-filter-group { min-width: calc(50% - 8px); }
+    .avw-rec-filterbar { grid-template-columns: 1fr 1fr; }
+    .avw-rec-search-btn { grid-column: 1 / -1; justify-self: start; }
     .avw-rec-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
 }
 @media (max-width: 480px) {
     .avw-rec-body { width: 100%; padding-left: 16px; padding-right: 16px; }
-    .avw-rec-filter-group { min-width: 100%; }
+    .avw-rec-filterbar { grid-template-columns: 1fr; }
     .avw-rec-grid { grid-template-columns: 1fr; }
 }
 </style>

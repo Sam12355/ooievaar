@@ -120,7 +120,7 @@ while ( have_posts() ) :
     content: counter(steps);
     position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
     width: 28px; height: 28px; background: #432B25; color: #eedfcb;
-    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    border-radius: 50%; text-align: center; line-height: 28px;
     font-family: 'Kurversbrug', serif; font-size: 14px;
 }
 
