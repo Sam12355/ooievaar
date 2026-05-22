@@ -609,27 +609,32 @@ add_action( 'init', 'avw_register_recept_cpt' );
  * RECEPTEN: Seed default taxonomy terms (runs once per term, safe to re-run)
  */
 function avw_seed_recept_terms() {
-    $products = array(
-        'Jonge genever', 'Oude genever', 'Korenwijn', 'Gin', 'Likeuren', 'Bitters',
-    );
-    foreach ( $products as $name ) {
-        if ( ! term_exists( $name, 'recept_product' ) ) {
-            wp_insert_term( $name, 'recept_product' );
-        }
+    // Remove old placeholder terms
+    $old_soorten = array( 'Cocktail', 'Longdrink', 'Shot', 'Mocktail', 'Warm drankje', 'Punch' );
+    foreach ( $old_soorten as $name ) {
+        $term = get_term_by( 'name', $name, 'recept_soort' );
+        if ( $term ) wp_delete_term( $term->term_id, 'recept_soort' );
+    }
+    $old_gelegenheden = array( 'Zomer', 'Winter', 'Feest', 'Kerst', 'Verjaardag', 'Borrel' );
+    foreach ( $old_gelegenheden as $name ) {
+        $term = get_term_by( 'name', $name, 'recept_gelegenheid' );
+        if ( $term ) wp_delete_term( $term->term_id, 'recept_gelegenheid' );
+    }
+    $old_products = array( 'Jonge genever', 'Oude genever', 'Korenwijn', 'Gin', 'Likeuren', 'Bitters' );
+    foreach ( $old_products as $name ) {
+        $term = get_term_by( 'name', $name, 'recept_product' );
+        if ( $term ) wp_delete_term( $term->term_id, 'recept_product' );
     }
 
-    $soorten = array(
-        'Cocktail', 'Longdrink', 'Shot', 'Mocktail', 'Warm drankje', 'Punch',
-    );
+    // Seed correct terms from original site
+    $soorten = array( 'Dessert', 'Zoet' );
     foreach ( $soorten as $name ) {
         if ( ! term_exists( $name, 'recept_soort' ) ) {
             wp_insert_term( $name, 'recept_soort' );
         }
     }
 
-    $gelegenheden = array(
-        'Zomer', 'Winter', 'Feest', 'Kerst', 'Verjaardag', 'Borrel',
-    );
+    $gelegenheden = array( 'Bij de koffie', 'Feestdag' );
     foreach ( $gelegenheden as $name ) {
         if ( ! term_exists( $name, 'recept_gelegenheid' ) ) {
             wp_insert_term( $name, 'recept_gelegenheid' );
