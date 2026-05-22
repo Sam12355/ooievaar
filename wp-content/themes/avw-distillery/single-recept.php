@@ -82,26 +82,33 @@ while ( have_posts() ) :
     font-family: 'DM Sans', sans-serif; font-size: 16px; line-height: 1.9; color: rgba(54,34,29,0.82);
 }
 
-/* Headings */
-.avw-srec-content-body h2 {
+/* Headings — h2, h3, h4 all styled the same way */
+.avw-srec-content-body h2,
+.avw-srec-content-body h3,
+.avw-srec-content-body h4 {
     font-family: 'Kurversbrug', serif; font-weight: normal; color: #36221d;
     text-transform: uppercase; letter-spacing: 0.1em;
-    font-size: 24px; margin: 48px 0 16px; padding-bottom: 10px;
-    border-bottom: 1px solid rgba(54,34,29,0.1);
+    font-size: 20px; margin: 40px 0 14px; padding-bottom: 10px;
+    border-bottom: 2px solid rgba(54,34,29,0.12);
 }
-.avw-srec-content-body h3 {
-    font-family: 'Kurversbrug', serif; font-weight: normal; color: #36221d;
-    text-transform: uppercase; letter-spacing: 0.08em;
-    font-size: 18px; margin: 32px 0 12px;
-}
+.avw-srec-content-body h2 { font-size: 24px; }
+.avw-srec-content-body h4 span { font-family: inherit; }
 
 /* Paragraphs */
-.avw-srec-content-body p { margin-bottom: 18px; }
+.avw-srec-content-body p {
+    margin-bottom: 20px;
+    background: #fdf8f1;
+    border-radius: 12px;
+    padding: 16px 20px;
+    border-left: 3px solid rgba(67,43,37,0.2);
+    line-height: 2;
+}
+.avw-srec-content-body p span[dir] { display: block; }
 
-/* Ingredient / step lists */
+/* Lists */
 .avw-srec-content-body ul {
     list-style: none; padding: 0; margin: 0 0 28px;
-    display: grid; grid-template-columns: 1fr 1fr; gap: 8px 24px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px;
 }
 .avw-srec-content-body ul li {
     padding: 10px 14px; background: #fdf8f1;
@@ -112,7 +119,7 @@ while ( have_posts() ) :
     padding-left: 0; margin: 0 0 28px; counter-reset: steps; list-style: none;
 }
 .avw-srec-content-body ol li {
-    counter-increment: steps; margin-bottom: 12px;
+    counter-increment: steps; margin-bottom: 10px;
     padding: 14px 18px 14px 56px; position: relative;
     background: #fdf8f1; border-radius: 12px; font-size: 15px; line-height: 1.6;
 }
