@@ -677,7 +677,7 @@ function avw_recept_search() {
     if ( $query->have_posts() ) {
         while ( $query->have_posts() ) {
             $query->the_post();
-            $img = get_the_post_thumbnail_url( get_the_ID(), 'medium' );
+            $img = get_the_post_thumbnail_url( get_the_ID(), 'large' ) ?: get_the_post_thumbnail_url( get_the_ID(), 'full' );
             $results[] = array(
                 'id'      => get_the_ID(),
                 'title'   => get_the_title(),
