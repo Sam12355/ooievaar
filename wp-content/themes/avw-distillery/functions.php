@@ -690,6 +690,124 @@ function avw_recept_search() {
 }
 
 /**
+ * VACATURES: Custom Post Type
+ */
+function avw_register_vacature_cpt() {
+    register_post_type( 'vacature', array(
+        'labels' => array(
+            'name'               => 'Vacatures',
+            'singular_name'      => 'Vacature',
+            'add_new'            => 'Nieuwe Vacature',
+            'add_new_item'       => 'Nieuwe Vacature Toevoegen',
+            'edit_item'          => 'Vacature Bewerken',
+            'new_item'           => 'Nieuwe Vacature',
+            'view_item'          => 'Vacature Bekijken',
+            'search_items'       => 'Vacatures Zoeken',
+            'not_found'          => 'Geen vacatures gevonden',
+            'not_found_in_trash' => 'Geen vacatures in prullenbak',
+            'all_items'          => 'Alle Vacatures',
+        ),
+        'public'         => true,
+        'has_archive'    => false,
+        'rewrite'        => array( 'slug' => 'vacature' ),
+        'supports'       => array( 'title', 'editor', 'thumbnail' ),
+        'menu_icon'      => 'dashicons-id-alt',
+        'menu_position'  => 5,
+        'show_in_rest'   => true,
+    ));
+}
+add_action( 'init', 'avw_register_vacature_cpt' );
+
+/**
+ * VACATURES: Meta box for vacancy details
+ */
+function avw_vacature_meta_box() {
+    add_meta_box(
+        'avw_vacature_details',
+        'Vacature Details',
+        'avw_vacature_meta_box_html',
+        'vacature',
+        'side',
+        'high'
+    );
+}
+add_action( 'add_meta_boxes', 'avw_vacature_meta_box' );
+
+function avw_vacature_meta_box_html( $post ) {
+    wp_nonce_field( 'avw_vacature_save', 'avw_vacature_nonce' );
+    $afdeling     = get_post_meta( $post->ID, '_vacature_afdeling',     true );
+    $locatie      = get_post_meta( $post->ID, '_vacature_locatie',      true );
+    $uren         = get_post_meta( $post->ID, '_vacature_uren',         true );
+    $contracttype = get_post_meta( $post->ID, '_vacature_contracttype', true );
+    ?>
+    <p>
+        <label style="font-weight:600;display:block;margin-bottom:4px;">Afdeling</label>
+        <input type="text" name="vacature_afdeling" value="<?php echo esc_attr($afdeling); ?>" style="width:100%;" placeholder="bijv. Productie" />
+    </p>
+    <p>
+        <label style="font-weight:600;display:block;margin-bottom:4px;">Locatie</label>
+        <input type="text" name="vacature_locatie" value="<?php echo esc_attr($locatie); ?>" style="width:100%;" placeholder="bijv. Amsterdam" />
+    </p>
+    <p>
+        <label style="font-weight:600;display:block;margin-bottom:4px;">Uren per week</label>
+        <input type="text" name="vacature_uren" value="<?php echo esc_attr($uren); ?>" style="width:100%;" placeholder="bijv. 32-40 uur" />
+    </p>
+    <p>
+        <label style="font-weight:600;display:block;margin-bottom:4px;">Contracttype</label>
+        <select name="vacature_contracttype" style="width:100%;">
+            <option value="">— kies —</option>
+            <?php foreach ( array('Vast', 'Tijdelijk', 'Freelance', 'Stage') as $opt ): ?>
+                <option value="<?php echo $opt; ?>" <?php selected( $contracttype, $opt ); ?>><?php echo $opt; ?></option>
+            <?php endforeach; ?>
+        </select>
+    </p>
+    <?php
+}
+
+function avw_vacature_save_meta( $post_id ) {
+    if ( ! isset($_POST['avw_vacature_nonce']) || ! wp_verify_nonce($_POST['avw_vacature_nonce'], 'avw_vacature_save') ) return;
+    if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ) return;
+    if ( ! current_user_can('edit_post', $post_id) ) return;
+
+    $fields = array( 'vacature_afdeling', 'vacature_locatie', 'vacature_uren', 'vacature_contracttype' );
+    foreach ( $fields as $field ) {
+        if ( isset($_POST[$field]) ) {
+            update_post_meta( $post_id, '_' . $field, sanitize_text_field($_POST[$field]) );
+        }
+    }
+}
+add_action( 'save_post_vacature', 'avw_vacature_save_meta' );
+
+/**
+ * VACATURES: Custom admin columns
+ */
+function avw_vacature_columns( $cols ) {
+    return array(
+        'cb'                    => $cols['cb'],
+        'title'                 => 'Functie',
+        'vacature_afdeling'     => 'Afdeling',
+        'vacature_locatie'      => 'Locatie',
+        'vacature_uren'         => 'Uren',
+        'vacature_contracttype' => 'Contract',
+        'date'                  => 'Datum',
+    );
+}
+add_filter( 'manage_vacature_posts_columns', 'avw_vacature_columns' );
+
+function avw_vacature_column_content( $col, $post_id ) {
+    $map = array(
+        'vacature_afdeling'     => '_vacature_afdeling',
+        'vacature_locatie'      => '_vacature_locatie',
+        'vacature_uren'         => '_vacature_uren',
+        'vacature_contracttype' => '_vacature_contracttype',
+    );
+    if ( isset($map[$col]) ) {
+        echo esc_html( get_post_meta($post_id, $map[$col], true) ?: '—' );
+    }
+}
+add_action( 'manage_vacature_posts_custom_column', 'avw_vacature_column_content', 10, 2 );
+
+/**
  * Add Cart Badge to AJAX Fragments
  */
 add_filter('woocommerce_add_to_cart_fragments', 'avw_cart_badge_fragment');
