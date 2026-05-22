@@ -1,11 +1,5 @@
 <?php
 
-/**
- * PURGE CACHE ON EVERY LOAD (TEMPORARY)
- */
-if ( class_exists( 'LiteSpeed\Purge' ) ) {
-    \LiteSpeed\Purge::purge_all();
-}
 
 function avw_distillery_scripts() {
     // Enqueue Main Style with dynamic version to kill cache
@@ -610,6 +604,8 @@ add_action( 'init', 'avw_register_recept_cpt' );
  * RECEPTEN: Seed default taxonomy terms (runs once per term, safe to re-run)
  */
 function avw_seed_recept_terms() {
+    if ( get_option( 'avw_recept_terms_v2' ) ) return;
+
     // Remove old placeholder terms
     $old_soorten = array( 'Cocktail', 'Longdrink', 'Shot', 'Mocktail', 'Warm drankje', 'Punch' );
     foreach ( $old_soorten as $name ) {
@@ -628,19 +624,14 @@ function avw_seed_recept_terms() {
     }
 
     // Seed correct terms from original site
-    $soorten = array( 'Dessert', 'Zoet' );
-    foreach ( $soorten as $name ) {
-        if ( ! term_exists( $name, 'recept_soort' ) ) {
-            wp_insert_term( $name, 'recept_soort' );
-        }
+    foreach ( array( 'Dessert', 'Zoet' ) as $name ) {
+        if ( ! term_exists( $name, 'recept_soort' ) ) wp_insert_term( $name, 'recept_soort' );
+    }
+    foreach ( array( 'Bij de koffie', 'Feestdag' ) as $name ) {
+        if ( ! term_exists( $name, 'recept_gelegenheid' ) ) wp_insert_term( $name, 'recept_gelegenheid' );
     }
 
-    $gelegenheden = array( 'Bij de koffie', 'Feestdag' );
-    foreach ( $gelegenheden as $name ) {
-        if ( ! term_exists( $name, 'recept_gelegenheid' ) ) {
-            wp_insert_term( $name, 'recept_gelegenheid' );
-        }
-    }
+    update_option( 'avw_recept_terms_v2', '1' );
 }
 add_action( 'init', 'avw_seed_recept_terms', 20 );
 
