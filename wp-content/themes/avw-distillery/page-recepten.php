@@ -48,27 +48,28 @@ $gelegenheden = get_terms(array('taxonomy' => 'recept_gelegenheid', 'hide_empty'
 }
 
 /* ---- Search Form ---- */
-.avw-rec-body { max-width: 900px; margin: 0 auto; padding: 60px 24px 100px; }
+.avw-rec-body { width: 80%; max-width: 1400px; margin: 0 auto; padding: 60px 0 100px; }
 
 .avw-rec-search-card {
     background: #fff; border-radius: 24px;
-    padding: 40px 48px;
+    padding: 32px 40px;
     box-shadow: 0 4px 40px rgba(54,34,29,0.08);
     border: 1px solid rgba(54,34,29,0.06);
     margin-bottom: 48px;
 }
 
 .avw-rec-search-title {
-    font-family: 'Kurversbrug', serif; font-size: 22px; color: #36221d;
+    font-family: 'Kurversbrug', serif; font-size: 20px; color: #36221d;
     text-transform: uppercase; letter-spacing: 0.1em; font-weight: normal;
-    margin: 0 0 28px;
+    margin: 0 0 20px;
 }
 
-.avw-rec-filters {
-    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 20px;
+/* Single-line search bar */
+.avw-rec-filterbar {
+    display: flex; align-items: flex-end; gap: 12px; flex-wrap: wrap;
 }
 
-.avw-rec-filter-group { display: flex; flex-direction: column; gap: 6px; }
+.avw-rec-filter-group { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 120px; }
 
 .avw-rec-filter-group label {
     font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 700;
@@ -79,26 +80,25 @@ $gelegenheden = get_terms(array('taxonomy' => 'recept_gelegenheid', 'hide_empty'
 .avw-rec-keyword-input {
     font-family: 'DM Sans', sans-serif; font-size: 14px; color: #36221d;
     border: 1.5px solid rgba(54,34,29,0.15); border-radius: 12px;
-    padding: 12px 16px; background: #fdf8f1;
+    padding: 11px 16px; background: #fdf8f1;
     outline: none; transition: border-color 0.2s; width: 100%;
     appearance: none; -webkit-appearance: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2336221d' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
     background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px;
 }
 
-.avw-rec-keyword-row { margin-bottom: 24px; }
-.avw-rec-keyword-input { background-image: none !important; padding-right: 16px !important; }
+.avw-rec-keyword-input { background-image: none !important; padding-right: 16px !important; flex: 1.5; }
 
 .avw-rec-filter-group select:focus,
 .avw-rec-keyword-input:focus { border-color: #36221d; background: #fff; }
 
 .avw-rec-search-btn {
-    display: inline-block;
+    flex-shrink: 0; align-self: flex-end;
     background: linear-gradient(90deg, rgba(0,0,0,0.2), rgba(0,0,0,0.2)), #432B25;
-    color: #fff; font-family: 'Kurversbrug', serif; font-size: 17px;
+    color: #fff; font-family: 'Kurversbrug', serif; font-size: 16px;
     text-transform: uppercase; letter-spacing: 0.12em;
-    padding: 14px 48px; border-radius: 34px; border: none;
-    cursor: pointer; transition: opacity 0.2s;
+    padding: 11px 36px; border-radius: 34px; border: none;
+    cursor: pointer; transition: opacity 0.2s; white-space: nowrap;
 }
 .avw-rec-search-btn:hover { opacity: 0.88; }
 
@@ -122,19 +122,19 @@ $gelegenheden = get_terms(array('taxonomy' => 'recept_gelegenheid', 'hide_empty'
 .avw-rec-card:hover { box-shadow: 0 12px 40px rgba(54,34,29,0.14); transform: translateY(-3px); }
 
 .avw-rec-card-img {
-    width: 100%; height: 180px; object-fit: cover; object-position: center;
+    width: 100%; height: 200px; object-fit: cover; object-position: center;
     display: block; background: #eedfcb;
 }
 
 .avw-rec-card-img-placeholder {
-    width: 100%; height: 180px; background: linear-gradient(135deg, #eedfcb 0%, #e0cbb0 100%);
+    width: 100%; height: 200px; background: linear-gradient(135deg, #eedfcb 0%, #e0cbb0 100%);
     display: flex; align-items: center; justify-content: center;
 }
 
 .avw-rec-card-body { padding: 20px 22px 24px; flex: 1; display: flex; flex-direction: column; }
 
 .avw-rec-card-title {
-    font-family: 'Kurversbrug', serif; font-size: 16px; color: #36221d;
+    font-family: 'Kurversbrug', serif; font-size: 17px; color: #36221d;
     text-transform: uppercase; letter-spacing: 0.06em; font-weight: normal;
     margin: 0 0 10px; line-height: 1.3;
 }
@@ -149,17 +149,18 @@ $gelegenheden = get_terms(array('taxonomy' => 'recept_gelegenheid', 'hide_empty'
     font-family: 'DM Sans', sans-serif; color: rgba(54,34,29,0.4); font-size: 15px;
 }
 
-.avw-rec-spinner {
-    display: none; text-align: center; padding: 40px;
-}
+.avw-rec-spinner { display: none; text-align: center; padding: 40px; }
 .avw-rec-spinner.active { display: block; }
 
-@media (max-width: 768px) {
-    .avw-rec-search-card { padding: 28px 24px; }
-    .avw-rec-filters { grid-template-columns: 1fr; }
+@media (max-width: 900px) {
+    .avw-rec-body { width: 92%; }
+    .avw-rec-filterbar { flex-wrap: wrap; }
+    .avw-rec-filter-group { min-width: calc(50% - 8px); }
     .avw-rec-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
 }
 @media (max-width: 480px) {
+    .avw-rec-body { width: 100%; padding-left: 16px; padding-right: 16px; }
+    .avw-rec-filter-group { min-width: 100%; }
     .avw-rec-grid { grid-template-columns: 1fr; }
 }
 </style>
@@ -185,7 +186,7 @@ $gelegenheden = get_terms(array('taxonomy' => 'recept_gelegenheid', 'hide_empty'
     <div class="avw-rec-search-card">
         <h2 class="avw-rec-search-title">Zoek een recept</h2>
 
-        <div class="avw-rec-filters">
+        <div class="avw-rec-filterbar">
             <div class="avw-rec-filter-group">
                 <label for="rec-product">Product</label>
                 <select id="rec-product" name="product">
@@ -213,14 +214,12 @@ $gelegenheden = get_terms(array('taxonomy' => 'recept_gelegenheid', 'hide_empty'
                     <?php endforeach; ?>
                 </select>
             </div>
+            <div class="avw-rec-filter-group">
+                <label for="rec-keyword">Trefwoord</label>
+                <input type="text" id="rec-keyword" class="avw-rec-keyword-input" placeholder="bijv. genever, limoen…" />
+            </div>
+            <button id="rec-search-btn" class="avw-rec-search-btn">Zoeken</button>
         </div>
-
-        <div class="avw-rec-filter-group avw-rec-keyword-row">
-            <label for="rec-keyword">Zoek op trefwoord</label>
-            <input type="text" id="rec-keyword" class="avw-rec-keyword-input" placeholder="bijv. genever, limoen, zomer…" />
-        </div>
-
-        <button id="rec-search-btn" class="avw-rec-search-btn">Zoeken</button>
     </div>
 
     <!-- Results -->
