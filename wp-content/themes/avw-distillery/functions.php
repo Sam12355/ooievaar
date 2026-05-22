@@ -53,6 +53,7 @@ add_action('wp_head', 'avw_tailwind_config');
 
 function avw_setup_theme() {
     add_theme_support( 'woocommerce' );
+    add_theme_support( 'post-thumbnails' );
     register_nav_menus( array(
         'primary' => __( 'Primary Menu', 'avw-distillery' ),
     ) );
