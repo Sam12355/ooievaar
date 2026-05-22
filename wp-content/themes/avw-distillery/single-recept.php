@@ -73,7 +73,7 @@ while ( have_posts() ) :
 }
 
 .avw-srec-featured-img {
-    width: 100%; max-height: 500px; object-fit: cover; object-position: center; display: block;
+    width: 100%; height: auto; display: block;
 }
 
 .avw-srec-content { padding: 52px 64px; }
