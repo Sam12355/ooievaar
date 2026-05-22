@@ -555,6 +555,106 @@ function avw_ajax_add_to_cart() {
 }
 
 /**
+ * RECEPTEN: Custom Post Type + Taxonomies
+ */
+function avw_register_recept_cpt() {
+    register_post_type( 'recept', array(
+        'labels' => array(
+            'name'               => 'Recepten',
+            'singular_name'      => 'Recept',
+            'add_new'            => 'Nieuw Recept',
+            'add_new_item'       => 'Nieuw Recept Toevoegen',
+            'edit_item'          => 'Recept Bewerken',
+            'new_item'           => 'Nieuw Recept',
+            'view_item'          => 'Recept Bekijken',
+            'search_items'       => 'Recepten Zoeken',
+            'not_found'          => 'Geen recepten gevonden',
+            'not_found_in_trash' => 'Geen recepten in prullenbak',
+        ),
+        'public'             => true,
+        'has_archive'        => false,
+        'rewrite'            => array( 'slug' => 'recept' ),
+        'supports'           => array( 'title', 'editor', 'thumbnail', 'excerpt' ),
+        'menu_icon'          => 'dashicons-food',
+        'show_in_rest'       => true,
+    ));
+
+    register_taxonomy( 'recept_product', 'recept', array(
+        'labels'       => array( 'name' => 'Producten', 'singular_name' => 'Product' ),
+        'hierarchical' => true,
+        'public'       => true,
+        'rewrite'      => array( 'slug' => 'recept-product' ),
+        'show_in_rest' => true,
+    ));
+
+    register_taxonomy( 'recept_soort', 'recept', array(
+        'labels'       => array( 'name' => 'Soorten', 'singular_name' => 'Soort' ),
+        'hierarchical' => true,
+        'public'       => true,
+        'rewrite'      => array( 'slug' => 'recept-soort' ),
+        'show_in_rest' => true,
+    ));
+
+    register_taxonomy( 'recept_gelegenheid', 'recept', array(
+        'labels'       => array( 'name' => 'Gelegenheden', 'singular_name' => 'Gelegenheid' ),
+        'hierarchical' => true,
+        'public'       => true,
+        'rewrite'      => array( 'slug' => 'recept-gelegenheid' ),
+        'show_in_rest' => true,
+    ));
+}
+add_action( 'init', 'avw_register_recept_cpt' );
+
+/**
+ * RECEPTEN: AJAX search handler
+ */
+add_action( 'wp_ajax_avw_recept_search', 'avw_recept_search' );
+add_action( 'wp_ajax_nopriv_avw_recept_search', 'avw_recept_search' );
+
+function avw_recept_search() {
+    $product     = isset($_POST['product'])     ? sanitize_text_field($_POST['product'])     : '';
+    $soort       = isset($_POST['soort'])       ? sanitize_text_field($_POST['soort'])       : '';
+    $gelegenheid = isset($_POST['gelegenheid']) ? sanitize_text_field($_POST['gelegenheid']) : '';
+    $keyword     = isset($_POST['keyword'])     ? sanitize_text_field($_POST['keyword'])     : '';
+
+    $args = array(
+        'post_type'      => 'recept',
+        'post_status'    => 'publish',
+        'posts_per_page' => 50,
+        'orderby'        => 'title',
+        'order'          => 'ASC',
+    );
+
+    $tax_query = array( 'relation' => 'AND' );
+    if ( $product )     $tax_query[] = array( 'taxonomy' => 'recept_product',     'field' => 'slug', 'terms' => $product );
+    if ( $soort )       $tax_query[] = array( 'taxonomy' => 'recept_soort',       'field' => 'slug', 'terms' => $soort );
+    if ( $gelegenheid ) $tax_query[] = array( 'taxonomy' => 'recept_gelegenheid', 'field' => 'slug', 'terms' => $gelegenheid );
+    if ( count($tax_query) > 1 ) $args['tax_query'] = $tax_query;
+
+    if ( $keyword ) $args['s'] = $keyword;
+
+    $query = new WP_Query( $args );
+    $results = array();
+
+    if ( $query->have_posts() ) {
+        while ( $query->have_posts() ) {
+            $query->the_post();
+            $img = get_the_post_thumbnail_url( get_the_ID(), 'medium' );
+            $results[] = array(
+                'id'      => get_the_ID(),
+                'title'   => get_the_title(),
+                'url'     => get_permalink(),
+                'excerpt' => wp_trim_words( get_the_excerpt(), 18 ),
+                'image'   => $img ?: '',
+            );
+        }
+        wp_reset_postdata();
+    }
+
+    wp_send_json_success( $results );
+}
+
+/**
  * Add Cart Badge to AJAX Fragments
  */
 add_filter('woocommerce_add_to_cart_fragments', 'avw_cart_badge_fragment');
