@@ -104,7 +104,7 @@ get_header();
 }
 .avw-rond-proef-item:last-child { border-bottom: none; }
 .avw-rond-proef-item-title {
-    font-family: 'Kurversbrug', serif; font-size: 18px; color: #36221d;
+    font-family: 'Kurversbrug', serif; font-size: 18px; color: #2d5a3d;
     text-transform: uppercase; letter-spacing: 0.09em; font-weight: normal;
     margin: 0 0 10px;
 }
