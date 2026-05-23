@@ -69,6 +69,7 @@ get_header();
     margin: 0 0 18px; padding-bottom: 14px;
     border-bottom: 2px solid rgba(54,34,29,0.1);
 }
+.avw-rond-card-title.green { color: #2d5a3d; border-bottom-color: rgba(45,90,61,0.15); }
 .avw-rond-card-text {
     font-family: 'DM Sans', sans-serif; font-size: 15px; line-height: 1.85;
     color: rgba(54,34,29,0.78);
@@ -118,7 +119,7 @@ get_header();
 .avw-rond-cta-wrap {
     padding: 32px 48px 40px;
     border-top: 1px solid rgba(54,34,29,0.06);
-    background: #fafaf8;
+    background: #fff;
 }
 .avw-rond-cta-btn {
     display: inline-block;
@@ -206,7 +207,7 @@ get_header();
 
     <!-- Proeflokaal intro card -->
     <div class="avw-rond-card">
-        <h2 class="avw-rond-card-title" style="color:#2d5a3d;">Proeflokaal A. van Wees</h2>
+        <h2 class="avw-rond-card-title green">Proeflokaal A. van Wees</h2>
         <div class="avw-rond-card-text">
             <p>Proef onze specialiteiten in Proeflokaal A. van Wees — volop genieten van al uw favorieten op de Herengracht in Amsterdam. Wilt u liever alleen proeven? De barmannen en barvrouwen geven deskundige voorlichting en schenken u een glas afgestemd op uw smaak en stemming. Van maandag tot en met zondag kunt u zelf uw favorieten uit ons assortiment kiezen.</p>
         </div>
