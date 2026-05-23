@@ -184,7 +184,7 @@ get_header();
         </div>
 
         <!-- Cadeau -->
-        <div class="avw-rond-section">
+        <div class="avw-rond-section" style="border-bottom: none;">
             <h2 class="avw-rond-card-title">Geef een rondleiding cadeau aan een liefhebber</h2>
             <div class="avw-rond-card-text">
                 <p>Bent u op zoek naar een bijzonder cadeau? Sinds kort bieden wij de mogelijkheid tot het bestellen van een rondleiding per persoon. U bestelt een of meerdere rondleidingen via onze webshop en geeft bij de bijzonderheden aan voor wie de rondleiding bestemd is. Zodra er een rondleiding wordt ingepland sturen wij hem of haar per e-mail een uitnodiging voor de eerstvolgende rondleiding. Mocht deze datum niet schikken, dan schuift hij of zij op naar de volgende datum, enzovoort.</p>
@@ -194,7 +194,7 @@ get_header();
 
         <!-- Proeflokaal intro -->
         <div class="avw-rond-section">
-            <h2 class="avw-rond-card-title green">Proeflokaal A. van Wees</h2>
+            <h2 class="avw-rond-card-title">Proeflokaal A. van Wees</h2>
             <div class="avw-rond-card-text">
                 <p>Proef onze specialiteiten in Proeflokaal A. van Wees — volop genieten van al uw favorieten op de Herengracht in Amsterdam. Wilt u liever alleen proeven? De barmannen en barvrouwen geven deskundige voorlichting en schenken u een glas afgestemd op uw smaak en stemming. Van maandag tot en met zondag kunt u zelf uw favorieten uit ons assortiment kiezen.</p>
             </div>
