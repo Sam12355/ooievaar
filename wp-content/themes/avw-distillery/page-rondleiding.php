@@ -204,13 +204,16 @@ get_header();
         </div>
     </div>
 
+    <!-- Proeflokaal intro card -->
+    <div class="avw-rond-card">
+        <h2 class="avw-rond-card-title" style="color:#2d5a3d;">Proeflokaal A. van Wees</h2>
+        <div class="avw-rond-card-text">
+            <p>Proef onze specialiteiten in Proeflokaal A. van Wees — volop genieten van al uw favorieten op de Herengracht in Amsterdam. Wilt u liever alleen proeven? De barmannen en barvrouwen geven deskundige voorlichting en schenken u een glas afgestemd op uw smaak en stemming. Van maandag tot en met zondag kunt u zelf uw favorieten uit ons assortiment kiezen.</p>
+        </div>
+    </div>
+
     <!-- Proeflokaal block -->
     <div class="avw-rond-proef-block">
-
-        <div class="avw-rond-proef-item" style="background:#f4faf6; border-bottom: 2px solid rgba(45,90,61,0.15); padding-bottom: 36px;">
-            <h2 class="avw-rond-card-title" style="margin-bottom:14px; color:#2d5a3d;">Proeflokaal A. van Wees</h2>
-            <p class="avw-rond-proef-item-text">Proef onze specialiteiten in Proeflokaal A. van Wees — volop genieten van al uw favorieten op de Herengracht in Amsterdam. Wilt u liever alleen proeven? De barmannen en barvrouwen geven deskundige voorlichting en schenken u een glas afgestemd op uw smaak en stemming. Van maandag tot en met zondag kunt u zelf uw favorieten uit ons assortiment kiezen.</p>
-        </div>
 
         <div class="avw-rond-proef-items">
 
