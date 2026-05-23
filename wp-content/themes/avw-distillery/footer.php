@@ -275,6 +275,7 @@
                 $svg.css('fill', 'none');
                 currentCount = Math.max(0, currentCount - 1);
                 showAvwToast('Verwijderd uit favorieten');
+                $(document.body).trigger('avw_fav_removed', [productId]);
             }
 
             $badge.text(currentCount);
