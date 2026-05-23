@@ -97,19 +97,6 @@ get_header();
     box-shadow: 0 4px 32px rgba(54,34,29,0.07); border: 1px solid rgba(54,34,29,0.06);
     overflow: hidden; margin-top: 48px;
 }
-.avw-rond-proef-header {
-    background: linear-gradient(135deg, #2d5a3d, #3d7a52);
-    padding: 36px 48px;
-}
-.avw-rond-proef-header-title {
-    font-family: 'Kurversbrug', serif; font-size: 28px; color: #fff;
-    text-transform: uppercase; letter-spacing: 0.1em; font-weight: normal;
-    margin: 0 0 8px;
-}
-.avw-rond-proef-header-sub {
-    font-family: 'DM Sans', sans-serif; font-size: 15px; color: rgba(255,255,255,0.8);
-    line-height: 1.7; margin: 0;
-}
 .avw-rond-proef-items { padding: 8px 0; }
 .avw-rond-proef-item {
     padding: 28px 48px;
@@ -117,7 +104,7 @@ get_header();
 }
 .avw-rond-proef-item:last-child { border-bottom: none; }
 .avw-rond-proef-item-title {
-    font-family: 'Kurversbrug', serif; font-size: 18px; color: #2d5a3d;
+    font-family: 'Kurversbrug', serif; font-size: 18px; color: #36221d;
     text-transform: uppercase; letter-spacing: 0.09em; font-weight: normal;
     margin: 0 0 10px;
 }
@@ -135,7 +122,7 @@ get_header();
 }
 .avw-rond-cta-btn {
     display: inline-block;
-    background: linear-gradient(135deg, #2d5a3d, #3d7a52);
+    background: linear-gradient(90deg, rgba(0,0,0,0.2), rgba(0,0,0,0.2)), #432B25;
     color: #fff; font-family: 'Kurversbrug', serif; font-size: 17px;
     text-transform: uppercase; letter-spacing: 0.12em;
     padding: 14px 48px; border-radius: 34px;
@@ -172,10 +159,12 @@ get_header();
 <div class="avw-rond-body">
 
     <!-- Intro -->
-    <div class="avw-rond-intro">
-        <p class="avw-rond-intro-lead">Reserveer een rondleiding met bijzondere proeverij bij onze distilleerderij.</p>
-        <p class="avw-rond-intro-lead">Wilt u graag eens een kijkje nemen achter de schermen? De sfeer en de geur in de distilleerderij opsnuiven, de ketels van dichtbij bewonderen, een rondgang maken langs de fusten in de lagerkelder en het verhaal achter gedistilleerd horen? Dat kan!</p>
-        <p class="avw-rond-intro-lead">Als u in de distilleerderij ziet hoe al dat lekkers wordt gemaakt, wilt u het ongetwijfeld ook proeven. Dat kan aansluitend, tijdens een bijzondere proeverij in combinatie met wat bijpassende hapjes. Verrassende combinaties, die uw culinaire grenzen verleggen.</p>
+    <div class="avw-rond-card">
+        <h2 class="avw-rond-card-title">Reserveer een rondleiding met bijzondere proeverij bij onze distilleerderij.</h2>
+        <div class="avw-rond-card-text">
+            <p>Wilt u graag eens een kijkje nemen achter de schermen? De sfeer en de geur in de distilleerderij opsnuiven, de ketels van dichtbij bewonderen, een rondgang maken langs de fusten in de lagerkelder en het verhaal achter gedistilleerd horen? Dat kan!</p>
+            <p>Als u in de distilleerderij ziet hoe al dat lekkers wordt gemaakt, wilt u het ongetwijfeld ook proeven. Dat kan aansluitend, tijdens een bijzondere proeverij in combinatie met wat bijpassende hapjes. Verrassende combinaties, die uw culinaire grenzen verleggen.</p>
+        </div>
     </div>
 
     <!-- Hoe werkt het -->
@@ -218,9 +207,9 @@ get_header();
     <!-- Proeflokaal block -->
     <div class="avw-rond-proef-block">
 
-        <div class="avw-rond-proef-header">
-            <h2 class="avw-rond-proef-header-title">Proeflokaal A. van Wees</h2>
-            <p class="avw-rond-proef-header-sub">Proef onze specialiteiten in Proeflokaal A. van Wees — volop genieten van al uw favorieten op de Herengracht in Amsterdam. Wilt u liever alleen proeven? De barmannen en barvrouwen geven deskundige voorlichting en schenken u een glas afgestemd op uw smaak en stemming. Van maandag tot en met zondag kunt u zelf uw favorieten uit ons assortiment kiezen.</p>
+        <div class="avw-rond-proef-item" style="border-bottom: 2px solid rgba(54,34,29,0.1);">
+            <h2 class="avw-rond-card-title" style="margin-bottom:14px;">Proeflokaal A. van Wees</h2>
+            <p class="avw-rond-proef-item-text">Proef onze specialiteiten in Proeflokaal A. van Wees — volop genieten van al uw favorieten op de Herengracht in Amsterdam. Wilt u liever alleen proeven? De barmannen en barvrouwen geven deskundige voorlichting en schenken u een glas afgestemd op uw smaak en stemming. Van maandag tot en met zondag kunt u zelf uw favorieten uit ons assortiment kiezen.</p>
         </div>
 
         <div class="avw-rond-proef-items">
