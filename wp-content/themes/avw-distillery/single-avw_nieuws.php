@@ -64,7 +64,7 @@ $other_news = new WP_Query(array(
     overflow: hidden;
 }
 .avw-snews-featured-img {
-    width: 100%; max-height: 480px; object-fit: cover; display: block;
+    width: 100%; height: auto; display: block;
 }
 .avw-snews-content { padding: 44px 52px 52px; }
 .avw-snews-meta {
