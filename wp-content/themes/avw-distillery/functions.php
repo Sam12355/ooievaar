@@ -929,6 +929,56 @@ function avw_contact_submit() {
 }
 
 /**
+ * NIEUWS: Custom Post Type
+ */
+function avw_register_nieuws_cpt() {
+    register_post_type( 'avw_nieuws', array(
+        'labels' => array(
+            'name'               => 'Nieuws',
+            'singular_name'      => 'Nieuwsbericht',
+            'add_new'            => 'Nieuw Bericht',
+            'add_new_item'       => 'Nieuw Nieuwsbericht Toevoegen',
+            'edit_item'          => 'Nieuwsbericht Bewerken',
+            'new_item'           => 'Nieuw Nieuwsbericht',
+            'view_item'          => 'Nieuwsbericht Bekijken',
+            'search_items'       => 'Nieuwsberichten Zoeken',
+            'not_found'          => 'Geen nieuwsberichten gevonden',
+            'not_found_in_trash' => 'Geen nieuwsberichten in prullenbak',
+            'all_items'          => 'Alle Nieuwsberichten',
+        ),
+        'public'          => true,
+        'has_archive'     => false,
+        'rewrite'         => array( 'slug' => 'nieuws-item' ),
+        'supports'        => array( 'title', 'editor', 'thumbnail', 'excerpt' ),
+        'menu_icon'       => 'dashicons-megaphone',
+        'menu_position'   => 4,
+        'show_in_rest'    => true,
+    ));
+}
+add_action( 'init', 'avw_register_nieuws_cpt' );
+
+/**
+ * NIEUWS: Custom admin columns
+ */
+function avw_nieuws_columns( $cols ) {
+    return array(
+        'cb'            => $cols['cb'],
+        'title'         => 'Titel',
+        'nieuws_thumb'  => 'Foto',
+        'date'          => 'Datum',
+    );
+}
+add_filter( 'manage_avw_nieuws_posts_columns', 'avw_nieuws_columns' );
+
+function avw_nieuws_column_content( $col, $post_id ) {
+    if ( $col === 'nieuws_thumb' ) {
+        $thumb = get_the_post_thumbnail( $post_id, array(60, 40) );
+        echo $thumb ?: '—';
+    }
+}
+add_action( 'manage_avw_nieuws_posts_custom_column', 'avw_nieuws_column_content', 10, 2 );
+
+/**
  * Add Cart Badge to AJAX Fragments
  */
 add_filter('woocommerce_add_to_cart_fragments', 'avw_cart_badge_fragment');
