@@ -979,6 +979,53 @@ function avw_nieuws_column_content( $col, $post_id ) {
 add_action( 'manage_avw_nieuws_posts_custom_column', 'avw_nieuws_column_content', 10, 2 );
 
 /**
+ * SEARCH: Live product search
+ */
+add_action('wp_ajax_avw_live_search',        'avw_live_search');
+add_action('wp_ajax_nopriv_avw_live_search', 'avw_live_search');
+
+function avw_live_search() {
+    $query = sanitize_text_field( $_POST['query'] ?? '' );
+    if ( mb_strlen( $query ) < 2 ) {
+        wp_send_json_success( array( 'html' => '', 'count' => 0, 'url' => '' ) );
+    }
+
+    $products = new WP_Query( array(
+        'post_type'      => 'product',
+        'post_status'    => 'publish',
+        's'              => $query,
+        'posts_per_page' => 6,
+    ) );
+
+    ob_start();
+    while ( $products->have_posts() ) {
+        $products->the_post();
+        $product = wc_get_product( get_the_ID() );
+        $img     = has_post_thumbnail() ? get_the_post_thumbnail_url( null, 'thumbnail' ) : wc_placeholder_img_src();
+        $price   = $product ? strip_tags( wc_price( wc_get_price_to_display( $product ) ) ) : '';
+        ?>
+        <a class="avw-sr-item" href="<?php the_permalink(); ?>">
+            <img src="<?php echo esc_url( $img ); ?>" alt="<?php the_title_attribute(); ?>" />
+            <div class="avw-sr-info">
+                <span class="avw-sr-title"><?php the_title(); ?></span>
+                <?php if ( $price ) : ?>
+                    <span class="avw-sr-price"><?php echo esc_html( get_woocommerce_currency_symbol() . ' ' . $price ); ?></span>
+                <?php endif; ?>
+            </div>
+        </a>
+        <?php
+    }
+    wp_reset_postdata();
+    $html = ob_get_clean();
+
+    wp_send_json_success( array(
+        'html'  => $html,
+        'count' => $products->found_posts,
+        'url'   => home_url( '/?s=' . urlencode( $query ) . '&post_type=product' ),
+    ) );
+}
+
+/**
  * Add Cart Badge to AJAX Fragments
  */
 add_filter('woocommerce_add_to_cart_fragments', 'avw_cart_badge_fragment');

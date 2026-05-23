@@ -160,6 +160,102 @@
                 display: none !important;
             }
         }
+
+        /* ---- Search overlay ---- */
+        #avw-search-backdrop {
+            display: none;
+            position: fixed; inset: 0; z-index: 48;
+            background: rgba(0,0,0,0.35);
+            backdrop-filter: blur(2px);
+        }
+        #avw-search-backdrop.open { display: block; }
+
+        #avw-search-panel {
+            position: fixed; left: 0; right: 0; z-index: 49;
+            background: #fff;
+            box-shadow: 0 12px 48px rgba(0,0,0,0.18);
+            transform: translateY(-8px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+        #avw-search-panel.open {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        #avw-search-inner {
+            max-width: 860px; margin: 0 auto; padding: 28px 24px 24px;
+        }
+        #avw-search-form {
+            display: flex; align-items: center;
+            border: 2px solid #36221d; border-radius: 40px;
+            overflow: hidden; background: #fdf8f1;
+            margin-bottom: 20px;
+        }
+        #avw-search-input {
+            flex: 1; border: none; background: transparent;
+            font-family: 'DM Sans', sans-serif; font-size: 16px; color: #36221d;
+            padding: 14px 20px; outline: none;
+        }
+        #avw-search-input::placeholder { color: rgba(54,34,29,0.4); }
+        #avw-search-submit {
+            border: none; background: #36221d; color: #eedfcb;
+            font-family: 'Kurversbrug', serif; font-size: 14px;
+            text-transform: uppercase; letter-spacing: 0.1em;
+            padding: 14px 28px; cursor: pointer; transition: opacity 0.2s;
+            white-space: nowrap;
+        }
+        #avw-search-submit:hover { opacity: 0.85; }
+
+        /* Results */
+        #avw-search-results { min-height: 0; }
+        .avw-sr-loading {
+            text-align: center; padding: 24px 0;
+            font-family: 'DM Sans', sans-serif; font-size: 14px; color: rgba(54,34,29,0.45);
+        }
+        .avw-sr-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+            margin-bottom: 16px;
+        }
+        @media (max-width: 600px) { .avw-sr-grid { grid-template-columns: repeat(2, 1fr); } }
+        .avw-sr-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 10px 12px; border-radius: 12px; text-decoration: none;
+            transition: background 0.15s;
+        }
+        .avw-sr-item:hover { background: #fdf8f1; }
+        .avw-sr-item img {
+            width: 52px; height: 52px; object-fit: cover;
+            border-radius: 8px; flex-shrink: 0; background: #f0e8de;
+        }
+        .avw-sr-info { min-width: 0; }
+        .avw-sr-title {
+            display: block; font-family: 'DM Sans', sans-serif; font-size: 13px;
+            font-weight: 600; color: #36221d;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .avw-sr-price {
+            display: block; font-family: 'DM Sans', sans-serif; font-size: 12px;
+            color: rgba(54,34,29,0.55); margin-top: 2px;
+        }
+        .avw-sr-footer {
+            border-top: 1px solid rgba(54,34,29,0.08); padding-top: 14px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .avw-sr-footer-count {
+            font-family: 'DM Sans', sans-serif; font-size: 13px; color: rgba(54,34,29,0.45);
+        }
+        .avw-sr-all-link {
+            font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 700;
+            color: #432B25; text-decoration: none; text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+        .avw-sr-all-link:hover { text-decoration: underline; }
+        .avw-sr-empty {
+            padding: 24px 0; text-align: center;
+            font-family: 'DM Sans', sans-serif; font-size: 14px; color: rgba(54,34,29,0.45);
+        }
     </style>
     <?php wp_head(); ?>
 </head>
@@ -273,7 +369,7 @@
                     </svg>
                 </a>
                 <!-- Search -->
-                <button class="bg-white rounded-full px-4 py-2 flex items-center gap-2 hover:bg-gray-100 transition-all active:scale-95 shadow-sm">
+                <button id="avw-search-btn" class="bg-white rounded-full px-4 py-2 flex items-center gap-2 hover:bg-gray-100 transition-all active:scale-95 shadow-sm">
                     <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
                         <path d="M7.875 13.5C10.9816 13.5 13.5 10.9816 13.5 7.875C13.5 4.7684 10.9816 2.25 7.875 2.25C4.7684 2.25 2.25 4.7684 2.25 7.875C2.25 10.9816 4.7684 13.5 7.875 13.5Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" />
                         <path d="M11.8526 11.8526L15.75 15.75" stroke="black" stroke-linecap="round" stroke-linejoin="round" />
@@ -290,6 +386,88 @@
                 </button>
             </div>
         </div>
+
+        <!-- Search backdrop -->
+        <div id="avw-search-backdrop"></div>
+
+        <!-- Search panel -->
+        <div id="avw-search-panel">
+            <div id="avw-search-inner">
+                <form id="avw-search-form" action="<?php echo home_url('/'); ?>" method="get">
+                    <input type="hidden" name="post_type" value="product" />
+                    <input type="search" id="avw-search-input" name="s" placeholder="Zoek producten…" autocomplete="off" />
+                    <button type="submit" id="avw-search-submit">Zoeken</button>
+                </form>
+                <div id="avw-search-results"></div>
+            </div>
+        </div>
+
+        <script>
+        (function() {
+            var btn      = document.getElementById('avw-search-btn');
+            var panel    = document.getElementById('avw-search-panel');
+            var backdrop = document.getElementById('avw-search-backdrop');
+            var input    = document.getElementById('avw-search-input');
+            var results  = document.getElementById('avw-search-results');
+            var nav      = btn.closest('nav');
+            var debounce, lastQuery = '';
+
+            function openSearch() {
+                var navH = nav.getBoundingClientRect().bottom;
+                panel.style.top = navH + 'px';
+                panel.classList.add('open');
+                backdrop.classList.add('open');
+                input.focus();
+            }
+            function closeSearch() {
+                panel.classList.remove('open');
+                backdrop.classList.remove('open');
+                results.innerHTML = '';
+                lastQuery = '';
+            }
+
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                panel.classList.contains('open') ? closeSearch() : openSearch();
+            });
+            backdrop.addEventListener('click', closeSearch);
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') closeSearch();
+            });
+
+            input.addEventListener('input', function() {
+                var q = this.value.trim();
+                if (q === lastQuery) return;
+                lastQuery = q;
+                clearTimeout(debounce);
+                if (q.length < 2) { results.innerHTML = ''; return; }
+                results.innerHTML = '<div class="avw-sr-loading">Zoeken…</div>';
+                debounce = setTimeout(function() { doSearch(q); }, 280);
+            });
+
+            function doSearch(q) {
+                var fd = new FormData();
+                fd.append('action', 'avw_live_search');
+                fd.append('query', q);
+                fetch('<?php echo admin_url('admin-ajax.php'); ?>', { method: 'POST', body: fd })
+                    .then(function(r) { return r.json(); })
+                    .then(function(res) {
+                        if (!res.success) { results.innerHTML = ''; return; }
+                        if (!res.data.html) {
+                            results.innerHTML = '<div class="avw-sr-empty">Geen producten gevonden voor "<strong>' + q + '</strong>".</div>';
+                            return;
+                        }
+                        results.innerHTML =
+                            '<div class="avw-sr-grid">' + res.data.html + '</div>' +
+                            '<div class="avw-sr-footer">' +
+                                '<span class="avw-sr-footer-count">' + res.data.count + ' resultaten</span>' +
+                                '<a class="avw-sr-all-link" href="' + res.data.url + '">Bekijk alle resultaten &rarr;</a>' +
+                            '</div>';
+                    })
+                    .catch(function() { results.innerHTML = ''; });
+            }
+        })();
+        </script>
 
         <!-- Mobile dropdown menu -->
         <div id="mobile-menu">
