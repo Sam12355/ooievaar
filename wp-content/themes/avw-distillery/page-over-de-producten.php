@@ -254,7 +254,7 @@ get_header();
                 <p class="avw-odp-p">Esprits versterken het aroma op natuurlijke wijze. Ze zijn eenvoudig te doseren en te mengen. Door de hoge concentratie is in elk recept slechts een kleine hoeveelheid nodig. Gebak, ijs en chocola worden daardoor niet onnodig vochtig en behouden ook na diepvriezen hun kwaliteit.</p>
             </div>
             <div class="avw-odp-img-wrap">
-                <img class="avw-odp-parallax-img" src="<?php echo get_template_directory_uri(); ?>/assets/odp-over.jpg" alt="Producten" />
+                <img class="avw-odp-parallax-img" src="<?php echo content_url('/uploads/2026/05/odp-over.jpg'); ?>" alt="Producten" />
             </div>
         </div>
 
@@ -335,7 +335,7 @@ get_header();
                 <p class="avw-odp-p">Het resultaat was een nietszeggend, smaak- en reukloos product, dat al snel zijn intrede deed als vervanger van de moutwijn. Door zijn prijsstelling werd de borrel op basis van melasse alcohol voor iedereen bereikbaar. Door commercie en nieuwe technologieën is het oude ambacht hopeloos in de vergetelheid geraakt. Bijna niemand weet tegenwoordig nog hoe perfect een goed gemaakte genever kan smaken!</p>
             </div>
             <div class="avw-odp-img-wrap">
-                <img class="avw-odp-parallax-img" src="<?php echo get_template_directory_uri(); ?>/assets/odp-genever.jpg" alt="Genever" />
+                <img class="avw-odp-parallax-img" src="<?php echo content_url('/uploads/2026/05/odp-genever.jpg'); ?>" alt="Genever" />
                 <div style="padding: 32px 0 0;">
                     <h3 class="avw-odp-h2" id="gen-bereiding">Onze bereiding van genever</h3>
                     <p class="avw-odp-p">Wij bereiden onze genevers op ambachtelijke wijze, dus van granendistillaten en kruiden. Hiermee houden we een traditie hoog die stamt uit de 16e eeuw. Bij de samenstelling van geneversoorten houden we rekening met verschillen in lagerperiodes van de distillaten. Zo creëren we een optimale smaakconsistentie per soort. Deze werkwijze is kostbaar en daarom uniek voor Nederlandse begrippen.</p>
@@ -468,14 +468,14 @@ get_header();
                 <p class="avw-odp-p">Iedere stoker bepaalde de hoeveelheden per kruidentype naar eigen inzicht. Daarbij was het belangrijk dat de geur en smaak van de jeneverbes de boventoon voerde met daaronder direct de frisse, knisperende tonen van lime.</p>
             </div>
             <div class="avw-odp-img-wrap">
-                <img class="avw-odp-parallax-img" src="<?php echo get_template_directory_uri(); ?>/assets/odp-gin-right.jpg" alt="Gin" />
+                <img class="avw-odp-parallax-img" src="<?php echo content_url('/uploads/2026/05/odp-gin-right.jpg'); ?>" alt="Gin" />
             </div>
         </div>
 
         <!-- Two col: image left + text right -->
         <div class="avw-odp-2col img-left">
             <div class="avw-odp-img-wrap">
-                <img class="avw-odp-parallax-img" src="<?php echo get_template_directory_uri(); ?>/assets/odp-gin-left.jpg" alt="Gin distilleren" />
+                <img class="avw-odp-parallax-img" src="<?php echo content_url('/uploads/2026/05/odp-gin-left.jpg'); ?>" alt="Gin distilleren" />
             </div>
             <div class="avw-odp-text">
                 <h3 class="avw-odp-h2">Onvergelijkbaar</h3>
@@ -509,7 +509,7 @@ get_header();
 
         <!-- Full-width parallax photo -->
         <div class="avw-odp-img-full">
-            <img class="avw-odp-parallax-img" src="<?php echo get_template_directory_uri(); ?>/assets/odp-esprit.jpg" alt="Esprit" />
+            <img class="avw-odp-parallax-img" src="<?php echo content_url('/uploads/2026/05/odp-esprit.jpg'); ?>" alt="Esprit" />
         </div>
 
         <div class="avw-odp-fullblock" id="esp-kooptekoop">
