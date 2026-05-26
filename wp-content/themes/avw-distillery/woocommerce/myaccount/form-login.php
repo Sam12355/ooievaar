@@ -28,9 +28,16 @@ do_action( 'woocommerce_before_customer_login_form' );
 
 .avw-login-wrap {
     width: 70%;
+    min-width: 0;
 }
 
+@media (max-width: 1024px) {
+    .avw-login-wrap { width: 85%; }
+}
 @media (max-width: 768px) {
+    .avw-login-wrap { width: 100%; }
+}
+@media (max-width: 480px) {
     .avw-login-wrap { width: 100%; }
 }
 
@@ -265,7 +272,13 @@ do_action( 'woocommerce_before_customer_login_form' );
 
 /* Responsive */
 @media (max-width: 480px) {
-    .avw-login-card { padding: 30px 24px; }
+    .avw-login-card { padding: 28px 20px; }
+    .avw-login-card-title { font-size: 19px; }
+    .avw-tabs { margin-bottom: 24px; }
+}
+@media (max-width: 360px) {
+    .avw-login-card { padding: 22px 14px; }
+    .avw-login-page { padding: 0 12px 60px; }
 }
 </style>
 

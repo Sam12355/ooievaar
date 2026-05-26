@@ -211,6 +211,8 @@
             flex: 1; border: none; background: transparent;
             font-family: 'DM Sans', sans-serif; font-size: 16px; color: #36221d;
             padding: 14px 20px; outline: none;
+            appearance: none; -webkit-appearance: none;
+            line-height: 1.2; display: block; margin: 0;
         }
         #avw-search-input::placeholder { color: rgba(54,34,29,0.4); }
         #avw-search-submit {
@@ -269,6 +271,27 @@
         .avw-sr-empty {
             padding: 24px 0; text-align: center;
             font-family: 'DM Sans', sans-serif; font-size: 14px; color: rgba(54,34,29,0.45);
+        }
+
+        /* Add to cart: stack quantity above button on mobile */
+        @media (max-width: 768px) {
+            .woocommerce form.cart {
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: stretch !important;
+                gap: 14px !important;
+            }
+            .woocommerce form.cart .quantity {
+                width: 100% !important;
+            }
+            .woocommerce form.cart .quantity input.qty {
+                width: 100% !important;
+                text-align: center !important;
+                box-sizing: border-box !important;
+            }
+            .woocommerce form.cart .single_add_to_cart_button {
+                width: 100% !important;
+            }
         }
     </style>
     <?php wp_head(); ?>
