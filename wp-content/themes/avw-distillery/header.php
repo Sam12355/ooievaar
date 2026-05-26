@@ -62,64 +62,78 @@
         }
 
         #mobile-menu {
-            max-height: 0;
-            overflow: hidden;
-            flex-direction: column;
-            background: #000;
-            padding: 0 1.5rem;
-            gap: 0;
-            border-top: 0px solid rgba(205,188,166,0.3);
+            display: none;
             position: absolute;
             top: 100%;
             left: 0;
-            width: 100%;
+            right: 0;
             z-index: 40;
-            box-shadow: none;
-            transition:
-                max-height 0.4s cubic-bezier(0.4,0,0.2,1),
-                padding 0.4s ease,
-                gap 0.4s ease,
-                border-top-width 0.4s ease,
-                box-shadow 0.4s ease;
-            display: flex;
+            background: #111;
+            border-top: 1px solid rgba(205,188,166,0.15);
+            box-shadow: 0 16px 48px rgba(0,0,0,0.65);
+            max-height: 80vh;
+            overflow-y: auto;
         }
-
         #mobile-menu.open {
-            max-height: 400px;
-            padding: 1.2rem 1.5rem 2rem;
-            gap: 1.5rem;
-            border-top-width: 1px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+            display: block;
+            animation: avwMenuIn 0.22s ease forwards;
         }
-
-        #mobile-menu a {
+        @keyframes avwMenuIn {
+            from { opacity: 0; transform: translateY(-6px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .avw-mob-parent {
+            display: block;
             font-family: 'Kurversbrug', serif;
             font-weight: 300;
             color: #cdbca6;
             font-size: 20px;
             text-transform: uppercase;
+            letter-spacing: 0.12em;
+            text-decoration: none;
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(205,188,166,0.1);
+            transition: color 0.2s;
+        }
+        .avw-mob-parent:hover { color: #fff; }
+        .avw-mob-children {
+            padding: 6px 0 10px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .avw-mob-child {
+            font-family: 'Kurversbrug', serif;
+            font-size: 14px;
+            color: rgba(205,188,166,0.65);
+            text-transform: uppercase;
             letter-spacing: 0.1em;
             text-decoration: none;
-            border-bottom: 1px solid rgba(205,188,166,0.1);
-            padding-bottom: 0.5rem;
-            transition: color 0.3s ease;
-            opacity: 0;
-            transform: translateY(-8px);
-            transition: opacity 0.3s ease, transform 0.3s ease, color 0.2s ease;
+            transition: color 0.2s;
         }
-
-        #mobile-menu.open a {
-            opacity: 1;
-            transform: translateY(0);
+        .avw-mob-child:hover { color: #cdbca6; }
+        .avw-mob-util {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            padding: 16px 0 4px;
         }
-
-        #mobile-menu a:last-child {
-            border-bottom: none;
+        .avw-mob-util a {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-family: 'Kurversbrug', serif;
+            font-size: 13px;
+            color: rgba(205,188,166,0.7);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            text-decoration: none;
+            transition: color 0.2s;
         }
-
-        #mobile-menu a:hover {
-            color: #fff;
-        }
+        .avw-mob-util a:hover { color: #fff; }
+        .avw-mob-lang { font-size: 13px; font-weight: 700; }
+        .avw-mob-lang.active { color: #fff; }
 
         /* Hamburger icon animation */
         #hamburger-btn .bar {
@@ -157,7 +171,7 @@
                 display: none !important;
             }
             #mobile-menu {
-                display: none !important;
+                display: none !important; /* overrides .open on desktop */
             }
         }
 
@@ -526,53 +540,51 @@
 
         <!-- Mobile dropdown menu -->
         <div id="mobile-menu">
-            <div class="flex flex-col gap-5 py-6">
+            <div style="padding: 8px 24px 24px;">
+
+                <!-- Nav items -->
                 <?php if (!empty($menu_tree)) : ?>
                     <?php foreach ($menu_tree as $parent) : ?>
-                        <div class="flex flex-col gap-2">
-                            <a href="<?php echo esc_url($parent->url); ?>" class="font-kurversbrug text-[#cdbca6] text-[18px] uppercase tracking-widest border-b border-[#cdbca6]/10 pb-2">
-                                <?php echo esc_html($parent->title); ?>
-                            </a>
-                            <?php if (!empty($parent->children)) : ?>
-                                <div class="flex flex-col gap-2 pl-3 mt-1">
-                                    <?php foreach ($parent->children as $child) : ?>
-                                        <a href="<?php echo esc_url($child->url); ?>" class="text-[#cdbca6]/70 text-[13px] uppercase tracking-wider font-kurversbrug">
-                                            <?php echo esc_html($child->title); ?>
-                                        </a>
-                                    <?php endforeach; ?>
-                                </div>
-                            <?php endif; ?>
-                        </div>
+                        <a href="<?php echo esc_url($parent->url); ?>" class="avw-mob-parent">
+                            <?php echo esc_html($parent->title); ?>
+                        </a>
+                        <?php if (!empty($parent->children)) : ?>
+                            <div class="avw-mob-children">
+                                <?php foreach ($parent->children as $child) : ?>
+                                    <a href="<?php echo esc_url($child->url); ?>" class="avw-mob-child">
+                                        <?php echo esc_html($child->title); ?>
+                                    </a>
+                                <?php endforeach; ?>
+                            </div>
+                        <?php endif; ?>
                     <?php endforeach; ?>
                 <?php endif; ?>
 
-                <!-- Divider -->
-                <div style="border-top:1px solid rgba(205,188,166,0.15);margin-top:4px;"></div>
-
-                <!-- Utility links: wishlist, account, language -->
-                <div class="flex items-center gap-4 flex-wrap">
-                    <a href="<?php echo esc_url($wl_url); ?>" class="flex items-center gap-2 font-kurversbrug text-[#cdbca6] text-[14px] uppercase tracking-widest hover:text-white transition-colors">
-                        <svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M9 15.75C9 15.75 1.6875 11.8125 1.6875 7.17188C1.6875 6.16488 2.08753 5.19913 2.79958 4.48708C3.51163 3.77503 4.47738 3.375 5.48438 3.375C7.07273 3.375 8.43328 4.24055 9 5.625C9.56672 4.24055 10.9273 3.375 12.5156 3.375C13.5226 3.375 14.4884 3.77503 15.2004 4.48708C15.9125 5.19913 16.3125 6.16488 16.3125 7.17188C16.3125 11.8125 9 15.75 9 15.75Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <!-- Utility row -->
+                <div class="avw-mob-util">
+                    <a href="<?php echo esc_url($wl_url); ?>">
+                        <svg width="15" height="15" viewBox="0 0 18 18" fill="none"><path d="M9 15.75C9 15.75 1.6875 11.8125 1.6875 7.17188C1.6875 6.16488 2.08753 5.19913 2.79958 4.48708C3.51163 3.77503 4.47738 3.375 5.48438 3.375C7.07273 3.375 8.43328 4.24055 9 5.625C9.56672 4.24055 10.9273 3.375 12.5156 3.375C13.5226 3.375 14.4884 3.77503 15.2004 4.48708C15.9125 5.19913 16.3125 6.16488 16.3125 7.17188C16.3125 11.8125 9 15.75 9 15.75Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>
                         Verlanglijst
                     </a>
-                    <a href="<?php echo esc_url( wc_get_account_endpoint_url('dashboard') ); ?>" class="flex items-center gap-2 font-kurversbrug text-[#cdbca6] text-[14px] uppercase tracking-widest hover:text-white transition-colors">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    <a href="<?php echo esc_url(wc_get_account_endpoint_url('dashboard')); ?>">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                         Account
                     </a>
-                    <!-- Language in mobile menu -->
+                    <!-- Language -->
+                    <span style="width:1px;height:16px;background:rgba(205,188,166,0.2);display:inline-block;"></span>
                     <?php if (!empty($avw_langs)) :
                         foreach ($avw_langs as $lang) :
-                            $is_cur = ($lang['slug'] === $avw_cur);
+                            $is_mob_cur = ($lang['slug'] === $avw_cur);
                     ?>
-                        <a href="<?php echo esc_url($lang['url']); ?>"
-                           class="font-kurversbrug text-[14px] uppercase tracking-widest transition-colors <?php echo $is_cur ? 'text-white font-bold' : 'text-[#cdbca6] hover:text-white'; ?>">
+                        <a href="<?php echo esc_url($lang['url']); ?>" class="avw-mob-lang<?php echo $is_mob_cur ? ' active' : ''; ?>">
                             <?php echo esc_html(strtoupper($lang['slug'])); ?>
                         </a>
                     <?php endforeach; else : ?>
-                        <a href="<?php echo home_url('/nl/'); ?>" class="font-kurversbrug text-[14px] uppercase tracking-widest <?php echo $avw_cur === 'nl' ? 'text-white font-bold' : 'text-[#cdbca6] hover:text-white'; ?> transition-colors">NL</a>
-                        <a href="<?php echo home_url('/en/'); ?>" class="font-kurversbrug text-[14px] uppercase tracking-widest <?php echo $avw_cur === 'en' ? 'text-white font-bold' : 'text-[#cdbca6] hover:text-white'; ?> transition-colors">EN</a>
+                        <a href="<?php echo home_url('/nl/'); ?>" class="avw-mob-lang<?php echo $avw_cur === 'nl' ? ' active' : ''; ?>">NL</a>
+                        <a href="<?php echo home_url('/en/'); ?>" class="avw-mob-lang<?php echo $avw_cur === 'en' ? ' active' : ''; ?>">EN</a>
                     <?php endif; ?>
                 </div>
+
             </div>
         </div>
     </nav>
