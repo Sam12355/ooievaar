@@ -29,6 +29,22 @@ get_header();
     padding-left: 32px;
     padding-right: 32px;
     padding-top: 0;
+    min-height: 0;
+}
+
+/* Login page: zero out all wrapper spacing */
+.avw-page-wrap.avw-login-wrap-page {
+    padding: 0 !important;
+    max-width: 100% !important;
+    min-height: 0 !important;
+}
+.avw-login-wrap-page .avw-page-content {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+.avw-login-wrap-page .woocommerce-breadcrumb,
+.avw-login-wrap-page .woocommerce-notices-wrapper:empty {
+    display: none !important;
 }
 
 .avw-page-title {
@@ -203,7 +219,10 @@ get_header();
 }
 </style>
 
-<div class="avw-page-wrap <?php echo (is_cart() || is_checkout() || is_account_page()) ? 'avw-woo-page' : ''; ?>">
+<div class="avw-page-wrap <?php
+    if (is_cart() || is_checkout() || is_account_page()) echo 'avw-woo-page';
+    if (is_account_page() && !is_user_logged_in()) echo ' avw-login-wrap-page';
+?>">
     <?php
     while ( have_posts() ) :
         the_post();

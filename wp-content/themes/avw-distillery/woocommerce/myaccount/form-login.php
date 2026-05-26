@@ -29,7 +29,7 @@ body.woocommerce-account:not(.logged-in) .avw-page-wrap {
 /* ── Brand panel ── */
 .avw-auth-brand {
     background: #36221d;
-    padding: 40px 48px;
+    padding: 20px 48px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -68,7 +68,7 @@ body.woocommerce-account:not(.logged-in) .avw-page-wrap {
 /* ── Form panel ── */
 .avw-auth-form {
     background: #fff;
-    padding: 40px 56px;
+    padding: 20px 56px 48px;
     display: flex;
     align-items: flex-start;
     justify-content: center;
@@ -249,12 +249,12 @@ body.woocommerce-account:not(.logged-in) .avw-page-wrap {
 @media (max-width: 900px) {
     .avw-auth { grid-template-columns: 1fr; }
     .avw-auth-brand { display: none; }
-    .avw-auth-form { padding: 32px 32px; }
+    .avw-auth-form { padding: 20px 24px 40px; }
     .avw-auth-inner { max-width: 100%; }
 }
 @media (max-width: 480px) {
-    .avw-auth-form { padding: 24px 20px; }
-    .avw-auth-tabs { margin-bottom: 24px; }
+    .avw-auth-form { padding: 16px 16px 36px; }
+    .avw-auth-tabs { margin-bottom: 20px; }
 }
 </style>
 
