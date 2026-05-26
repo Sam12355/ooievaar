@@ -1040,3 +1040,33 @@ function avw_cart_badge_fragment($fragments) {
     $fragments['#cart-badge'] = ob_get_clean();
     return $fragments;
 }
+
+/**
+ * POLYLANG: Register theme strings for translation
+ * After registering, go to WP Admin → Languages → String Translations to add EN translations.
+ */
+add_action('init', function() {
+    if ( ! function_exists('pll_register_string') ) return;
+    $g = 'avw-theme';
+
+    // Homepage hero
+    pll_register_string('hero-p1',    "A. van Wees distilleerderij 'De Ooievaar' is de enig overgebleven, ambachtelijke distilleerderij in Amsterdam.", $g);
+    pll_register_string('hero-p2',    'Gevestigd in het hart van de Jordaan, distilleren wij volgens authentieke receptuur.', $g);
+
+    // Homepage products section
+    pll_register_string('prod-title', 'Een Greep uit ons assortiment', $g);
+    pll_register_string('prod-body',  'Door onze ambachtelijke manier van werken houden wij een traditie in stand die stamt uit de 16e eeuw. Met de grote kennis van distilleren die in ons bedrijf aanwezig is en de liefde voor een edel vak produceren wij Oudhollands gedistilleerd van unieke kwaliteit. Tegelijk ontwikkelen wij met oude kennis nieuwe producten zoals een groentenlikeur.', $g);
+    pll_register_string('prod-filter-all', 'Toon Alles', $g);
+    pll_register_string('prod-btn',   'Naar de WEBWINKEL', $g);
+
+    // Homepage about section
+    pll_register_string('about-title', 'Honderden ambachtelijke dranken rechtstreeks uit onze Amsterdamse distilleerderij', $g);
+    pll_register_string('about-p1',   'A.van Wees anno 1883 distilleerderij de Ooievaar anno 1782 omvat de enig overgebleven, ambachtelijke distilleerderij in Amsterdam. U vindt ons in de Driehoekstraat in het hart van de Jordaan.', $g);
+    pll_register_string('about-p2',   'We distilleren producten met natuurlijke ingrediënten, op basis van oorspronkelijke receptuur – en dat proeft u. Onze specialiteiten? Tongstrelende Oudhollandse genevers en likeuren.', $g);
+    pll_register_string('about-btn',  'Lees meer over de distilleerderij', $g);
+
+    // Homepage news section
+    pll_register_string('news-title', 'Laatste Nieuws', $g);
+    pll_register_string('news-sub',   'Lees hier de laatste nieuwtjes over de oudste distillerderij van Amsterdam', $g);
+    pll_register_string('news-btn',   'Lees Alle nieuwsartikelen', $g);
+}, 20);

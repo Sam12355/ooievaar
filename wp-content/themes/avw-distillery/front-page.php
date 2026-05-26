@@ -20,11 +20,10 @@
             <div class="max-w-[460px] px-2">
                 <div id="hero-text-set">
                     <p class="font-sans text-white text-[16px] sm:text-[18px] md:text-[20px] leading-relaxed mb-4">
-                        A. van Wees distilleerderij <br />'De Ooievaar' is de enig overgebleven, ambachtelijke
-                        distilleerderij in Amsterdam.
+                        <?php echo function_exists('pll__') ? pll__('hero-p1') : "A. van Wees distilleerderij 'De Ooievaar' is de enig overgebleven, ambachtelijke distilleerderij in Amsterdam."; ?>
                     </p>
                     <p class="font-sans text-white text-[16px] sm:text-[18px] md:text-[20px] leading-relaxed">
-                        Gevestigd in het hart van de Jordaan, distilleren wij volgens authentieke receptuur.
+                        <?php echo function_exists('pll__') ? pll__('hero-p2') : 'Gevestigd in het hart van de Jordaan, distilleren wij volgens authentieke receptuur.'; ?>
                     </p>
                 </div>
             </div>
@@ -35,12 +34,9 @@
     <section class="bg-[#e0cbb0] py-12 sm:py-16 md:py-20 px-4 sm:px-6">
         <div class="max-w-[1290px] mx-auto">
             <div class="text-center mb-8 sm:mb-12">
-                <h2 class="font-kurversbrug text-[#36221d] text-[28px] sm:text-[36px] md:text-[42px] mb-4 sm:mb-6">Een Greep uit ons assortiment</h2>
+                <h2 class="font-kurversbrug text-[#36221d] text-[28px] sm:text-[36px] md:text-[42px] mb-4 sm:mb-6"><?php echo function_exists('pll__') ? pll__('prod-title') : 'Een Greep uit ons assortiment'; ?></h2>
                 <p class="font-sans text-black text-[16px] sm:text-[18px] md:text-[20px] max-w-[810px] mx-auto leading-relaxed">
-                    Door onze ambachtelijke manier van werken houden wij een traditie in stand die stamt uit de 16e
-                    eeuw. Met de grote kennis van distilleren die in ons bedrijf aanwezig is en de liefde voor een edel
-                    vak produceren wij Oudhollands gedistilleerd van unieke kwaliteit. Tegelijk ontwikkelen wij met oude
-                    kennis nieuwe producten zoals een groentenlikeur.
+                    <?php echo function_exists('pll__') ? pll__('prod-body') : 'Door onze ambachtelijke manier van werken houden wij een traditie in stand die stamt uit de 16e eeuw. Met de grote kennis van distilleren die in ons bedrijf aanwezig is en de liefde voor een edel vak produceren wij Oudhollands gedistilleerd van unieke kwaliteit. Tegelijk ontwikkelen wij met oude kennis nieuwe producten zoals een groentenlikeur.'; ?>
                 </p>
             </div>
 
@@ -79,7 +75,7 @@
                 <div class="flex items-center justify-center flex-wrap border border-[#eedfcb] rounded-[32px] p-1.5 gap-1.5 max-w-full">
                     <button
                         class="category-btn px-4 sm:px-6 py-2 rounded-full text-[14px] sm:text-[16px] font-['DM_Sans',sans-serif] transition-all bg-[#eedfcb] text-[#031509] whitespace-nowrap"
-                        data-category="Toon Alles">Toon Alles</button>
+                        data-category="<?php echo function_exists('pll__') ? pll__('prod-filter-all') : 'Toon Alles'; ?>"><?php echo function_exists('pll__') ? pll__('prod-filter-all') : 'Toon Alles'; ?></button>
                     
                     <?php if ( ! empty( $found_categories ) ) : ?>
                         <?php foreach ( $found_categories as $cat_name ) : ?>
@@ -179,7 +175,7 @@
                 <a href="<?php echo esc_url( home_url( '/assortment/' ) ); ?>"
                     class="rounded-[34px] px-8 sm:px-10 py-3 sm:py-4 text-white font-kurversbrug text-[16px] sm:text-[18px] hover:opacity-90 transition-opacity"
                     style="background:linear-gradient(90deg,rgba(0,0,0,0.2),rgba(0,0,0,0.2)),#432B25; display:inline-block;">
-                    Naar de WEBWINKEL
+                    <?php echo function_exists('pll__') ? pll__('prod-btn') : 'Naar de WEBWINKEL'; ?>
                 </a>
             </div>
         </div>
@@ -205,16 +201,14 @@
                 <!-- Center Content -->
                 <div class="w-full lg:w-1/2 flex flex-col items-center text-center gap-6 sm:gap-10">
                     <h2 class="font-kurversbrug font-light text-[#36221d] text-[28px] sm:text-[36px] md:text-[42px] lg:text-[48px] leading-[1.1] uppercase tracking-tight">
-                        Honderden ambachtelijke dranken rechtstreeks uit onze Amsterdamse distilleerderij
+                        <?php echo function_exists('pll__') ? pll__('about-title') : 'Honderden ambachtelijke dranken rechtstreeks uit onze Amsterdamse distilleerderij'; ?>
                     </h2>
                     <div class="font-sans text-black text-[16px] sm:text-[18px] md:text-[20px] leading-relaxed max-w-[620px]">
                         <p class="mb-4">
-                            A.van Wees anno 1883 distilleerderij de Ooievaar anno 1782 omvat de enig overgebleven,
-                            ambachtelijke distilleerderij in Amsterdam. U vindt ons in de Driehoekstraat in het hart van de Jordaan.
+                            <?php echo function_exists('pll__') ? pll__('about-p1') : 'A.van Wees anno 1883 distilleerderij de Ooievaar anno 1782 omvat de enig overgebleven, ambachtelijke distilleerderij in Amsterdam. U vindt ons in de Driehoekstraat in het hart van de Jordaan.'; ?>
                         </p>
                         <p>
-                            We distilleren producten met natuurlijke ingrediënten, op basis van oorspronkelijke receptuur – en dat proeft u.
-                            Onze specialiteiten? Tongstrelende Oudhollandse genevers en likeuren.
+                            <?php echo function_exists('pll__') ? pll__('about-p2') : 'We distilleren producten met natuurlijke ingrediënten, op basis van oorspronkelijke receptuur – en dat proeft u. Onze specialiteiten? Tongstrelende Oudhollandse genevers en likeuren.'; ?>
                         </p>
                     </div>
                 </div>
@@ -237,7 +231,7 @@
                 <button
                     class="rounded-full px-8 sm:px-12 py-4 sm:py-5 text-white font-kurversbrug text-[14px] sm:text-[16px] uppercase tracking-widest hover:brightness-110 transition-all shadow-lg"
                     style="background-color: #36221d;">
-                    Lees meer over de distilleerderij
+                    <?php echo function_exists('pll__') ? pll__('about-btn') : 'Lees meer over de distilleerderij'; ?>
                 </button>
             </div>
         </div>
@@ -247,8 +241,8 @@
     <section class="bg-[#e0cbb0] py-12 sm:py-16 md:py-20 px-4 sm:px-6">
         <div class="max-w-[1290px] mx-auto">
             <div class="text-center mb-10 sm:mb-14">
-                <h2 class="font-kurversbrug text-[#36221d] text-[28px] sm:text-[36px] md:text-[42px] lg:text-[46px] mb-3 sm:mb-4">Laatste Nieuws</h2>
-                <p class="font-sans text-black text-[16px] sm:text-[18px] md:text-[20px] leading-relaxed">Lees hier de laatste nieuwtjes over de oudste distillerderij van Amsterdam</p>
+                <h2 class="font-kurversbrug text-[#36221d] text-[28px] sm:text-[36px] md:text-[42px] lg:text-[46px] mb-3 sm:mb-4"><?php echo function_exists('pll__') ? pll__('news-title') : 'Laatste Nieuws'; ?></h2>
+                <p class="font-sans text-black text-[16px] sm:text-[18px] md:text-[20px] leading-relaxed"><?php echo function_exists('pll__') ? pll__('news-sub') : 'Lees hier de laatste nieuwtjes over de oudste distillerderij van Amsterdam'; ?></p>
             </div>
             <div class="flex flex-col md:flex-row gap-6 sm:gap-8 mb-10 sm:mb-14">
                 <!-- News card 1 -->
@@ -294,7 +288,7 @@
                 <button
                     class="rounded-[121px] px-6 sm:px-8 py-3 sm:py-4 text-white font-kurversbrug text-[16px] sm:text-[18px] hover:opacity-90 transition-opacity"
                     style="background:linear-gradient(90deg,rgba(0,0,0,0.2),rgba(0,0,0,0.2)),#432B25;">
-                    Lees Alle nieuwsartikelen
+                    <?php echo function_exists('pll__') ? pll__('news-btn') : 'Lees Alle nieuwsartikelen'; ?>
                 </button>
             </div>
         </div>
