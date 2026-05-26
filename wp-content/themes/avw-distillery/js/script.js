@@ -1,3 +1,14 @@
+// ── Inject carousel CSS fix (bypasses page cache) ──
+(function() {
+    var s = document.createElement('style');
+    s.textContent = [
+        '.swiper-button-next::after,.swiper-button-prev::after{display:none!important;content:""!important}',
+        '.related-carousel-wrapper h4{font-size:18px!important;letter-spacing:.06em!important;word-break:break-word!important}',
+        '@media(min-width:640px){.related-carousel-wrapper h4{font-size:22px!important;letter-spacing:.15em!important}}'
+    ].join('');
+    document.head.appendChild(s);
+})();
+
 document.addEventListener("DOMContentLoaded", () => {
   // ── Mobile Menu Toggle ──
   const hamburgerBtn = document.getElementById('hamburger-btn');
@@ -140,5 +151,24 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
     }
+  }
+
+  // ── Related Products Carousel ──
+  var relatedEl = document.querySelector('.related-swiper');
+  if (relatedEl && typeof Swiper !== 'undefined') {
+    var nextEl = document.querySelector('.avw-swiper-next') || document.querySelector('.swiper-button-next');
+    var prevEl = document.querySelector('.avw-swiper-prev') || document.querySelector('.swiper-button-prev');
+    new Swiper('.related-swiper', {
+      slidesPerView: 1,
+      spaceBetween: 16,
+      loop: true,
+      autoplay: { delay: 3500, disableOnInteraction: false },
+      navigation: (nextEl && prevEl) ? { nextEl: nextEl, prevEl: prevEl } : false,
+      breakpoints: {
+        480:  { slidesPerView: 1.5, spaceBetween: 16 },
+        640:  { slidesPerView: 2.2, spaceBetween: 16 },
+        1024: { slidesPerView: 3,   spaceBetween: 20 }
+      }
+    });
   }
 });
