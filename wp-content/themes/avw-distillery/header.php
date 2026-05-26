@@ -304,27 +304,41 @@
             
             <!-- Dynamic Nav Menu Logic (Hierarchy Aware) -->
             <?php
-            $locations = get_nav_menu_locations();
+            $locations  = get_nav_menu_locations();
             $menu_items = false;
 
-            // 1. Try language-specific primary location first (Polylang compatibility)
-            if (has_nav_menu('primary')) {
-                $menu_items = wp_get_nav_menu_items($locations['primary']);
+            // 1. Try Polylang-filtered primary location
+            if ( has_nav_menu('primary') ) {
+                $menu_items = wp_get_nav_menu_items( $locations['primary'] );
             }
 
-            // 2. Fallback to Supreme Boutique Menu
-            if (!$menu_items || empty($menu_items)) {
-                $supreme_menu = wp_get_nav_menu_object('Supreme Boutique Menu');
-                if ($supreme_menu) {
-                    $menu_items = wp_get_nav_menu_items($supreme_menu->term_id);
+            // 2. Fallback to named menus
+            if ( ! $menu_items || empty($menu_items) ) {
+                foreach ( array('Supreme Boutique Menu', 'Premium Boutique Menu') as $name ) {
+                    $obj = wp_get_nav_menu_object( $name );
+                    if ( $obj ) {
+                        $menu_items = wp_get_nav_menu_items( $obj->term_id );
+                        if ( $menu_items ) break;
+                    }
                 }
             }
 
-            // 3. Fallback to Premium Boutique Menu
-            if (!$menu_items || empty($menu_items)) {
-                $premium_menu = wp_get_nav_menu_object('Premium Boutique Menu');
-                if ($premium_menu) {
-                    $menu_items = wp_get_nav_menu_items($premium_menu->term_id);
+            // Translate menu items to current language via Polylang
+            if ( $menu_items && function_exists('pll_get_post') ) {
+                foreach ( $menu_items as $item ) {
+                    if ( in_array( $item->object, array('page','post','product'), true ) && ! empty( $item->object_id ) ) {
+                        $translated_id = pll_get_post( $item->object_id );
+                        if ( $translated_id && $translated_id !== (int) $item->object_id ) {
+                            $translated = get_post( $translated_id );
+                            if ( $translated ) {
+                                // Use translated page title only if user hasn't set a custom menu label
+                                if ( $item->title === get_post( $item->object_id )->post_title ) {
+                                    $item->title = $translated->post_title;
+                                }
+                                $item->url = get_permalink( $translated_id );
+                            }
+                        }
+                    }
                 }
             }
 
