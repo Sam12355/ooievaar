@@ -3,16 +3,36 @@
         <div class="max-w-[1380px] mx-auto">
             <!-- Top Row: responsive grid -->
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 sm:gap-10 mb-10 sm:mb-12">
+                <?php
+                // Helper: resolve a page URL by trying multiple slug candidates
+                function avw_page_url( $slugs, $fallback = '' ) {
+                    foreach ( (array) $slugs as $slug ) {
+                        $page = get_page_by_path( $slug );
+                        if ( $page ) return get_permalink( $page->ID );
+                    }
+                    return $fallback ?: home_url( '/' );
+                }
+                $footer_links = array(
+                    'De Distilleerderij' => avw_page_url( array('distilleerderij','de-distilleerderij') ),
+                    'Producten'          => function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/nl/assortiment/'),
+                    'Beleef'             => avw_page_url( array('beleef') ),
+                    'Kennis'             => avw_page_url( array('kennis') ),
+                    'Webwinkel'          => function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/nl/assortiment/'),
+                    'Blog &amp; Nieuws'  => get_post_type_archive_link('avw_nieuws') ?: avw_page_url( array('nieuws') ),
+                );
+                $account_links = array(
+                    'Mijn Account'       => function_exists('wc_get_account_endpoint_url') ? wc_get_account_endpoint_url('dashboard') : home_url('/mijn-account/'),
+                    'Mijn Mandje'        => function_exists('wc_get_cart_url') ? wc_get_cart_url() : home_url('/mandje/'),
+                    'Veelgestelde Vragen'=> avw_page_url( array('veelgestelde-vragen','faq') ),
+                );
+                ?>
                 <!-- Col 1: Snelle Links -->
                 <div>
                     <h4 class="font-kurversbrug font-light text-[#cdbca6] text-[14px] sm:text-[16px] uppercase tracking-wider mb-4 sm:mb-6">Snelle Links</h4>
                     <ul class="space-y-2">
-                        <li class="flex items-center gap-2"><span class="text-white text-[10px]">•</span><a href="#" class="font-kurversbrug font-light text-white text-[14px] sm:text-[16px] hover:text-[#cdbca6] transition-colors">De Distilleerderij</a></li>
-                        <li class="flex items-center gap-2"><span class="text-white text-[10px]">•</span><a href="#" class="font-kurversbrug font-light text-white text-[14px] sm:text-[16px] hover:text-[#cdbca6] transition-colors">Producten</a></li>
-                        <li class="flex items-center gap-2"><span class="text-white text-[10px]">•</span><a href="#" class="font-kurversbrug font-light text-white text-[14px] sm:text-[16px] hover:text-[#cdbca6] transition-colors">Beleef</a></li>
-                        <li class="flex items-center gap-2"><span class="text-white text-[10px]">•</span><a href="#" class="font-kurversbrug font-light text-white text-[14px] sm:text-[16px] hover:text-[#cdbca6] transition-colors">Kennis</a></li>
-                        <li class="flex items-center gap-2"><span class="text-white text-[10px]">•</span><a href="#" class="font-kurversbrug font-light text-white text-[14px] sm:text-[16px] hover:text-[#cdbca6] transition-colors">Webwinkel</a></li>
-                        <li class="flex items-center gap-2"><span class="text-white text-[10px]">•</span><a href="#" class="font-kurversbrug font-light text-white text-[14px] sm:text-[16px] hover:text-[#cdbca6] transition-colors">Blog &amp; Nieuws</a></li>
+                        <?php foreach ( $footer_links as $label => $url ) : ?>
+                        <li class="flex items-center gap-2"><span class="text-white text-[10px]">•</span><a href="<?php echo esc_url( $url ); ?>" class="font-kurversbrug font-light text-white text-[14px] sm:text-[16px] hover:text-[#cdbca6] transition-colors"><?php echo $label; ?></a></li>
+                        <?php endforeach; ?>
                     </ul>
                 </div>
 
@@ -20,9 +40,9 @@
                 <div>
                     <h4 class="font-kurversbrug font-light text-[#cdbca6] text-[14px] sm:text-[16px] uppercase tracking-wider mb-4 sm:mb-6">Mijn Account</h4>
                     <ul class="space-y-2">
-                        <li class="flex items-center gap-2"><span class="text-white text-[10px]">•</span><a href="#" class="font-kurversbrug font-light text-white text-[14px] sm:text-[16px] hover:text-[#cdbca6] transition-colors">Mijn Account</a></li>
-                        <li class="flex items-center gap-2"><span class="text-white text-[10px]">•</span><a href="#" class="font-kurversbrug font-light text-white text-[14px] sm:text-[16px] hover:text-[#cdbca6] transition-colors">Mijn Mandje</a></li>
-                        <li class="flex items-center gap-2"><span class="text-white text-[10px]">•</span><a href="#" class="font-kurversbrug font-light text-white text-[14px] sm:text-[16px] hover:text-[#cdbca6] transition-colors">Veelgestelde Vragen</a></li>
+                        <?php foreach ( $account_links as $label => $url ) : ?>
+                        <li class="flex items-center gap-2"><span class="text-white text-[10px]">•</span><a href="<?php echo esc_url( $url ); ?>" class="font-kurversbrug font-light text-white text-[14px] sm:text-[16px] hover:text-[#cdbca6] transition-colors"><?php echo esc_html( $label ); ?></a></li>
+                        <?php endforeach; ?>
                     </ul>
                 </div>
 
