@@ -368,6 +368,29 @@
                         <circle cx="12" cy="7" r="4"/>
                     </svg>
                 </a>
+                <!-- Language switcher -->
+                <?php
+                $avw_langs = function_exists('pll_the_languages') ? pll_the_languages(array('raw' => 1)) : array();
+                $avw_cur   = function_exists('pll_current_language') ? pll_current_language() : substr(get_locale(), 0, 2);
+                ?>
+                <div class="flex items-center bg-white rounded-full shadow-sm overflow-hidden" style="height:36px;">
+                    <?php if (!empty($avw_langs)) :
+                        foreach ($avw_langs as $lang) :
+                            $is_cur = ($lang['slug'] === $avw_cur);
+                    ?>
+                        <a href="<?php echo esc_url($lang['url']); ?>"
+                           class="flex items-center justify-center px-3 h-full text-[12px] font-bold uppercase tracking-wider transition-all <?php echo $is_cur ? 'bg-[#36221d] text-[#eedfcb]' : 'text-black hover:bg-gray-100'; ?>"
+                           <?php echo $is_cur ? 'aria-current="true"' : ''; ?>>
+                            <?php echo esc_html(strtoupper($lang['slug'])); ?>
+                        </a>
+                    <?php endforeach; else : ?>
+                        <a href="<?php echo home_url('/nl/'); ?>"
+                           class="flex items-center justify-center px-3 h-full text-[12px] font-bold uppercase tracking-wider transition-all <?php echo $avw_cur === 'nl' ? 'bg-[#36221d] text-[#eedfcb]' : 'text-black hover:bg-gray-100'; ?>">NL</a>
+                        <a href="<?php echo home_url('/en/'); ?>"
+                           class="flex items-center justify-center px-3 h-full text-[12px] font-bold uppercase tracking-wider transition-all <?php echo $avw_cur === 'en' ? 'bg-[#36221d] text-[#eedfcb]' : 'text-black hover:bg-gray-100'; ?>">EN</a>
+                    <?php endif; ?>
+                </div>
+
                 <!-- Search -->
                 <button id="avw-search-btn" class="bg-white rounded-full px-4 py-2 flex items-center gap-2 hover:bg-gray-100 transition-all active:scale-95 shadow-sm">
                     <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
