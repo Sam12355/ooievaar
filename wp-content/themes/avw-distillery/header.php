@@ -330,18 +330,16 @@
 
             <!-- Right: Action buttons -->
             <div class="flex items-center gap-3 flex-shrink-0 ml-auto">
-                <!-- Wishlist (Heart) -->
+                <!-- Wishlist (Heart) — hidden on mobile, shown on desktop -->
                 <?php
                 $wl_page = get_page_by_path('verlanglijst');
                 $wl_url  = $wl_page ? get_permalink($wl_page->ID) : home_url('/verlanglijst/');
+                $fav_count = count(avw_get_favorites());
                 ?>
-                <a href="<?php echo esc_url($wl_url); ?>" class="bg-white rounded-full p-2.5 flex items-center justify-center hover:opacity-90 transition-all active:scale-95 shadow-sm relative group/fav">
+                <a href="<?php echo esc_url($wl_url); ?>" class="hidden md:flex bg-white rounded-full p-2.5 items-center justify-center hover:opacity-90 transition-all active:scale-95 shadow-sm relative group/fav">
                     <svg width="20" height="20" viewBox="0 0 18 18" fill="none">
                         <path d="M9 15.75C9 15.75 1.6875 11.8125 1.6875 7.17188C1.6875 6.16488 2.08753 5.19913 2.79958 4.48708C3.51163 3.77503 4.47738 3.375 5.48438 3.375C7.07273 3.375 8.43328 4.24055 9 5.625C9.56672 4.24055 10.9273 3.375 12.5156 3.375C13.5226 3.375 14.4884 3.77503 15.2004 4.48708C15.9125 5.19913 16.3125 6.16488 16.3125 7.17188C16.3125 11.8125 9 15.75 9 15.75Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
-                    <?php 
-                    $fav_count = count(avw_get_favorites());
-                    ?>
                     <div id="fav-badge" class="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-md transition-all <?php echo $fav_count > 0 ? 'scale-100 opacity-100' : 'scale-0 opacity-0'; ?>">
                         <?php echo $fav_count; ?>
                     </div>
@@ -352,36 +350,36 @@
                         <path d="M15.1875 3.375H2.8125C2.50184 3.375 2.25 3.62684 2.25 3.9375V14.0625C2.25 14.3732 2.50184 14.625 2.8125 14.625H15.1875C15.4982 14.625 15.75 14.3732 15.75 14.0625V3.9375C15.75 3.62684 15.4982 3.375 15.1875 3.375Z" stroke="black" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
                         <path d="M11.8125 6.1875C11.8125 6.93342 11.5162 7.64879 10.9887 8.17624C10.4613 8.70368 9.74592 9 9 9C8.25408 9 7.53871 8.70368 7.01126 8.17624C6.48382 7.64879 6.1875 6.93342 6.1875 6.1875" stroke="black" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
-                    <?php 
+                    <?php
                     $cart_count = ( isset(WC()->cart) && WC()->cart ) ? WC()->cart->get_cart_contents_count() : 0;
                     ?>
                     <div id="cart-badge" class="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-md transition-all <?php echo $cart_count > 0 ? 'scale-100 opacity-100' : 'scale-0 opacity-0'; ?>">
                         <?php echo $cart_count; ?>
                     </div>
                 </a>
-                <!-- User -->
-                <a href="<?php echo esc_url( wc_get_account_endpoint_url( 'dashboard' ) ); ?>" 
+                <!-- User — hidden on mobile -->
+                <a href="<?php echo esc_url( wc_get_account_endpoint_url( 'dashboard' ) ); ?>"
                    aria-label="<?php echo is_user_logged_in() ? esc_attr__( 'My Account', 'woocommerce' ) : esc_attr__( 'Sign In', 'woocommerce' ); ?>"
-                   class="bg-[#cdbca6] rounded-full p-2.5 flex items-center justify-center hover:opacity-90 transition-all active:scale-95 shadow-sm">
+                   class="hidden md:flex bg-[#cdbca6] rounded-full p-2.5 items-center justify-center hover:opacity-90 transition-all active:scale-95 shadow-sm">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1a2e1a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
                         <circle cx="12" cy="7" r="4"/>
                     </svg>
                 </a>
                 <!-- Search -->
-                <button id="avw-search-btn" class="bg-white rounded-full px-4 py-2 flex items-center gap-2 hover:bg-gray-100 transition-all active:scale-95 shadow-sm">
+                <button id="avw-search-btn" class="bg-white rounded-full p-2.5 md:px-4 md:py-2 flex items-center gap-2 hover:bg-gray-100 transition-all active:scale-95 shadow-sm">
                     <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
                         <path d="M7.875 13.5C10.9816 13.5 13.5 10.9816 13.5 7.875C13.5 4.7684 10.9816 2.25 7.875 2.25C4.7684 2.25 2.25 4.7684 2.25 7.875C2.25 10.9816 4.7684 13.5 7.875 13.5Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" />
                         <path d="M11.8526 11.8526L15.75 15.75" stroke="black" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
-                    <span class="text-black text-[14px] font-bold hidden sm:inline">Zoek</span>
+                    <span class="text-black text-[14px] font-bold hidden md:inline">Zoek</span>
                 </button>
-                <!-- Language switcher -->
+                <!-- Language switcher — hidden on mobile -->
                 <?php
                 $avw_langs = function_exists('pll_the_languages') ? pll_the_languages(array('raw' => 1)) : array();
                 $avw_cur   = function_exists('pll_current_language') ? pll_current_language() : substr(get_locale(), 0, 2);
                 ?>
-                <div class="relative" id="avw-lang-switcher">
+                <div class="relative hidden md:block" id="avw-lang-switcher">
                     <button id="avw-lang-btn" class="bg-white rounded-full px-3 py-2 flex items-center gap-1.5 hover:bg-gray-100 transition-all active:scale-95 shadow-sm" aria-label="Taal wisselen">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="12" r="10"/>
@@ -528,17 +526,17 @@
 
         <!-- Mobile dropdown menu -->
         <div id="mobile-menu">
-            <div class="flex flex-col gap-6 py-8">
+            <div class="flex flex-col gap-5 py-6">
                 <?php if (!empty($menu_tree)) : ?>
                     <?php foreach ($menu_tree as $parent) : ?>
                         <div class="flex flex-col gap-2">
-                            <a href="<?php echo esc_url($parent->url); ?>" class="font-kurversbrug text-[#cdbca6] text-[20px] uppercase tracking-widest border-b border-[#cdbca6]/10 pb-2">
+                            <a href="<?php echo esc_url($parent->url); ?>" class="font-kurversbrug text-[#cdbca6] text-[18px] uppercase tracking-widest border-b border-[#cdbca6]/10 pb-2">
                                 <?php echo esc_html($parent->title); ?>
                             </a>
                             <?php if (!empty($parent->children)) : ?>
-                                <div class="flex flex-col gap-3 pl-4 mt-2">
+                                <div class="flex flex-col gap-2 pl-3 mt-1">
                                     <?php foreach ($parent->children as $child) : ?>
-                                        <a href="<?php echo esc_url($child->url); ?>" class="text-[#cdbca6]/80 text-[14px] uppercase tracking-wider font-kurversbrug">
+                                        <a href="<?php echo esc_url($child->url); ?>" class="text-[#cdbca6]/70 text-[13px] uppercase tracking-wider font-kurversbrug">
                                             <?php echo esc_html($child->title); ?>
                                         </a>
                                     <?php endforeach; ?>
@@ -547,6 +545,34 @@
                         </div>
                     <?php endforeach; ?>
                 <?php endif; ?>
+
+                <!-- Divider -->
+                <div style="border-top:1px solid rgba(205,188,166,0.15);margin-top:4px;"></div>
+
+                <!-- Utility links: wishlist, account, language -->
+                <div class="flex items-center gap-4 flex-wrap">
+                    <a href="<?php echo esc_url($wl_url); ?>" class="flex items-center gap-2 font-kurversbrug text-[#cdbca6] text-[14px] uppercase tracking-widest hover:text-white transition-colors">
+                        <svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M9 15.75C9 15.75 1.6875 11.8125 1.6875 7.17188C1.6875 6.16488 2.08753 5.19913 2.79958 4.48708C3.51163 3.77503 4.47738 3.375 5.48438 3.375C7.07273 3.375 8.43328 4.24055 9 5.625C9.56672 4.24055 10.9273 3.375 12.5156 3.375C13.5226 3.375 14.4884 3.77503 15.2004 4.48708C15.9125 5.19913 16.3125 6.16488 16.3125 7.17188C16.3125 11.8125 9 15.75 9 15.75Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        Verlanglijst
+                    </a>
+                    <a href="<?php echo esc_url( wc_get_account_endpoint_url('dashboard') ); ?>" class="flex items-center gap-2 font-kurversbrug text-[#cdbca6] text-[14px] uppercase tracking-widest hover:text-white transition-colors">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        Account
+                    </a>
+                    <!-- Language in mobile menu -->
+                    <?php if (!empty($avw_langs)) :
+                        foreach ($avw_langs as $lang) :
+                            $is_cur = ($lang['slug'] === $avw_cur);
+                    ?>
+                        <a href="<?php echo esc_url($lang['url']); ?>"
+                           class="font-kurversbrug text-[14px] uppercase tracking-widest transition-colors <?php echo $is_cur ? 'text-white font-bold' : 'text-[#cdbca6] hover:text-white'; ?>">
+                            <?php echo esc_html(strtoupper($lang['slug'])); ?>
+                        </a>
+                    <?php endforeach; else : ?>
+                        <a href="<?php echo home_url('/nl/'); ?>" class="font-kurversbrug text-[14px] uppercase tracking-widest <?php echo $avw_cur === 'nl' ? 'text-white font-bold' : 'text-[#cdbca6] hover:text-white'; ?> transition-colors">NL</a>
+                        <a href="<?php echo home_url('/en/'); ?>" class="font-kurversbrug text-[14px] uppercase tracking-widest <?php echo $avw_cur === 'en' ? 'text-white font-bold' : 'text-[#cdbca6] hover:text-white'; ?> transition-colors">EN</a>
+                    <?php endif; ?>
+                </div>
             </div>
         </div>
     </nav>

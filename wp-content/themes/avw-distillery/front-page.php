@@ -247,7 +247,7 @@
             <div class="flex flex-col md:flex-row gap-6 sm:gap-8 mb-10 sm:mb-14">
                 <!-- News card 1 -->
                 <div class="rounded-[20px] overflow-hidden relative cursor-pointer group flex-1">
-                    <div class="relative overflow-hidden" style="height:260px; min-height:220px;">
+                    <div class="relative overflow-hidden" style="height:380px; min-height:300px;">
                         <img src="<?php echo get_template_directory_uri(); ?>/assets/2598b498148e6540a6572d998fa86bee0e7a8b8e.png" alt="Kleine distilleerderijen"
                             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                         <div class="absolute inset-0"
@@ -266,7 +266,7 @@
                 </div>
                 <!-- News card 2 -->
                 <div class="rounded-[20px] overflow-hidden relative cursor-pointer group flex-1">
-                    <div class="relative overflow-hidden" style="height:260px; min-height:220px;">
+                    <div class="relative overflow-hidden" style="height:380px; min-height:300px;">
                         <img src="<?php echo get_template_directory_uri(); ?>/assets/409a5a74866028f1506810bb78de0eda68ebce8e.png" alt="Werkbezoek aan Japan"
                             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                         <div class="absolute inset-0"
