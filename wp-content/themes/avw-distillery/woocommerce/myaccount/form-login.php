@@ -24,13 +24,12 @@ body.woocommerce-account:not(.logged-in) .avw-page-wrap {
 .avw-auth {
     display: grid;
     grid-template-columns: 380px 1fr;
-    min-height: 75vh;
 }
 
 /* ── Brand panel ── */
 .avw-auth-brand {
     background: #36221d;
-    padding: 64px 48px;
+    padding: 40px 48px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -50,7 +49,7 @@ body.woocommerce-account:not(.logged-in) .avw-page-wrap {
     line-height: 1.15;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    margin: 48px 0 20px;
+    margin: 28px 0 16px;
 }
 .avw-auth-brand-sub {
     font-family: 'DM Sans', sans-serif;
@@ -69,7 +68,7 @@ body.woocommerce-account:not(.logged-in) .avw-page-wrap {
 /* ── Form panel ── */
 .avw-auth-form {
     background: #fff;
-    padding: 64px 56px;
+    padding: 40px 56px;
     display: flex;
     align-items: flex-start;
     justify-content: center;
@@ -250,12 +249,12 @@ body.woocommerce-account:not(.logged-in) .avw-page-wrap {
 @media (max-width: 900px) {
     .avw-auth { grid-template-columns: 1fr; }
     .avw-auth-brand { display: none; }
-    .avw-auth-form { padding: 48px 32px; }
+    .avw-auth-form { padding: 32px 32px; }
     .avw-auth-inner { max-width: 100%; }
 }
 @media (max-width: 480px) {
-    .avw-auth-form { padding: 36px 20px; }
-    .avw-auth-tabs { margin-bottom: 28px; }
+    .avw-auth-form { padding: 24px 20px; }
+    .avw-auth-tabs { margin-bottom: 24px; }
 }
 </style>
 

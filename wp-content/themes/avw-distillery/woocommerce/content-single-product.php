@@ -122,7 +122,7 @@ foreach ( $tabs as $key => $tab ) {
             $related_ids = wc_get_related_products( $product->get_id(), 9 );
             if ( ! empty( $related_ids ) ) : ?>
                 <div class="related-carousel-wrapper relative group p-6 sm:p-10 rounded-[32px]">
-                    <h4 class="font-kurversbrug text-[22px] text-[#36221d] mb-8 uppercase tracking-[0.2em] text-center">Inspiratie voor u</h4>
+                    <h4 class="font-kurversbrug text-[18px] sm:text-[22px] text-[#36221d] mb-6 uppercase tracking-[0.08em] sm:tracking-[0.2em] text-center">Inspiratie voor u</h4>
                     
                     <div class="relative px-4 sm:px-8">
                         <div class="swiper related-swiper overflow-hidden">
@@ -161,7 +161,7 @@ foreach ( $tabs as $key => $tab ) {
 document.addEventListener('DOMContentLoaded', function() {
     if (typeof Swiper !== 'undefined') {
         new Swiper(".related-swiper", {
-            slidesPerView: 1.5,
+            slidesPerView: 1,
             spaceBetween: 15,
             loop: true,
             autoplay: { delay: 3500 },
@@ -170,6 +170,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 prevEl: ".swiper-button-prev",
             },
             breakpoints: {
+                480: { slidesPerView: 1.5 },
                 640: { slidesPerView: 2.2 },
                 1024: { slidesPerView: 3 }
             }
