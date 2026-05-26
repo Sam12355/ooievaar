@@ -24,6 +24,8 @@ body.woocommerce-account:not(.logged-in) .avw-page-wrap {
 .avw-auth {
     display: grid;
     grid-template-columns: 380px 1fr;
+    width: 100%;
+    min-width: 0;
 }
 
 /* ── Brand panel ── */
@@ -69,13 +71,15 @@ body.woocommerce-account:not(.logged-in) .avw-page-wrap {
 .avw-auth-form {
     background: #fff;
     padding: 20px 56px 48px;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
 }
 .avw-auth-inner {
     width: 100%;
     max-width: 440px;
+    margin: 0 auto;
+    box-sizing: border-box;
 }
 
 /* ── Tabs ── */
@@ -253,7 +257,7 @@ body.woocommerce-account:not(.logged-in) .avw-page-wrap {
     .avw-auth { grid-template-columns: 1fr; }
     .avw-auth-brand { display: none; }
     .avw-auth-form { padding: 20px 24px 40px; }
-    .avw-auth-inner { max-width: 100%; }
+    .avw-auth-inner { max-width: 100%; margin: 0; }
 }
 @media (max-width: 480px) {
     .avw-auth-form { padding: 16px 16px 36px; }
