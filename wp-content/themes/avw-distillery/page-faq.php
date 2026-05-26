@@ -155,8 +155,9 @@ get_header();
     <p class="avw-faq-hero-eyebrow"><?php echo $is_en ? 'Help &amp; Information' : 'Hulp &amp; Informatie'; ?></p>
     <h1 class="avw-faq-hero-title"><?php echo $is_en ? 'Frequently Asked<br>Questions' : 'Veelgestelde<br>Vragen'; ?></h1>
     <?php
-    $is_en = ( function_exists('pll_current_language') && pll_current_language() === 'en' )
-          || ( ! function_exists('pll_current_language') && strpos( get_locale(), 'en' ) === 0 );
+    $avw_lang = function_exists('pll_current_language') ? pll_current_language() : get_locale();
+$is_en = ( strpos( $avw_lang, 'en' ) === 0 )
+      || ( strpos( $_SERVER['REQUEST_URI'], '/en/' ) !== false );
     echo '<p class="avw-faq-hero-sub">' . ( $is_en
         ? 'Do you have a question about ordering, delivery or pick-up? Find your answers here.'
         : 'Heeft u een vraag over bestellen, bezorgen of afhalen? Hier vindt u de antwoorden.'
