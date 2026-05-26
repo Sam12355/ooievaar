@@ -88,15 +88,16 @@ body.woocommerce-account:not(.logged-in) .avw-page-wrap {
     flex: 1;
     background: none;
     border: none;
-    padding: 14px 12px;
+    padding: 14px 8px;
     font-family: 'Kurversbrug', serif;
-    font-size: 13px;
-    letter-spacing: 0.14em;
+    font-size: 12px;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
     color: rgba(54,34,29,0.3);
     cursor: pointer;
     position: relative;
     transition: color 0.2s;
+    white-space: nowrap;
 }
 .avw-auth-tab::after {
     content: '';
@@ -112,8 +113,10 @@ body.woocommerce-account:not(.logged-in) .avw-page-wrap {
 .avw-auth-tab.active::after { transform: scaleX(1); }
 
 /* ── Panels ── */
-.avw-auth-panel { display: none; }
+.avw-auth-panel { display: none; overflow: hidden; width: 100%; box-sizing: border-box; }
 .avw-auth-panel.active { display: block; }
+.avw-auth-panel form, .avw-auth-panel .woocommerce-privacy-policy-text,
+.avw-auth-panel p { max-width: 100%; box-sizing: border-box; }
 
 /* ── Fields ── */
 .avw-auth-field {

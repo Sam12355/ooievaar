@@ -121,13 +121,35 @@ foreach ( $tabs as $key => $tab ) {
             <?php
             $related_ids = wc_get_related_products( $product->get_id(), 9 );
             if ( ! empty( $related_ids ) ) : ?>
-                <div class="related-carousel-wrapper relative group p-6 sm:p-10 rounded-[32px]">
-                    <h4 class="font-kurversbrug text-[18px] sm:text-[22px] text-[#36221d] mb-6 uppercase tracking-[0.08em] sm:tracking-[0.2em] text-center">Inspiratie voor u</h4>
-                    
-                    <div class="relative px-4 sm:px-8">
+                <style>
+                /* Hide Swiper default ::after arrows — we use custom SVGs */
+                .related-swiper-wrap .avw-swiper-next::after,
+                .related-swiper-wrap .avw-swiper-prev::after { display: none !important; content: '' !important; }
+                .related-swiper-wrap .avw-swiper-next,
+                .related-swiper-wrap .avw-swiper-prev {
+                    position: absolute; top: 50%; transform: translateY(-50%);
+                    width: 40px; height: 40px; z-index: 20;
+                    display: flex; align-items: center; justify-content: center;
+                    color: #36221d; opacity: 0.5; cursor: pointer;
+                    transition: opacity 0.2s;
+                }
+                .related-swiper-wrap .avw-swiper-next:hover,
+                .related-swiper-wrap .avw-swiper-prev:hover { opacity: 1; }
+                .related-swiper-wrap .avw-swiper-next { right: -4px; }
+                .related-swiper-wrap .avw-swiper-prev { left: -4px; }
+                @media (min-width: 640px) {
+                    .related-swiper-wrap .avw-swiper-next { right: -20px; }
+                    .related-swiper-wrap .avw-swiper-prev { left: -20px; }
+                }
+                .related-swiper-wrap .swiper-button-disabled { opacity: 0.15 !important; }
+                </style>
+                <div class="related-carousel-wrapper p-4 sm:p-8 rounded-[32px]">
+                    <h4 class="font-kurversbrug text-[18px] sm:text-[22px] text-[#36221d] mb-6 uppercase tracking-[0.06em] sm:tracking-[0.15em] text-center">Inspiratie voor u</h4>
+
+                    <div class="related-swiper-wrap relative px-6 sm:px-10">
                         <div class="swiper related-swiper overflow-hidden">
                             <div class="swiper-wrapper">
-                                <?php foreach ( $related_ids as $related_id ) : 
+                                <?php foreach ( $related_ids as $related_id ) :
                                     $rel_product = wc_get_product( $related_id );
                                     if ( ! $rel_product ) continue;
                                     ?>
@@ -143,13 +165,8 @@ foreach ( $tabs as $key => $tab ) {
                                 <?php endforeach; ?>
                             </div>
                         </div>
-                        <!-- Navigation Buttons (ULTRA VISIBLE & ICONIC) -->
-                        <div class="swiper-button-next !text-[#36221d] !w-10 !h-10 !-right-2 sm:!-right-6 z-20 flex items-center justify-center opacity-50 hover:opacity-100 transition-opacity">
-                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                        </div>
-                        <div class="swiper-button-prev !text-[#36221d] !w-10 !h-10 !-left-2 sm:!-left-6 z-20 flex items-center justify-center opacity-50 hover:opacity-100 transition-opacity">
-                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                        </div>
+                        <div class="avw-swiper-next"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
+                        <div class="avw-swiper-prev"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></div>
                     </div>
                 </div>
             <?php endif; ?>
@@ -166,8 +183,8 @@ document.addEventListener('DOMContentLoaded', function() {
             loop: true,
             autoplay: { delay: 3500 },
             navigation: {
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev",
+                nextEl: ".avw-swiper-next",
+                prevEl: ".avw-swiper-prev",
             },
             breakpoints: {
                 480: { slidesPerView: 1.5 },
