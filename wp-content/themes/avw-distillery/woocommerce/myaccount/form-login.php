@@ -22,23 +22,18 @@ do_action( 'woocommerce_before_customer_login_form' );
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 24px 60px;
+    padding: 0;
     font-family: 'DM Sans', sans-serif;
 }
 
 .avw-login-wrap {
-    width: 70%;
+    width: 100%;
     min-width: 0;
+    padding: 0 20px 60px;
 }
 
-@media (max-width: 1024px) {
-    .avw-login-wrap { width: 85%; }
-}
-@media (max-width: 768px) {
-    .avw-login-wrap { width: 100%; }
-}
 @media (max-width: 480px) {
-    .avw-login-wrap { width: 100%; }
+    .avw-login-wrap { padding: 0 12px 40px; }
 }
 
 /* ---- Tabs ---- */
@@ -85,7 +80,7 @@ do_action( 'woocommerce_before_customer_login_form' );
 .avw-login-card {
     background: #fff;
     border-radius: 24px;
-    padding: 44px 40px;
+    padding: 40px 32px;
     box-shadow: 0 12px 60px rgba(0,0,0,0.06);
     border: 1px solid rgba(19,62,35,0.05);
 }
