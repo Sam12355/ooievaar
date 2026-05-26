@@ -149,10 +149,19 @@ get_header();
 </style>
 
 <!-- Hero -->
+<?php $is_en = ( function_exists('pll_current_language') && pll_current_language() === 'en' )
+            || ( ! function_exists('pll_current_language') && strpos( get_locale(), 'en' ) === 0 ); ?>
 <div class="avw-faq-hero">
-    <p class="avw-faq-hero-eyebrow">Hulp &amp; Informatie</p>
-    <h1 class="avw-faq-hero-title">Veelgestelde<br>Vragen</h1>
-    <p class="avw-faq-hero-sub">Heeft u een vraag over bestellen, bezorgen of afhalen? Hier vindt u de antwoorden.</p>
+    <p class="avw-faq-hero-eyebrow"><?php echo $is_en ? 'Help &amp; Information' : 'Hulp &amp; Informatie'; ?></p>
+    <h1 class="avw-faq-hero-title"><?php echo $is_en ? 'Frequently Asked<br>Questions' : 'Veelgestelde<br>Vragen'; ?></h1>
+    <?php
+    $is_en = ( function_exists('pll_current_language') && pll_current_language() === 'en' )
+          || ( ! function_exists('pll_current_language') && strpos( get_locale(), 'en' ) === 0 );
+    echo '<p class="avw-faq-hero-sub">' . ( $is_en
+        ? 'Do you have a question about ordering, delivery or pick-up? Find your answers here.'
+        : 'Heeft u een vraag over bestellen, bezorgen of afhalen? Hier vindt u de antwoorden.'
+    ) . '</p>';
+    ?>
 </div>
 
 <!-- Accordion body -->
@@ -160,6 +169,53 @@ get_header();
     <div class="avw-faq-wrap">
 
         <?php
+        $is_en = ( function_exists('pll_current_language') && pll_current_language() === 'en' )
+              || ( ! function_exists('pll_current_language') && strpos( get_locale(), 'en' ) === 0 );
+
+        if ( $is_en ) :
+        $faqs = array(
+            array(
+                'q' => 'Where and when can I pick up my order?',
+                'a' => '<p>You can pick up your order at our shop at <strong>Driehoekstraat 10</strong>, Amsterdam. Open Monday to Friday from <strong>13:00 to 17:00</strong> (weekends closed).</p>
+                        <p>NB: If you have not yet received a pick-up notification from us, please call ahead to check whether the product is in stock — otherwise you may have made the trip for nothing!</p>
+                        <div class="avw-notice"><strong>PLEASE NOTE:</strong> Until Monday 15 August we have limited availability and pick-up is not possible. Your order will not be dispatched until after 15 August.</div>',
+            ),
+            array(
+                'q' => 'Which payment methods does Slijterij de Ooievaar accept?',
+                'a' => '<p>When purchasing on our website you can pay with <strong>iDEAL</strong> or by <strong>bank transfer</strong>. Once payment has been confirmed, your order will be dispatched.</p>
+                        <p>Please make sure to only close the iDEAL window after clicking <em>close</em>, otherwise your order will not be registered as placed.</p>
+                        <p>If paying from abroad, we accept payments via <strong>SWIFT, Credit card, Bancontact</strong> and <strong>Sofort Banking</strong>.</p>',
+            ),
+            array(
+                'q' => 'Pick up or delivery?',
+                'a' => '<p>It\'s great that you can order our products through the webshop and have them delivered. But what could be nicer than strolling through the Jordaan and picking up your parcel at our shop on the beautiful Driehoekstraat? It saves on delivery costs and we both contribute to a smaller footprint.</p>
+                        <p>With a bit of luck you can even watch us work through the windows! You can\'t get any closer — unless you book a distillery tour, of course.</p>
+                        <p>If you choose pick-up, we will send you a confirmation once the bottles are ready. Due to staff shortages we operate adjusted opening hours:</p>
+                        <p><strong>Open:</strong> Monday to Friday 13:00 – 17:00.<br><strong>Closed:</strong> Saturday and Sunday.</p>',
+            ),
+            array(
+                'q' => 'Delivery and ID verification?',
+                'a' => '<p>From 1 July 2021, the new alcohol legislation is in effect. This means that upon delivery of your parcel, the <strong>PostNL</strong> courier will ask for your ID to confirm the parcel is intended for you.</p>
+                        <p><strong>We do not deliver to persons under the age of 18!</strong></p>',
+            ),
+            array(
+                'q' => 'What are the shipping costs?',
+                'a' => '<p>If you cannot visit the shop, shipping is your only option. You can still reduce your footprint by ordering multiple bottles per shipment — it lowers your proportional shipping costs.</p>
+                        <ul style="margin:12px 0 12px 20px; line-height:1.9; color:rgba(54,34,29,0.75);">
+                            <li>Orders <strong>from € 50.00</strong> → reduced shipping costs</li>
+                            <li>Orders <strong>from € 150.00</strong> → free shipping</li>
+                        </ul>
+                        <p>Shipping costs are calculated automatically at checkout. Our products do not fit through letterboxes and require a signature upon delivery. You will see the costs appear directly when filling your basket.</p>',
+            ),
+            array(
+                'q' => 'When will my order be shipped?',
+                'a' => '<p>If you order <strong>before 10:00</strong> on a working day and pay by iDEAL, we aim to dispatch your order the same working day. For orders placed after 10:00, we aim to dispatch the following working day.</p>
+                        <p>Unfortunately our post office is no longer just around the corner, so we cannot always guarantee same or next-day dispatch. We aim for this, but due to our small team and high demand it sometimes isn\'t possible.</p>
+                        <p>NB: If you need the parcel by a specific date, please mention this in the <strong>comments field</strong> — otherwise we will assume the shipment is not urgent.</p>
+                        <div class="avw-notice"><strong>PLEASE NOTE:</strong> From Friday 21 July until Monday 15 August 2023 we will not be dispatching parcels due to limited availability. An order placed after 21 July at 17:00 will only be dispatched from 15 August onwards.</div>',
+            ),
+        );
+        else :
         $faqs = array(
             array(
                 'q' => 'Waar en wanneer kan ik mijn bestelling afhalen?',
@@ -202,6 +258,7 @@ get_header();
                         <div class="avw-notice"><strong>LET OP:</strong> Vanaf vrijdag 21 juli tot en met maandag 15 augustus 2023 sturen wij in verband met onze beperkte aanwezigheid geen pakketten. Een pakket dat u na 21 juli 17.00 uur bestelt wordt pas vanaf 15 augustus verzonden.</div>',
             ),
         );
+        endif;
         ?>
 
         <?php foreach ( $faqs as $i => $faq ) : ?>
