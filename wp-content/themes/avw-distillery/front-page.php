@@ -250,45 +250,39 @@
                 <h2 class="font-kurversbrug text-[#36221d] text-[28px] sm:text-[36px] md:text-[42px] lg:text-[46px] mb-3 sm:mb-4"><?php echo function_exists('pll__') ? pll__('Laatste Nieuws') : 'Laatste Nieuws'; ?></h2>
                 <p class="font-sans text-black text-[16px] sm:text-[18px] md:text-[20px] leading-relaxed"><?php echo function_exists('pll__') ? pll__('Lees hier de laatste nieuwtjes over de oudste distillerderij van Amsterdam') : 'Lees hier de laatste nieuwtjes over de oudste distillerderij van Amsterdam'; ?></p>
             </div>
+            <?php
+            $fp_news = new WP_Query(array(
+                'post_type'      => 'avw_nieuws',
+                'post_status'    => 'publish',
+                'posts_per_page' => 2,
+                'orderby'        => 'date',
+                'order'          => 'DESC',
+            ));
+            $fallback_img = get_template_directory_uri() . '/assets/assortment-hero-v2.png';
+            ?>
             <div class="flex flex-col md:flex-row gap-6 sm:gap-8 mb-10 sm:mb-14">
-                <!-- News card 1 -->
-                <div class="rounded-[20px] overflow-hidden relative cursor-pointer group flex-1">
+                <?php if ( $fp_news->have_posts() ): while ( $fp_news->have_posts() ): $fp_news->the_post();
+                    $img = has_post_thumbnail() ? get_the_post_thumbnail_url(null, 'large') : $fallback_img;
+                ?>
+                <a href="<?php the_permalink(); ?>" class="rounded-[20px] overflow-hidden relative cursor-pointer group flex-1" style="text-decoration:none;">
                     <div class="relative overflow-hidden" style="height:380px; min-height:300px;">
-                        <img src="<?php echo get_template_directory_uri(); ?>/assets/2598b498148e6540a6572d998fa86bee0e7a8b8e.png" alt="Kleine distilleerderijen"
+                        <img src="<?php echo esc_url($img); ?>" alt="<?php the_title_attribute(); ?>"
                             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                         <div class="absolute inset-0"
                             style="background:linear-gradient(to bottom,rgba(21,27,49,0.15),rgba(28,63,58,0.4));"></div>
                         <div class="absolute bottom-6 left-6 right-6">
-                            <h3 class="font-kurversbrug text-white text-[18px] sm:text-[20px] leading-snug mb-4 sm:mb-6">Kleine distilleerderijen – Gastblog Marketing Tribune</h3>
+                            <h3 class="font-kurversbrug text-white text-[18px] sm:text-[20px] leading-snug mb-4 sm:mb-6"><?php the_title(); ?></h3>
                             <div class="flex items-center gap-2">
                                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                                     <circle cx="6" cy="6" r="5.8125" stroke="rgba(255,255,255,0.68)" stroke-width="0.375" />
                                     <path d="M6 2.625V6L8.10938 6.99609" stroke="rgba(255,255,255,0.68)" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
-                                <span class="font-['DM_Sans',sans-serif] text-[rgba(255,255,255,0.68)] text-[13px]">15/08/2023</span>
+                                <span class="font-['DM_Sans',sans-serif] text-[rgba(255,255,255,0.68)] text-[13px]"><?php echo get_the_date('d/m/Y'); ?></span>
                             </div>
                         </div>
                     </div>
-                </div>
-                <!-- News card 2 -->
-                <div class="rounded-[20px] overflow-hidden relative cursor-pointer group flex-1">
-                    <div class="relative overflow-hidden" style="height:380px; min-height:300px;">
-                        <img src="<?php echo get_template_directory_uri(); ?>/assets/409a5a74866028f1506810bb78de0eda68ebce8e.png" alt="Werkbezoek aan Japan"
-                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                        <div class="absolute inset-0"
-                            style="background:linear-gradient(to bottom,rgba(21,27,49,0.15),rgba(28,63,58,0.4));"></div>
-                        <div class="absolute bottom-6 left-6 right-6">
-                            <h3 class="font-kurversbrug text-white text-[18px] sm:text-[20px] leading-snug mb-4 sm:mb-6">Werkbezoek aan Japan</h3>
-                            <div class="flex items-center gap-2">
-                                <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                                    <circle cx="6" cy="6" r="5.8125" stroke="rgba(255,255,255,0.68)" stroke-width="0.375" />
-                                    <path d="M6 2.625V6L8.10938 6.99609" stroke="rgba(255,255,255,0.68)" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                                <span class="font-['DM_Sans',sans-serif] text-[rgba(255,255,255,0.68)] text-[13px]">15/08/2023</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                </a>
+                <?php endwhile; wp_reset_postdata(); endif; ?>
             </div>
             <div class="flex justify-center">
                 <a href="<?php echo esc_url($nieuws_url); ?>"
