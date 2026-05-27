@@ -7,6 +7,9 @@
 
 get_header();
 
+$avw_lang = function_exists('pll_current_language') ? pll_current_language() : get_locale();
+$is_en    = ( strpos( $avw_lang, 'en' ) === 0 ) || ( strpos( $_SERVER['REQUEST_URI'], '/en/' ) !== false );
+
 $vacatures = new WP_Query(array(
     'post_type'      => 'vacature',
     'post_status'    => 'publish',
@@ -137,10 +140,10 @@ $vacatures = new WP_Query(array(
         <nav class="avw-vac-breadcrumb">
             <a href="<?php echo home_url(); ?>">Home</a>
             <span style="margin:0 10px;">&bull;</span>
-            <span style="color:#fff;">Vacatures</span>
+            <span style="color:#fff;"><?php echo $is_en ? 'Vacancies' : 'Vacatures'; ?></span>
         </nav>
-        <h1 id="vac-hero-title" class="avw-vac-hero-title">Vacatures</h1>
-        <p class="avw-vac-hero-sub">Kom werken bij A. van Wees Distilleerderij De Ooievaar</p>
+        <h1 id="vac-hero-title" class="avw-vac-hero-title"><?php echo $is_en ? 'Vacancies' : 'Vacatures'; ?></h1>
+        <p class="avw-vac-hero-sub"><?php echo $is_en ? 'Work with us at A. van Wees Distillery De Ooievaar' : 'Kom werken bij A. van Wees Distilleerderij De Ooievaar'; ?></p>
     </div>
 </section>
 
@@ -175,8 +178,8 @@ $vacatures = new WP_Query(array(
         </div>
     <?php else: ?>
         <div class="avw-vac-empty">
-            <p class="avw-vac-empty-title">Momenteel geen vacatures</p>
-            <p class="avw-vac-empty-text">Er zijn op dit moment geen openstaande vacatures. Stuur gerust een open sollicitatie.</p>
+            <p class="avw-vac-empty-title"><?php echo $is_en ? 'No vacancies at the moment' : 'Momenteel geen vacatures'; ?></p>
+            <p class="avw-vac-empty-text"><?php echo $is_en ? 'There are currently no open positions. Feel free to send an open application.' : 'Er zijn op dit moment geen openstaande vacatures. Stuur gerust een open sollicitatie.'; ?></p>
         </div>
     <?php endif; ?>
 </div>
