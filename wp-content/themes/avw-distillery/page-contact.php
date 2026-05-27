@@ -6,6 +6,9 @@
  */
 
 get_header();
+
+$avw_lang = function_exists('pll_current_language') ? pll_current_language() : get_locale();
+$is_en    = ( strpos( $avw_lang, 'en' ) === 0 ) || ( strpos( $_SERVER['REQUEST_URI'], '/en/' ) !== false );
 ?>
 
 <style>
@@ -156,20 +159,22 @@ get_header();
         <!-- Info -->
         <div class="avw-con-info-card">
             <p class="avw-con-info-notice">
-                De telefoonnummers hieronder zijn uitsluitend bedoeld voor vragen over onze producten.
+                <?php echo $is_en
+                    ? 'The phone numbers below are exclusively for questions about our products.'
+                    : 'De telefoonnummers hieronder zijn uitsluitend bedoeld voor vragen over onze producten.'; ?>
             </p>
 
             <div class="avw-con-info-block">
-                <div class="avw-con-info-label">Telefoon</div>
+                <div class="avw-con-info-label"><?php echo $is_en ? 'Phone' : 'Telefoon'; ?></div>
                 <div class="avw-con-info-value">
-                    <a href="tel:+31206267753">020-6267753</a> of <a href="tel:+31206264702">020-6264702</a>
+                    <a href="tel:+31206267753">020-6267753</a> <?php echo $is_en ? 'or' : 'of'; ?> <a href="tel:+31206264702">020-6264702</a>
                 </div>
             </div>
 
             <hr class="avw-con-divider" />
 
             <div class="avw-con-info-block">
-                <div class="avw-con-info-label">Adres</div>
+                <div class="avw-con-info-label"><?php echo $is_en ? 'Address' : 'Adres'; ?></div>
                 <div class="avw-con-info-value">
                     Slijterij de Ooievaar<br>
                     Driehoekstraat 10<br>
@@ -180,50 +185,55 @@ get_header();
             <hr class="avw-con-divider" />
 
             <div class="avw-con-info-block">
-                <div class="avw-con-info-label">Openingstijden</div>
+                <div class="avw-con-info-label"><?php echo $is_en ? 'Opening Hours' : 'Openingstijden'; ?></div>
                 <div class="avw-con-info-value">
+                    <?php if ( $is_en ): ?>
+                    Monday to Friday: 1:00 PM – 5:00 PM<br>
+                    Closed on weekends.
+                    <?php else: ?>
                     Maandag t/m vrijdag: 13.00 – 17.00 uur<br>
                     Gesloten in het weekend.
+                    <?php endif; ?>
                 </div>
             </div>
 
             <hr class="avw-con-divider" />
 
             <div class="avw-con-info-block">
-                <div class="avw-con-info-label">KvK-nummer</div>
+                <div class="avw-con-info-label"><?php echo $is_en ? 'Chamber of Commerce' : 'KvK-nummer'; ?></div>
                 <div class="avw-con-info-value">33112761</div>
             </div>
 
             <div class="avw-con-info-block">
-                <div class="avw-con-info-label">BTW-nummer</div>
+                <div class="avw-con-info-label"><?php echo $is_en ? 'VAT Number' : 'BTW-nummer'; ?></div>
                 <div class="avw-con-info-value">NL0014 15 694 B.01.9110</div>
             </div>
         </div>
 
         <!-- Form -->
         <div class="avw-con-form-card">
-            <h2 class="avw-con-form-title">Stuur ons een bericht</h2>
+            <h2 class="avw-con-form-title"><?php echo $is_en ? 'Send us a message' : 'Stuur ons een bericht'; ?></h2>
             <form id="avw-contact-form" novalidate>
                 <?php wp_nonce_field( 'avw_contact_nonce', 'avw_contact_nonce_field' ); ?>
 
                 <div class="avw-con-field">
-                    <label for="con-email">E-mail <span class="req">*</span></label>
-                    <input type="email" id="con-email" name="email" placeholder="jouw@email.nl" required />
+                    <label for="con-email"><?php echo $is_en ? 'Email' : 'E-mail'; ?> <span class="req">*</span></label>
+                    <input type="email" id="con-email" name="email" placeholder="<?php echo $is_en ? 'your@email.com' : 'jouw@email.nl'; ?>" required />
                 </div>
                 <div class="avw-con-field">
-                    <label for="con-name">Naam <span class="req">*</span></label>
-                    <input type="text" id="con-name" name="name" placeholder="Jouw naam" required />
+                    <label for="con-name"><?php echo $is_en ? 'Name' : 'Naam'; ?> <span class="req">*</span></label>
+                    <input type="text" id="con-name" name="name" placeholder="<?php echo $is_en ? 'Your name' : 'Jouw naam'; ?>" required />
                 </div>
                 <div class="avw-con-field">
-                    <label for="con-subject">Onderwerp</label>
-                    <input type="text" id="con-subject" name="subject" placeholder="Waar gaat je vraag over?" />
+                    <label for="con-subject"><?php echo $is_en ? 'Subject' : 'Onderwerp'; ?></label>
+                    <input type="text" id="con-subject" name="subject" placeholder="<?php echo $is_en ? 'What is your question about?' : 'Waar gaat je vraag over?'; ?>" />
                 </div>
                 <div class="avw-con-field">
-                    <label for="con-message">Bericht <span class="req">*</span></label>
-                    <textarea id="con-message" name="message" placeholder="Je bericht…" required></textarea>
+                    <label for="con-message"><?php echo $is_en ? 'Message' : 'Bericht'; ?> <span class="req">*</span></label>
+                    <textarea id="con-message" name="message" placeholder="<?php echo $is_en ? 'Your message…' : 'Je bericht…'; ?>" required></textarea>
                 </div>
 
-                <button type="submit" class="avw-con-submit-btn">Versturen</button>
+                <button type="submit" class="avw-con-submit-btn"><?php echo $is_en ? 'Send' : 'Versturen'; ?></button>
                 <div id="avw-con-msg" class="avw-con-msg"></div>
             </form>
         </div>
@@ -254,13 +264,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (!email || !name || !message) {
             msg.className = 'avw-con-msg error';
-            msg.textContent = 'Vul alle verplichte velden in.';
+            msg.textContent = <?php echo $is_en ? "'Please fill in all required fields.'" : "'Vul alle verplichte velden in.'"; ?>;
             msg.style.display = 'block';
             return;
         }
 
         btn.disabled = true;
-        btn.textContent = 'Versturen…';
+        btn.textContent = <?php echo $is_en ? "'Sending…'" : "'Versturen…'"; ?>;
 
         var data = new FormData();
         data.append('action',  'avw_contact_submit');
@@ -283,14 +293,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     msg.textContent = res.data;
                 }
                 btn.disabled = false;
-                btn.textContent = 'Versturen';
+                btn.textContent = <?php echo $is_en ? "'Send'" : "'Versturen'"; ?>;
             })
             .catch(function() {
                 msg.className = 'avw-con-msg error';
-                msg.textContent = 'Er ging iets mis. Probeer het opnieuw.';
+                msg.textContent = <?php echo $is_en ? "'Something went wrong. Please try again.'" : "'Er ging iets mis. Probeer het opnieuw.'"; ?>;
                 msg.style.display = 'block';
                 btn.disabled = false;
-                btn.textContent = 'Versturen';
+                btn.textContent = <?php echo $is_en ? "'Send'" : "'Versturen'"; ?>;
             });
     });
 });
