@@ -1177,3 +1177,50 @@ add_action('init', function() {
 
     update_option('avw_en_menu_v3', 1);
 }, 99);
+
+// ── Create English translation of Assortiment page (runs once) ──
+add_action('init', function() {
+    if ( get_option('avw_en_assortiment_v1') ) return;
+    if ( ! function_exists('pll_set_post_language') || ! function_exists('pll_save_post_translations') ) return;
+
+    // Find the Dutch assortiment page
+    $nl_page = get_page_by_path('assortiment');
+    if ( ! $nl_page ) {
+        // Try WooCommerce shop page
+        $shop_id = wc_get_page_id('shop');
+        if ( $shop_id > 0 ) $nl_page = get_post( $shop_id );
+    }
+    if ( ! $nl_page ) return;
+
+    // Make sure Dutch page is set to Dutch
+    pll_set_post_language( $nl_page->ID, 'nl' );
+
+    // Check if English translation already exists
+    $existing_en = pll_get_post( $nl_page->ID, 'en' );
+    if ( $existing_en ) {
+        update_option('avw_en_assortiment_v1', 1);
+        return;
+    }
+
+    // Create English page
+    $en_id = wp_insert_post( array(
+        'post_title'   => 'Assortment',
+        'post_name'    => 'assortment',
+        'post_status'  => 'publish',
+        'post_type'    => 'page',
+        'post_content' => '',
+        'page_template' => 'woocommerce/archive-product.php',
+    ) );
+
+    if ( is_wp_error( $en_id ) ) return;
+
+    pll_set_post_language( $en_id, 'en' );
+
+    // Link as translations of each other
+    pll_save_post_translations( array(
+        'nl' => $nl_page->ID,
+        'en' => $en_id,
+    ) );
+
+    update_option('avw_en_assortiment_v1', 1);
+}, 99);
