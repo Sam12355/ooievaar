@@ -1224,7 +1224,7 @@ add_action('init', function() {
 
 // ── Set manually created Assortiment page to English (runs once) ──
 add_action('init', function() {
-    if ( get_option('avw_fix_assortiment_en_v1') ) return;
+    if ( get_option('avw_fix_assortiment_en_v2') ) return;
     if ( ! function_exists('pll_set_post_language') || ! function_exists('pll_save_post_translations') || ! function_exists('pll_get_post_language') ) return;
 
     // Find the Dutch Assortiment page
@@ -1268,7 +1268,7 @@ add_action('init', function() {
         }
     }
 
-    if ( ! $en_page ) { update_option('avw_fix_assortiment_en_v1', 1); return; }
+    if ( ! $en_page ) { update_option('avw_fix_assortiment_en_v2', 1); return; }
 
     // Set to English and link translations
     pll_set_post_language( $en_page->ID, 'en' );
@@ -1277,5 +1277,50 @@ add_action('init', function() {
         pll_save_post_translations( array( 'nl' => $nl_page->ID, 'en' => $en_page->ID ) );
     }
 
-    update_option('avw_fix_assortiment_en_v1', 1);
+    update_option('avw_fix_assortiment_en_v2', 1);
 }, 100);
+
+// ── Link the two Assortiment pages as translations (runs once) ──
+add_action('init', function() {
+    if ( get_option('avw_link_assortiment_v1') ) return;
+    if ( ! function_exists('pll_get_post_language') || ! function_exists('pll_save_post_translations') ) return;
+
+    // Get all pages titled Assortiment or using the template
+    $all = get_posts( array(
+        'post_type'      => 'page',
+        'post_status'    => 'publish',
+        'posts_per_page' => -1,
+        'meta_key'       => '_wp_page_template',
+        'meta_value'     => 'page-over-de-producten.php',
+    ) );
+
+    $nl_id = null;
+    $en_id = null;
+
+    foreach ( $all as $p ) {
+        $lang = pll_get_post_language( $p->ID );
+        if ( $lang === 'nl' && ! $nl_id ) $nl_id = $p->ID;
+        if ( $lang === 'en' && ! $en_id ) $en_id = $p->ID;
+    }
+
+    // Also search all pages titled Assortiment regardless of template
+    if ( ! $nl_id || ! $en_id ) {
+        $by_title = get_posts( array(
+            'post_type'      => 'page',
+            'post_status'    => 'publish',
+            'posts_per_page' => -1,
+            's'              => 'Assortiment',
+        ) );
+        foreach ( $by_title as $p ) {
+            $lang = pll_get_post_language( $p->ID );
+            if ( $lang === 'nl' && ! $nl_id ) $nl_id = $p->ID;
+            if ( $lang === 'en' && ! $en_id ) $en_id = $p->ID;
+        }
+    }
+
+    if ( $nl_id && $en_id ) {
+        pll_save_post_translations( array( 'nl' => $nl_id, 'en' => $en_id ) );
+    }
+
+    update_option('avw_link_assortiment_v1', 1);
+}, 101);
