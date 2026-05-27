@@ -1,14 +1,21 @@
 <?php
 /**
- * Template Name: Over de Producten
+ * Template Name: Assortiment / Over de Producten
  *
  * @package avw-distillery
  */
 
 get_header();
 
-$avw_lang = function_exists('pll_current_language') ? pll_current_language() : get_locale();
-$is_en    = ( strpos( $avw_lang, 'en' ) === 0 ) || ( strpos( $_SERVER['REQUEST_URI'], '/en/' ) !== false );
+$avw_lang   = function_exists('pll_current_language') ? pll_current_language() : get_locale();
+$post_lang  = function_exists('pll_get_post_language') ? pll_get_post_language( get_the_ID() ) : '';
+$post_slug  = get_post_field( 'post_name', get_the_ID() );
+$en_slugs   = array( 'assortment', 'assortiment-en', 'products', 'en-assortiment' );
+$is_en      = ( $post_lang === 'en' )
+           || ( strpos( $avw_lang, 'en' ) === 0 )
+           || ( strpos( $_SERVER['REQUEST_URI'], '/en/' ) !== false )
+           || ( in_array( $post_slug, $en_slugs, true ) )
+           || ( strpos( get_locale(), 'en' ) === 0 );
 ?>
 
 <style>
