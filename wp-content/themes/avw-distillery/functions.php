@@ -1070,3 +1070,73 @@ add_action('init', function() {
     pll_register_string('news-sub',   'Lees hier de laatste nieuwtjes over de oudste distillerderij van Amsterdam', $g);
     pll_register_string('news-btn',   'Lees Alle nieuwsartikelen', $g);
 }, 20);
+
+// ── Create English navigation menu (runs once, then skips) ──
+add_action('init', function() {
+    if ( get_option('avw_en_menu_v2') ) return;
+
+    // Get or create the menu
+    $menu_obj = wp_get_nav_menu_object('English Menu');
+    if ( $menu_obj ) {
+        $menu_id = $menu_obj->term_id;
+        // Clear old items so we start fresh
+        $old = wp_get_nav_menu_items($menu_id);
+        if ( $old ) foreach ( $old as $it ) wp_delete_post($it->ID, true);
+    } else {
+        $menu_id = wp_create_nav_menu('English Menu');
+        if ( is_wp_error($menu_id) ) return;
+    }
+
+    // Helper: find best English URL for a page slug
+    $en_url = function( $slugs, $fallback ) {
+        foreach ( (array) $slugs as $slug ) {
+            $page = get_page_by_path( $slug );
+            if ( ! $page ) continue;
+            if ( function_exists('pll_get_post') ) {
+                $en_id = pll_get_post( $page->ID, 'en' );
+                if ( $en_id ) return get_permalink( $en_id );
+            }
+            // Same slug under /en/ prefix as fallback
+            return home_url('/en/' . $slug . '/');
+        }
+        return home_url( $fallback );
+    };
+
+    $shop = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/en/shop/');
+    $news = get_post_type_archive_link('avw_nieuws') ?: home_url('/en/nieuws/');
+    // Point shop & news to English prefix
+    $shop = preg_replace('#/nl/#', '/en/', $shop);
+    $news = preg_replace('#/nl/#', '/en/', $news);
+
+    $items = array(
+        array( 'The Distillery', $en_url( array('distilleerderij','de-distilleerderij'), '/en/distilleerderij/' ) ),
+        array( 'Products',       $shop ),
+        array( 'Experience',     $en_url( array('beleef'),   '/en/beleef/' ) ),
+        array( 'Knowledge',      $en_url( array('kennis'),   '/en/kennis/' ) ),
+        array( 'Webshop',        $shop ),
+        array( 'News',           $news ),
+    );
+
+    foreach ( $items as $pos => $item ) {
+        wp_update_nav_menu_item( $menu_id, 0, array(
+            'menu-item-title'    => $item[0],
+            'menu-item-url'      => $item[1],
+            'menu-item-status'   => 'publish',
+            'menu-item-type'     => 'custom',
+            'menu-item-position' => $pos + 1,
+        ) );
+    }
+
+    // Assign this menu to Polylang's English primary location
+    $pll = get_option('polylang');
+    if ( is_array($pll) ) {
+        $theme = get_stylesheet();
+        if ( ! isset($pll['nav_menus'][$theme]['primary']) ) {
+            $pll['nav_menus'][$theme]['primary'] = array();
+        }
+        $pll['nav_menus'][$theme]['primary']['en'] = (int) $menu_id;
+        update_option('polylang', $pll);
+    }
+
+    update_option('avw_en_menu_v2', 1);
+}, 99);
