@@ -7,6 +7,9 @@
 
 get_header();
 
+$avw_lang = function_exists('pll_current_language') ? pll_current_language() : get_locale();
+$is_en    = ( strpos( $avw_lang, 'en' ) === 0 ) || ( strpos( $_SERVER['REQUEST_URI'], '/en/' ) !== false );
+
 while ( have_posts() ) :
     the_post();
     $afdeling     = get_post_meta( get_the_ID(), '_vacature_afdeling',     true );
@@ -168,7 +171,7 @@ while ( have_posts() ) :
         <nav class="avw-svac-breadcrumb">
             <a href="<?php echo home_url(); ?>">Home</a>
             <span style="margin:0 10px;">&bull;</span>
-            <a href="<?php echo get_permalink(get_page_by_path('vacatures')); ?>">Vacatures</a>
+            <a href="<?php echo get_permalink(get_page_by_path('vacatures')); ?>"><?php echo $is_en ? 'Vacancies' : 'Vacatures'; ?></a>
             <span style="margin:0 10px;">&bull;</span>
             <span style="color:#fff;"><?php the_title(); ?></span>
         </nav>
@@ -186,7 +189,7 @@ while ( have_posts() ) :
 <div class="avw-svac-body">
     <a class="avw-svac-back" href="<?php echo get_permalink(get_page_by_path('vacatures')); ?>">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
-        Alle vacatures
+        <?php echo $is_en ? 'All vacancies' : 'Alle vacatures'; ?>
     </a>
 
     <div class="avw-svac-layout">
@@ -203,25 +206,25 @@ while ( have_posts() ) :
                 <div class="avw-svac-detail-row">
                     <?php if ($afdeling): ?>
                     <div class="avw-svac-detail-item">
-                        <span class="avw-svac-detail-label">Afdeling</span>
+                        <span class="avw-svac-detail-label"><?php echo $is_en ? 'Department' : 'Afdeling'; ?></span>
                         <span class="avw-svac-detail-value"><?php echo esc_html($afdeling); ?></span>
                     </div>
                     <?php endif; ?>
                     <?php if ($locatie): ?>
                     <div class="avw-svac-detail-item">
-                        <span class="avw-svac-detail-label">Locatie</span>
+                        <span class="avw-svac-detail-label"><?php echo $is_en ? 'Location' : 'Locatie'; ?></span>
                         <span class="avw-svac-detail-value"><?php echo esc_html($locatie); ?></span>
                     </div>
                     <?php endif; ?>
                     <?php if ($uren): ?>
                     <div class="avw-svac-detail-item">
-                        <span class="avw-svac-detail-label">Uren per week</span>
+                        <span class="avw-svac-detail-label"><?php echo $is_en ? 'Hours per week' : 'Uren per week'; ?></span>
                         <span class="avw-svac-detail-value"><?php echo esc_html($uren); ?></span>
                     </div>
                     <?php endif; ?>
                     <?php if ($contracttype): ?>
                     <div class="avw-svac-detail-item">
-                        <span class="avw-svac-detail-label">Contracttype</span>
+                        <span class="avw-svac-detail-label"><?php echo $is_en ? 'Contract type' : 'Contracttype'; ?></span>
                         <span class="avw-svac-detail-value"><?php echo esc_html($contracttype); ?></span>
                     </div>
                     <?php endif; ?>
@@ -230,10 +233,10 @@ while ( have_posts() ) :
             <?php endif; ?>
 
             <div class="avw-svac-apply-card">
-                <p class="avw-svac-apply-title">Solliciteer</p>
-                <p class="avw-svac-apply-sub">Stuur je motivatie en CV naar ons toe</p>
-                <a class="avw-svac-apply-btn" href="mailto:info@de-ooievaar.nl?subject=Sollicitatie: <?php the_title_attribute(); ?>">
-                    Stuur je sollicitatie
+                <p class="avw-svac-apply-title"><?php echo $is_en ? 'Apply' : 'Solliciteer'; ?></p>
+                <p class="avw-svac-apply-sub"><?php echo $is_en ? 'Send us your motivation and CV' : 'Stuur je motivatie en CV naar ons toe'; ?></p>
+                <a class="avw-svac-apply-btn" href="mailto:info@de-ooievaar.nl?subject=<?php echo $is_en ? 'Application' : 'Sollicitatie'; ?>: <?php the_title_attribute(); ?>">
+                    <?php echo $is_en ? 'Send your application' : 'Stuur je sollicitatie'; ?>
                 </a>
             </div>
         </aside>
