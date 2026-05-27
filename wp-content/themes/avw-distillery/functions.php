@@ -1073,13 +1073,12 @@ add_action('init', function() {
 
 // ── Create English navigation menu (runs once, then skips) ──
 add_action('init', function() {
-    if ( get_option('avw_en_menu_v2') ) return;
+    if ( get_option('avw_en_menu_v3') ) return;
 
     // Get or create the menu
     $menu_obj = wp_get_nav_menu_object('English Menu');
     if ( $menu_obj ) {
         $menu_id = $menu_obj->term_id;
-        // Clear old items so we start fresh
         $old = wp_get_nav_menu_items($menu_id);
         if ( $old ) foreach ( $old as $it ) wp_delete_post($it->ID, true);
     } else {
@@ -1087,7 +1086,7 @@ add_action('init', function() {
         if ( is_wp_error($menu_id) ) return;
     }
 
-    // Helper: find best English URL for a page slug
+    // Helper: find English URL by Dutch slug(s)
     $en_url = function( $slugs, $fallback ) {
         foreach ( (array) $slugs as $slug ) {
             $page = get_page_by_path( $slug );
@@ -1096,38 +1095,76 @@ add_action('init', function() {
                 $en_id = pll_get_post( $page->ID, 'en' );
                 if ( $en_id ) return get_permalink( $en_id );
             }
-            // Same slug under /en/ prefix as fallback
             return home_url('/en/' . $slug . '/');
         }
         return home_url( $fallback );
     };
 
-    $shop = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/en/shop/');
-    $news = get_post_type_archive_link('avw_nieuws') ?: home_url('/en/nieuws/');
-    // Point shop & news to English prefix
-    $shop = preg_replace('#/nl/#', '/en/', $shop);
-    $news = preg_replace('#/nl/#', '/en/', $news);
-
-    $items = array(
-        array( 'The Distillery', $en_url( array('distilleerderij','de-distilleerderij'), '/en/distilleerderij/' ) ),
-        array( 'Products',       $shop ),
-        array( 'Experience',     $en_url( array('beleef'),   '/en/beleef/' ) ),
-        array( 'Knowledge',      $en_url( array('kennis'),   '/en/kennis/' ) ),
-        array( 'Webshop',        $shop ),
-        array( 'News',           $news ),
-    );
-
-    foreach ( $items as $pos => $item ) {
-        wp_update_nav_menu_item( $menu_id, 0, array(
-            'menu-item-title'    => $item[0],
-            'menu-item-url'      => $item[1],
-            'menu-item-status'   => 'publish',
-            'menu-item-type'     => 'custom',
-            'menu-item-position' => $pos + 1,
+    // Helper: add one menu item, return its new item ID
+    $add = function( $title, $url, $parent, $pos ) use ( $menu_id ) {
+        return wp_update_nav_menu_item( $menu_id, 0, array(
+            'menu-item-title'     => $title,
+            'menu-item-url'       => $url,
+            'menu-item-status'    => 'publish',
+            'menu-item-type'      => 'custom',
+            'menu-item-position'  => $pos,
+            'menu-item-parent-id' => $parent,
         ) );
-    }
+    };
 
-    // Assign this menu to Polylang's English primary location
+    $shop  = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/en/shop/');
+    $shop  = preg_replace('#/nl/#', '/en/', $shop);
+    $news  = get_post_type_archive_link('avw_nieuws') ?: home_url('/en/news/');
+    $news  = preg_replace('#/nl/#', '/en/', $news);
+    $cart  = function_exists('wc_get_cart_url')     ? wc_get_cart_url()     : home_url('/en/cart/');
+    $check = function_exists('wc_get_checkout_url') ? wc_get_checkout_url() : home_url('/en/checkout/');
+    $cart  = preg_replace('#/nl/#', '/en/', $cart);
+    $check = preg_replace('#/nl/#', '/en/', $check);
+
+    $pos = 1;
+
+    // ── The Distillery ──
+    $distillery = $add( 'The Distillery', $en_url( array('distilleerderij','de-distilleerderij'), '/en/distilleerderij/' ), 0, $pos++ );
+    $add( 'About',          $en_url( array('over'),              '/en/over/' ),              $distillery, $pos++ );
+    $add( 'Recipe & Craft', $en_url( array('receptuur-ambacht','receptuur'), '/en/receptuur/' ), $distillery, $pos++ );
+    $add( 'Family History', $en_url( array('familiegeschiedenis'), '/en/familiegeschiedenis/' ), $distillery, $pos++ );
+    $add( 'Vacancies',      $en_url( array('vacatures'),         '/en/vacatures/' ),         $distillery, $pos++ );
+    $add( 'Contact',        $en_url( array('contact'),           '/en/contact/' ),           $distillery, $pos++ );
+
+    // ── Products ──
+    $products = $add( 'Products', $shop, 0, $pos++ );
+    $add( 'Product',    $shop, $products, $pos++ );
+    $add( 'Assortment', $en_url( array('assortiment'), '/en/assortiment/' ), $products, $pos++ );
+
+    // ── Experience ──
+    $experience = $add( 'Experience', $en_url( array('beleef'), '/en/beleef/' ), 0, $pos++ );
+    $add( 'Tasting Room',    $en_url( array('proeflokaal'),           '/en/proeflokaal/' ),           $experience, $pos++ );
+    $add( 'Tour / Tasting',  $en_url( array('rondleiding-proeverij','rondleiding'), '/en/rondleiding/' ), $experience, $pos++ );
+    $add( 'Genever School',  $en_url( array('geneverschool'),         '/en/geneverschool/' ),         $experience, $pos++ );
+
+    // ── Knowledge ──
+    $knowledge = $add( 'Knowledge', $en_url( array('kennis'), '/en/kennis/' ), 0, $pos++ );
+    $kennisbank = $add( 'Knowledge Base', $en_url( array('kennisbank'), '/en/kennisbank/' ), $knowledge, $pos++ );
+    $add( 'Knowledge Article', $en_url( array('kennis-artikel','kennisartikel'), '/en/kennis-artikel/' ), $kennisbank, $pos++ );
+
+    // ── Webshop ──
+    $webshop = $add( 'Webshop', $shop, 0, $pos++ );
+    $prod_sub = $add( 'Products', $shop, $webshop, $pos++ );
+    $cats_sub = $add( 'Categories', $shop, $prod_sub, $pos++ );
+    $add( 'Product',      $shop,  $cats_sub, $pos++ );
+    $add( 'Cart',         $cart,  $webshop,  $pos++ );
+    $add( 'Checkout',     $check, $webshop,  $pos++ );
+    $add( 'Account / Login', $en_url( array('my-account','mijn-account'), '/en/my-account/' ), $webshop, $pos++ );
+    $service = $add( 'Service', home_url('/en/'), $webshop, $pos++ );
+    $add( 'FAQ',           $en_url( array('faq'), '/en/faq/' ),                     $service, $pos++ );
+    $add( 'Shipping Info', $en_url( array('verzend-info','verzendinfo'), '/en/verzend-info/' ), $service, $pos++ );
+    $add( 'Business',      $en_url( array('zakelijk'), '/en/zakelijk/' ),           $webshop,  $pos++ );
+
+    // ── Blog & News ──
+    $blog = $add( 'Blog & News', $news, 0, $pos++ );
+    $add( 'Article', $news, $blog, $pos++ );
+
+    // Assign to Polylang English primary location
     $pll = get_option('polylang');
     if ( is_array($pll) ) {
         $theme = get_stylesheet();
@@ -1138,5 +1175,5 @@ add_action('init', function() {
         update_option('polylang', $pll);
     }
 
-    update_option('avw_en_menu_v2', 1);
+    update_option('avw_en_menu_v3', 1);
 }, 99);
