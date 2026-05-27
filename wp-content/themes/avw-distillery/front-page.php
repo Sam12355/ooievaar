@@ -227,12 +227,18 @@
             </div>
 
             <!-- Button Row -->
+            <?php
+            $avw_lang_fp = function_exists('pll_current_language') ? pll_current_language() : '';
+            $is_en_fp    = ( strpos($avw_lang_fp, 'en') === 0 ) || ( strpos($_SERVER['REQUEST_URI'], '/en/') !== false );
+            $over_url    = $is_en_fp ? home_url('/en/over/') : home_url('/nl/over/');
+            $nieuws_url  = $is_en_fp ? home_url('/en/nieuws/') : home_url('/nl/nieuws/');
+            ?>
             <div class="flex justify-center mt-10 sm:mt-12">
-                <button
+                <a href="<?php echo esc_url($over_url); ?>"
                     class="rounded-full px-8 sm:px-12 py-4 sm:py-5 text-white font-kurversbrug text-[14px] sm:text-[16px] uppercase tracking-widest hover:brightness-110 transition-all shadow-lg"
                     style="background-color: #36221d;">
                     <?php echo function_exists('pll__') ? pll__('Lees meer over de distilleerderij') : 'Lees meer over de distilleerderij'; ?>
-                </button>
+                </a>
             </div>
         </div>
     </section>
@@ -285,11 +291,11 @@
                 </div>
             </div>
             <div class="flex justify-center">
-                <button
+                <a href="<?php echo esc_url($nieuws_url); ?>"
                     class="rounded-[121px] px-6 sm:px-8 py-3 sm:py-4 text-white font-kurversbrug text-[16px] sm:text-[18px] hover:opacity-90 transition-opacity"
                     style="background:linear-gradient(90deg,rgba(0,0,0,0.2),rgba(0,0,0,0.2)),#432B25;">
                     <?php echo function_exists('pll__') ? pll__('Lees Alle nieuwsartikelen') : 'Lees Alle nieuwsartikelen'; ?>
-                </button>
+                </a>
             </div>
         </div>
     </section>
