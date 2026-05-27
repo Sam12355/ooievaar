@@ -51,7 +51,7 @@ get_header();
 
 /* ---- Content body (non-WooCommerce pages) ---- */
 .avw-cp-body {
-    width: 72%; max-width: 900px; margin: 0 auto; padding: 72px 0 100px;
+    width: 80%; max-width: 1200px; margin: 0 auto; padding: 72px 0 100px;
 }
 .avw-cp-card {
     background: #fff; border-radius: 24px;
