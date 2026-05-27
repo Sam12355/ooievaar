@@ -251,14 +251,28 @@
                 <p class="font-sans text-black text-[16px] sm:text-[18px] md:text-[20px] leading-relaxed"><?php echo function_exists('pll__') ? pll__('Lees hier de laatste nieuwtjes over de oudste distillerderij van Amsterdam') : 'Lees hier de laatste nieuwtjes over de oudste distillerderij van Amsterdam'; ?></p>
             </div>
             <?php
+            $fp_query_lang = $is_en_fp ? 'en' : 'nl';
             $fp_news = new WP_Query(array(
                 'post_type'      => 'avw_nieuws',
                 'post_status'    => 'publish',
                 'posts_per_page' => 2,
                 'orderby'        => 'date',
                 'order'          => 'DESC',
-                'lang'           => function_exists('pll_current_language') ? pll_current_language() : '',
+                'lang'           => $fp_query_lang,
             ));
+            // Fallback: no posts in current lang → fetch Dutch and redirect to translation
+            $fp_news_fallback = false;
+            if ( ! $fp_news->have_posts() && $is_en_fp ) {
+                $fp_news = new WP_Query(array(
+                    'post_type'      => 'avw_nieuws',
+                    'post_status'    => 'publish',
+                    'posts_per_page' => 2,
+                    'orderby'        => 'date',
+                    'order'          => 'DESC',
+                    'lang'           => 'nl',
+                ));
+                $fp_news_fallback = true;
+            }
             $fallback_img  = get_template_directory_uri() . '/assets/assortment-hero-v2.png';
             $fp_news_count = $fp_news->post_count;
             $single_news   = ( $fp_news_count === 1 );
@@ -266,8 +280,14 @@
             <div class="<?php echo $single_news ? 'flex justify-center mb-10 sm:mb-14' : 'flex flex-col md:flex-row gap-6 sm:gap-8 mb-10 sm:mb-14'; ?>">
                 <?php if ( $fp_news->have_posts() ): while ( $fp_news->have_posts() ): $fp_news->the_post();
                     $img = has_post_thumbnail() ? get_the_post_thumbnail_url(null, 'large') : $fallback_img;
+                    // When falling back to Dutch posts on English site, try to link to the English translation
+                    $fp_post_url = get_permalink();
+                    if ( $is_en_fp && $fp_news_fallback && function_exists('pll_get_post') ) {
+                        $en_id = pll_get_post( get_the_ID(), 'en' );
+                        if ( $en_id ) $fp_post_url = get_permalink( $en_id );
+                    }
                 ?>
-                <a href="<?php the_permalink(); ?>"
+                <a href="<?php echo esc_url($fp_post_url); ?>"
                     class="rounded-[20px] overflow-hidden relative cursor-pointer group<?php echo $single_news ? '' : ' flex-1'; ?>"
                     style="text-decoration:none;<?php echo $single_news ? ' width:420px; max-width:100%;' : ''; ?>">
                     <div class="relative overflow-hidden" style="<?php echo $single_news ? 'width:420px; max-width:100%; aspect-ratio:1/1; background:#1e1a17;' : 'height:380px; min-height:300px;'; ?>">
