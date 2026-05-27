@@ -1180,7 +1180,7 @@ add_action('init', function() {
 
 // ── Ensure Assortiment page has nl language + English translation (runs once) ──
 add_action('init', function() {
-    if ( get_option('avw_en_assortiment_v2') ) return;
+    if ( get_option('avw_en_assortiment_v3') ) return;
     if ( ! function_exists('pll_set_post_language') || ! function_exists('pll_save_post_translations') || ! function_exists('pll_get_post') ) return;
 
     // Find the Dutch assortiment page by slug or by WooCommerce shop page id
@@ -1219,5 +1219,63 @@ add_action('init', function() {
     pll_set_post_language( $en_id, 'en' );
     pll_save_post_translations( array( 'nl' => $nl_page->ID, 'en' => $en_id ) );
 
-    update_option('avw_en_assortiment_v2', 1);
+    update_option('avw_en_assortiment_v3', 1);
 }, 99);
+
+// ── Set manually created Assortiment page to English (runs once) ──
+add_action('init', function() {
+    if ( get_option('avw_fix_assortiment_en_v1') ) return;
+    if ( ! function_exists('pll_set_post_language') || ! function_exists('pll_save_post_translations') || ! function_exists('pll_get_post_language') ) return;
+
+    // Find the Dutch Assortiment page
+    $nl_page = null;
+    foreach ( array('assortiment', 'shop') as $slug ) {
+        $p = get_page_by_path( $slug );
+        if ( $p && pll_get_post_language( $p->ID ) === 'nl' ) { $nl_page = $p; break; }
+    }
+    if ( ! $nl_page && function_exists('wc_get_page_id') ) {
+        $sid = wc_get_page_id('shop');
+        if ( $sid > 0 ) $nl_page = get_post( $sid );
+    }
+
+    // Find the page using the Assortiment template that is NOT the Dutch page
+    $candidates = get_posts( array(
+        'post_type'      => 'page',
+        'post_status'    => 'publish',
+        'posts_per_page' => -1,
+        'meta_key'       => '_wp_page_template',
+        'meta_value'     => 'page-over-de-producten.php',
+    ) );
+
+    $en_page = null;
+    foreach ( $candidates as $c ) {
+        if ( $nl_page && $c->ID === $nl_page->ID ) continue;
+        $lang = function_exists('pll_get_post_language') ? pll_get_post_language( $c->ID ) : '';
+        if ( $lang !== 'nl' ) { $en_page = $c; break; }
+    }
+
+    // Also search by title if template search found nothing
+    if ( ! $en_page ) {
+        $by_title = get_posts( array(
+            'post_type'      => 'page',
+            'post_status'    => 'publish',
+            'posts_per_page' => 5,
+            'title'          => 'Assortiment',
+        ) );
+        foreach ( $by_title as $c ) {
+            if ( $nl_page && $c->ID === $nl_page->ID ) continue;
+            $en_page = $c; break;
+        }
+    }
+
+    if ( ! $en_page ) { update_option('avw_fix_assortiment_en_v1', 1); return; }
+
+    // Set to English and link translations
+    pll_set_post_language( $en_page->ID, 'en' );
+    if ( $nl_page ) {
+        pll_set_post_language( $nl_page->ID, 'nl' );
+        pll_save_post_translations( array( 'nl' => $nl_page->ID, 'en' => $en_page->ID ) );
+    }
+
+    update_option('avw_fix_assortiment_en_v1', 1);
+}, 100);
