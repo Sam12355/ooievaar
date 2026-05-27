@@ -257,19 +257,24 @@
                 'posts_per_page' => 2,
                 'orderby'        => 'date',
                 'order'          => 'DESC',
+                'lang'           => function_exists('pll_current_language') ? pll_current_language() : '',
             ));
-            $fallback_img = get_template_directory_uri() . '/assets/assortment-hero-v2.png';
+            $fallback_img  = get_template_directory_uri() . '/assets/assortment-hero-v2.png';
+            $fp_news_count = $fp_news->post_count;
+            $single_news   = ( $fp_news_count === 1 );
             ?>
-            <div class="flex flex-col md:flex-row gap-6 sm:gap-8 mb-10 sm:mb-14">
+            <div class="<?php echo $single_news ? 'flex justify-center mb-10 sm:mb-14' : 'flex flex-col md:flex-row gap-6 sm:gap-8 mb-10 sm:mb-14'; ?>">
                 <?php if ( $fp_news->have_posts() ): while ( $fp_news->have_posts() ): $fp_news->the_post();
                     $img = has_post_thumbnail() ? get_the_post_thumbnail_url(null, 'large') : $fallback_img;
                 ?>
-                <a href="<?php the_permalink(); ?>" class="rounded-[20px] overflow-hidden relative cursor-pointer group flex-1" style="text-decoration:none;">
-                    <div class="relative overflow-hidden" style="height:380px; min-height:300px;">
+                <a href="<?php the_permalink(); ?>"
+                    class="rounded-[20px] overflow-hidden relative cursor-pointer group<?php echo $single_news ? '' : ' flex-1'; ?>"
+                    style="text-decoration:none;<?php echo $single_news ? ' width:420px; max-width:100%;' : ''; ?>">
+                    <div class="relative overflow-hidden" style="<?php echo $single_news ? 'width:420px; max-width:100%; aspect-ratio:1/1; background:#1e1a17;' : 'height:380px; min-height:300px;'; ?>">
                         <img src="<?php echo esc_url($img); ?>" alt="<?php the_title_attribute(); ?>"
-                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                            class="w-full h-full <?php echo $single_news ? 'object-contain' : 'object-cover'; ?> transition-transform duration-500 group-hover:scale-105" />
                         <div class="absolute inset-0"
-                            style="background:linear-gradient(to bottom,rgba(21,27,49,0.15),rgba(28,63,58,0.4));"></div>
+                            style="background:linear-gradient(to bottom,rgba(21,27,49,0.0) 50%,rgba(28,63,58,0.55) 100%);"></div>
                         <div class="absolute bottom-6 left-6 right-6">
                             <h3 class="font-kurversbrug text-white text-[18px] sm:text-[20px] leading-snug mb-4 sm:mb-6"><?php the_title(); ?></h3>
                             <div class="flex items-center gap-2">
