@@ -57,127 +57,66 @@ get_header(); ?>
     .avw-biz-reg { padding-top: 60px; }
 }
 
-.avw-biz-form-section-title {
-    font-family: 'Kurversbrug', serif;
-    font-size: 18px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: #133E23;
-    margin-bottom: 32px;
-    padding-bottom: 12px;
-    border-bottom: 1.5px solid rgba(19,62,35,0.1);
-    display: flex;
-    align-items: center;
-    gap: 12px;
+/* ---- Gravity Forms brand overrides ---- */
+.avw-biz-form-wrap .gform_wrapper { margin: 0; }
+.avw-biz-form-wrap .gfield_label,
+.avw-biz-form-wrap .gfield_label label {
+    font-size: 11px !important; font-weight: 700 !important;
+    text-transform: uppercase !important; letter-spacing: 0.12em !important;
+    color: rgba(19,62,35,0.5) !important; margin-left: 4px !important;
 }
-
-.avw-biz-form-section-title span {
-    width: 28px;
-    height: 28px;
-    background: #133E23;
-    color: #cdbca6;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    font-size: 12px;
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 700;
+.avw-biz-form-wrap .gfield_required { color: #c62828 !important; }
+.avw-biz-form-wrap input[type="text"],
+.avw-biz-form-wrap input[type="email"],
+.avw-biz-form-wrap input[type="tel"],
+.avw-biz-form-wrap input[type="url"],
+.avw-biz-form-wrap input[type="number"],
+.avw-biz-form-wrap select,
+.avw-biz-form-wrap textarea {
+    padding: 16px 20px !important; border: 1.5px solid rgba(19,62,35,0.12) !important;
+    border-radius: 16px !important; font-size: 15px !important; color: #133E23 !important;
+    background: #fafafa !important; width: 100% !important; box-sizing: border-box !important;
+    outline: none !important; font-family: 'DM Sans', sans-serif !important;
+    box-shadow: none !important; transition: all 0.25s ease !important;
 }
-
-.avw-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px 32px;
-    margin-bottom: 48px;
+.avw-biz-form-wrap input[type="text"]:focus,
+.avw-biz-form-wrap input[type="email"]:focus,
+.avw-biz-form-wrap input[type="tel"]:focus,
+.avw-biz-form-wrap textarea:focus,
+.avw-biz-form-wrap select:focus {
+    border-color: #133E23 !important; background: #fff !important;
+    box-shadow: 0 0 0 4px rgba(19,62,35,0.05) !important;
 }
-
-@media (max-width: 640px) {
-    .avw-grid { grid-template-columns: 1fr; }
+.avw-biz-form-wrap textarea { min-height: 120px !important; resize: vertical !important; }
+.avw-biz-form-wrap .gform_footer,
+.avw-biz-form-wrap .gform_page_footer { padding: 20px 0 0; border: none; }
+.avw-biz-form-wrap .gform_footer input[type="submit"],
+.avw-biz-form-wrap .gform_page_footer input[type="submit"],
+.avw-biz-form-wrap .gform_footer button[type="submit"],
+.avw-biz-form-wrap .gform_next_button {
+    display: block !important; width: 100% !important;
+    background: #133E23 !important; color: #cdbca6 !important;
+    padding: 20px 32px !important; border-radius: 9999px !important;
+    font-family: 'Kurversbrug', serif !important; font-size: 16px !important;
+    text-transform: uppercase !important; letter-spacing: 0.2em !important;
+    border: none !important; cursor: pointer !important;
+    box-shadow: 0 10px 40px rgba(19,62,35,0.2) !important;
+    transition: all 0.3s !important; text-align: center !important;
 }
-
-.avw-form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+.avw-biz-form-wrap .gform_footer input[type="submit"]:hover,
+.avw-biz-form-wrap .gform_footer button[type="submit"]:hover {
+    background: #0a2415 !important; color: #fff !important;
 }
-
-.avw-form-group.full-width {
-    grid-column: span 2;
+.avw-biz-form-wrap .gform_confirmation_message {
+    font-family: 'DM Sans', sans-serif; font-size: 15px; color: #133E23;
+    background: #e8f5e9; border: 1px solid #a5d6a7; border-radius: 12px;
+    padding: 18px 22px; line-height: 1.7; text-align: center;
 }
-
-@media (max-width: 640px) {
-    .avw-form-group.full-width { grid-column: span 1; }
-}
-
-.avw-form-group label {
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: rgba(19,62,35,0.5);
-    margin-left: 4px;
-}
-
-.avw-form-group input, 
-.avw-form-group select, 
-.avw-form-group textarea {
-    padding: 16px 20px;
-    border: 1.5px solid rgba(19,62,35,0.12);
-    border-radius: 16px;
-    font-size: 15px;
-    color: #133E23;
-    background: #fafafa;
-    transition: all 0.25s ease;
-    width: 100%;
-    outline: none;
-    font-family: 'DM Sans', sans-serif;
-}
-
-.avw-form-group input:focus, 
-.avw-form-group select:focus, 
-.avw-form-group textarea:focus {
-    border-color: #133E23;
-    background: #fff;
-    box-shadow: 0 0 0 4px rgba(19,62,35,0.05);
-}
-
-.avw-form-group textarea {
-    min-height: 120px;
-    resize: vertical;
-}
-
-.avw-biz-submit-btn {
-    display: block;
-    width: 100%;
-    background: #133E23;
-    color: #cdbca6;
-    padding: 20px 32px;
-    border-radius: 9999px;
-    font-family: 'Kurversbrug', serif;
-    font-size: 16px;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 10px 40px rgba(19,62,35,0.2);
-    text-align: center;
-    margin-top: 20px;
-}
-
-.avw-biz-submit-btn:hover {
-    background: #0a2415;
-    transform: translateY(-3px);
-    box-shadow: 0 15px 50px rgba(19,62,35,0.3);
-    color: #fff;
-}
-
-.avw-biz-footer-note {
-    text-align: center;
-    margin-top: 40px;
-    font-size: 13px;
-    color: rgba(19,62,35,0.4);
+.avw-biz-form-wrap .validation_error,
+.avw-biz-form-wrap .gfield_description.validation_message {
+    font-family: 'DM Sans', sans-serif !important; font-size: 13px !important;
+    color: #c62828 !important; background: none !important;
+    border: none !important; padding: 0 !important;
 }
 </style>
 
@@ -192,85 +131,17 @@ get_header(); ?>
             </p>
         </header>
 
-        <!-- Application Form -->
+        <!-- Application Form (Gravity Forms ID 1) -->
         <div class="avw-biz-form-wrap">
-            <form action="#" method="POST" id="avw-business-registration-form">
-                
-                <!-- Section 1: Company Info -->
-                <h3 class="avw-biz-form-section-title"><span>1</span> Company Information</h3>
-                <div class="avw-grid">
-                    <div class="avw-form-group full-width">
-                        <label>Business Name *</label>
-                        <input type="text" name="biz_name" required placeholder="Legal company name">
-                    </div>
-                    <div class="avw-form-group">
-                        <label>VAT Number *</label>
-                        <input type="text" name="biz_vat" required placeholder="e.g. NL123456789B01">
-                    </div>
-                    <div class="avw-form-group">
-                        <label>Chamber of Commerce (KvK) *</label>
-                        <input type="text" name="biz_kvk" required placeholder="8-digit number">
-                    </div>
-                    <div class="avw-form-group">
-                        <label>Business Type</label>
-                        <select name="biz_type">
-                            <option value="horeca">Cafe / Restaurant / Hotel</option>
-                            <option value="retail">Liquor Store / Retail</option>
-                            <option value="wholesale">Wholesale / Distributor</option>
-                            <option value="events">Events / Catering</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                    <div class="avw-form-group">
-                        <label>Website</label>
-                        <input type="url" name="biz_web" placeholder="https://">
-                    </div>
-                </div>
-
-                <!-- Section 2: Contact Info -->
-                <h3 class="avw-biz-form-section-title"><span>2</span> Contact Details</h3>
-                <div class="avw-grid">
-                    <div class="avw-form-group">
-                        <label>Full Name *</label>
-                        <input type="text" name="contact_name" required placeholder="Main contact person">
-                    </div>
-                    <div class="avw-form-group">
-                        <label>Phone Number *</label>
-                        <input type="tel" name="contact_phone" required placeholder="+31 ...">
-                    </div>
-                    <div class="avw-form-group full-width">
-                        <label>Work Email Address *</label>
-                        <input type="email" name="contact_email" required placeholder="email@company.com">
-                    </div>
-                </div>
-
-                <!-- Section 3: Address -->
-                <h3 class="avw-biz-form-section-title"><span>3</span> Business Address</h3>
-                <div class="avw-grid">
-                    <div class="avw-form-group full-width">
-                        <label>Street & Number *</label>
-                        <input type="text" name="addr_street" required>
-                    </div>
-                    <div class="avw-form-group">
-                        <label>Postal Code *</label>
-                        <input type="text" name="addr_zip" required>
-                    </div>
-                    <div class="avw-form-group">
-                        <label>City *</label>
-                        <input type="text" name="addr_city" required>
-                    </div>
-                    <div class="avw-form-group full-width">
-                        <label>Additional Notes</label>
-                        <textarea name="message" placeholder="Tell us about your business or specific products you are interested in..."></textarea>
-                    </div>
-                </div>
-
-                <button type="submit" class="avw-biz-submit-btn">Submit Application</button>
-
-                <p class="avw-biz-footer-note">
-                    Your application will be reviewed by our team. We usually respond within 2-3 business days.
-                </p>
-            </form>
+            <?php
+            if ( function_exists('gravity_form') ) {
+                gravity_form( 1, false, false, false, null, true );
+            } elseif ( class_exists('GFAPI') ) {
+                echo do_shortcode( '[gravityforms id="1"]' );
+            } else {
+                echo '<p style="font-family:\'DM Sans\',sans-serif;color:rgba(19,62,35,0.6);font-size:14px;text-align:center;">Form is not available. Please install Gravity Forms.</p>';
+            }
+            ?>
         </div>
 
     </div>
