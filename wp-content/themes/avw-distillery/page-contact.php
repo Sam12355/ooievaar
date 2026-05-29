@@ -236,7 +236,7 @@ $is_en    = ( strpos( $avw_lang, 'en' ) === 0 ) || ( strpos( $_SERVER['REQUEST_U
             <h2 class="avw-con-form-title"><?php echo $is_en ? 'Send us a message' : 'Stuur ons een bericht'; ?></h2>
             <?php
             // Set this to your Gravity Forms contact form ID (Forms → hover a form → note the ID).
-            $avw_gf_id = get_option( 'avw_contact_form_id', 1 );
+            $avw_gf_id = get_option( 'avw_contact_form_id', 2 );
             if ( function_exists('gravity_form') ) {
                 gravity_form( $avw_gf_id, false, false, false, null, true );
             } elseif ( class_exists('GFAPI') ) {
