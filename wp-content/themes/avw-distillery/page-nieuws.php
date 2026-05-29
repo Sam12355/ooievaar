@@ -7,13 +7,29 @@
 
 get_header();
 
+$avw_lang = function_exists('pll_current_language') ? pll_current_language() : get_locale();
+$is_en    = ( strpos( $avw_lang, 'en' ) === 0 ) || ( strpos( $_SERVER['REQUEST_URI'], '/en/' ) !== false );
+$cur_lang = $is_en ? 'en' : 'nl';
+
+// Query posts in current language; fallback to all languages if none found
 $nieuws = new WP_Query(array(
     'post_type'      => 'avw_nieuws',
     'post_status'    => 'publish',
     'posts_per_page' => -1,
     'orderby'        => 'date',
     'order'          => 'DESC',
+    'lang'           => $cur_lang,
 ));
+if ( ! $nieuws->have_posts() ) {
+    $nieuws = new WP_Query(array(
+        'post_type'      => 'avw_nieuws',
+        'post_status'    => 'publish',
+        'posts_per_page' => -1,
+        'orderby'        => 'date',
+        'order'          => 'DESC',
+        'lang'           => '',
+    ));
+}
 ?>
 
 <style>
@@ -116,15 +132,15 @@ $nieuws = new WP_Query(array(
 
 <!-- HERO -->
 <section class="avw-news-hero">
-    <img id="news-hero-img" class="avw-news-hero-img" src="<?php echo get_template_directory_uri(); ?>/assets/assortment-hero-v2.png" alt="Nieuws" />
+    <img id="news-hero-img" class="avw-news-hero-img" src="<?php echo get_template_directory_uri(); ?>/assets/assortment-hero-v2.png" alt="<?php echo $is_en ? 'News' : 'Nieuws'; ?>" />
     <div class="avw-news-hero-overlay"></div>
     <div class="avw-news-hero-content">
         <nav class="avw-news-breadcrumb">
             <a href="<?php echo home_url(); ?>">Home</a>
             <span style="margin:0 10px;">&bull;</span>
-            <span style="color:#fff;">Nieuws</span>
+            <span style="color:#fff;"><?php echo $is_en ? 'News' : 'Nieuws'; ?></span>
         </nav>
-        <h1 id="news-hero-title" class="avw-news-hero-title">Nieuws</h1>
+        <h1 id="news-hero-title" class="avw-news-hero-title"><?php echo $is_en ? 'News' : 'Nieuws'; ?></h1>
     </div>
 </section>
 
@@ -145,14 +161,14 @@ $nieuws = new WP_Query(array(
                         <div class="avw-news-card-date"><?php echo get_the_date('d F Y'); ?></div>
                         <h2 class="avw-news-card-title"><?php the_title(); ?></h2>
                         <p class="avw-news-card-excerpt"><?php echo get_the_excerpt() ?: wp_trim_words(get_the_content(), 25); ?></p>
-                        <span class="avw-news-card-link">Lees meer &rarr;</span>
+                        <span class="avw-news-card-link"><?php echo $is_en ? 'Read more &rarr;' : 'Lees meer &rarr;'; ?></span>
                     </div>
                 </a>
             <?php endwhile; wp_reset_postdata(); ?>
         </div>
     <?php else: ?>
         <div class="avw-news-empty">
-            <p>Er zijn nog geen nieuwsberichten gepubliceerd.</p>
+            <p><?php echo $is_en ? 'No news articles published yet.' : 'Er zijn nog geen nieuwsberichten gepubliceerd.'; ?></p>
         </div>
     <?php endif; ?>
 </div>

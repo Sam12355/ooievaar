@@ -7,6 +7,20 @@
 
 get_header();
 
+$avw_lang = function_exists('pll_current_language') ? pll_current_language() : get_locale();
+$is_en    = ( strpos( $avw_lang, 'en' ) === 0 ) || ( strpos( $_SERVER['REQUEST_URI'], '/en/' ) !== false );
+$cur_lang = $is_en ? 'en' : 'nl';
+
+// Find the news listing page for back link
+$news_list_page = get_pages(array(
+    'meta_key'   => '_wp_page_template',
+    'meta_value' => 'page-nieuws.php',
+    'number'     => 1,
+));
+$news_url = ! empty($news_list_page)
+    ? get_permalink( $news_list_page[0]->ID )
+    : home_url( $is_en ? '/en/news/' : '/nl/nieuws/' );
+
 $other_news = new WP_Query(array(
     'post_type'      => 'avw_nieuws',
     'post_status'    => 'publish',
@@ -14,6 +28,7 @@ $other_news = new WP_Query(array(
     'orderby'        => 'date',
     'order'          => 'DESC',
     'post__not_in'   => array( get_the_ID() ),
+    'lang'           => $cur_lang,
 ));
 ?>
 
@@ -173,7 +188,7 @@ $other_news = new WP_Query(array(
         <nav class="avw-snews-breadcrumb">
             <a href="<?php echo home_url(); ?>">Home</a>
             <span style="margin:0 10px;">&bull;</span>
-            <a href="<?php echo get_post_type_archive_link('avw_nieuws') ?: home_url('/nieuws/'); ?>">Nieuws</a>
+            <a href="<?php echo esc_url($news_url); ?>"><?php echo $is_en ? 'News' : 'Nieuws'; ?></a>
             <span style="margin:0 10px;">&bull;</span>
             <span style="color:#fff;"><?php the_title(); ?></span>
         </nav>
@@ -183,9 +198,9 @@ $other_news = new WP_Query(array(
 
 <!-- ARTICLE -->
 <div class="avw-snews-body">
-    <a class="avw-snews-back" href="<?php echo get_post_type_archive_link('avw_nieuws') ?: home_url('/nieuws/'); ?>">
+    <a class="avw-snews-back" href="<?php echo esc_url($news_url); ?>">
         <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M19 12H5M5 12l7 7M5 12l7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Terug naar nieuws
+        <?php echo $is_en ? 'Back to News' : 'Terug naar nieuws'; ?>
     </a>
 
     <article class="avw-snews-card">
@@ -207,7 +222,7 @@ $other_news = new WP_Query(array(
 <!-- OTHER NEWS CAROUSEL -->
 <div class="avw-snews-other">
     <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:24px;">
-        <h2 class="avw-snews-other-title" style="margin:0;">Meer nieuws</h2>
+        <h2 class="avw-snews-other-title" style="margin:0;"><?php echo $is_en ? 'More News' : 'Meer nieuws'; ?></h2>
         <div class="avw-snews-nav">
             <button class="avw-snews-btn" id="snews-prev" aria-label="Vorige">
                 <svg width="18" height="18" fill="none" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" stroke="#36221d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
