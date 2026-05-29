@@ -10,10 +10,12 @@ get_header();
 $avw_lang = function_exists('pll_current_language') ? pll_current_language() : get_locale();
 $is_en    = ( strpos( $avw_lang, 'en' ) === 0 ) || ( strpos( $_SERVER['REQUEST_URI'], '/en/' ) !== false );
 
+$paged  = ( get_query_var('paged') ) ? get_query_var('paged') : ( ( get_query_var('page') ) ? get_query_var('page') : 1 );
 $kennis = new WP_Query(array(
     'post_type'      => 'avw_kennis',
     'post_status'    => 'publish',
-    'posts_per_page' => -1,
+    'posts_per_page' => 9,
+    'paged'          => $paged,
     'orderby'        => 'date',
     'order'          => 'DESC',
     'lang'           => $is_en ? 'en' : 'nl',
@@ -108,6 +110,30 @@ $kennis = new WP_Query(array(
     font-family: 'DM Sans', sans-serif; font-size: 16px; color: rgba(54,34,29,0.5);
 }
 
+/* ---- Pagination ---- */
+.avw-kb-pagination {
+    display: flex; align-items: center; justify-content: center;
+    gap: 8px; margin-top: 56px; flex-wrap: wrap;
+}
+.avw-kb-pagination a,
+.avw-kb-pagination span {
+    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 42px; height: 42px; padding: 0 14px;
+    border-radius: 999px; text-decoration: none; transition: all 0.2s;
+    border: 1.5px solid rgba(54,34,29,0.15); color: rgba(54,34,29,0.65);
+    background: #fff;
+}
+.avw-kb-pagination a:hover {
+    background: #36221d; color: #eedfcb; border-color: #36221d;
+}
+.avw-kb-pagination span.current {
+    background: #36221d; color: #eedfcb; border-color: #36221d;
+}
+.avw-kb-pagination span.dots {
+    border: none; background: none; color: rgba(54,34,29,0.35);
+}
+
 @media (max-width: 960px) {
     .avw-kb-body { width: 92%; }
     .avw-kb-grid { grid-template-columns: repeat(2, 1fr); }
@@ -154,6 +180,26 @@ $kennis = new WP_Query(array(
                 </a>
             <?php endwhile; wp_reset_postdata(); ?>
         </div>
+
+        <?php
+        $total_pages = $kennis->max_num_pages;
+        if ( $total_pages > 1 ) :
+            echo '<div class="avw-kb-pagination">';
+            echo paginate_links(array(
+                'base'      => get_pagenum_link(1) . '%_%',
+                'format'    => 'page/%#%/',
+                'current'   => $paged,
+                'total'     => $total_pages,
+                'prev_text' => '&larr;',
+                'next_text' => '&rarr;',
+                'type'      => 'plain',
+                'mid_size'  => 2,
+                'end_size'  => 1,
+            ));
+            echo '</div>';
+        endif;
+        ?>
+
     <?php else: ?>
         <div class="avw-kb-empty">
             <p><?php echo $is_en ? 'No articles published yet.' : 'Er zijn nog geen artikelen gepubliceerd.'; ?></p>
