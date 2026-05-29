@@ -15,7 +15,7 @@ $paged  = max( 1, (int) get_query_var('page') ?: (int) get_query_var('paged') ?:
 $kennis = new WP_Query(array(
     'post_type'      => 'avw_kennis',
     'post_status'    => 'publish',
-    'posts_per_page' => 9,
+    'posts_per_page' => 1,
     'paged'          => $paged,
     'orderby'        => 'date',
     'order'          => 'DESC',
@@ -183,23 +183,21 @@ $kennis = new WP_Query(array(
         </div>
 
         <?php
-        $total_pages = $kennis->max_num_pages;
-        if ( $total_pages > 1 ) :
-            $kb_base = trailingslashit( get_permalink( get_queried_object_id() ) );
-            echo '<div class="avw-kb-pagination">';
-            echo paginate_links(array(
-                'base'      => $kb_base . '%_%',
-                'format'    => 'page/%#%/',
-                'current'   => $paged,
-                'total'     => $total_pages,
-                'prev_text' => '&larr;',
-                'next_text' => '&rarr;',
-                'type'      => 'plain',
-                'mid_size'  => 2,
-                'end_size'  => 1,
-            ));
-            echo '</div>';
-        endif;
+        $total_pages = max( 1, $kennis->max_num_pages );
+        $kb_base     = trailingslashit( get_permalink( get_queried_object_id() ) );
+        echo '<div class="avw-kb-pagination">';
+        echo paginate_links(array(
+            'base'      => $kb_base . '%_%',
+            'format'    => 'page/%#%/',
+            'current'   => $paged,
+            'total'     => $total_pages,
+            'prev_text' => '&larr;',
+            'next_text' => '&rarr;',
+            'type'      => 'plain',
+            'mid_size'  => 2,
+            'end_size'  => 1,
+        ));
+        echo '</div>';
         ?>
 
     <?php else: ?>
