@@ -910,6 +910,17 @@ add_action( 'init', function() {
 }, 999 );
 
 /**
+ * Register avw_kennis and avw_nieuws as translatable post types in Polylang.
+ * This enables the language metabox, "+" translation button, and language switcher
+ * on single posts for both CPTs.
+ */
+add_filter( 'pll_get_post_types', function( $post_types, $is_settings ) {
+    $post_types['avw_kennis'] = 'avw_kennis';
+    $post_types['avw_nieuws'] = 'avw_nieuws';
+    return $post_types;
+}, 10, 2 );
+
+/**
  * SEARCH: Live product search
  */
 add_action('wp_ajax_avw_live_search',        'avw_live_search');

@@ -19,6 +19,7 @@ $kennis = new WP_Query(array(
     'paged'          => $paged,
     'orderby'        => 'date',
     'order'          => 'DESC',
+    'lang'           => function_exists('pll_current_language') ? pll_current_language() : '',
 ));
 ?>
 
