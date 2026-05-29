@@ -902,6 +902,13 @@ function avw_kennis_column_content( $col, $post_id ) {
 }
 add_action( 'manage_avw_kennis_posts_custom_column', 'avw_kennis_column_content', 10, 2 );
 
+// Flush rewrite rules once so avw_kennis single URLs resolve correctly
+add_action( 'init', function() {
+    if ( get_option('avw_kennis_rules_v1') ) return;
+    flush_rewrite_rules();
+    update_option('avw_kennis_rules_v1', 1);
+}, 999 );
+
 /**
  * SEARCH: Live product search
  */
