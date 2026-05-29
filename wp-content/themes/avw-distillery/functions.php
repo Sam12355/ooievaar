@@ -853,6 +853,56 @@ function avw_nieuws_column_content( $col, $post_id ) {
 add_action( 'manage_avw_nieuws_posts_custom_column', 'avw_nieuws_column_content', 10, 2 );
 
 /**
+ * KENNISBANK: Custom Post Type
+ */
+function avw_register_kennis_cpt() {
+    register_post_type( 'avw_kennis', array(
+        'labels' => array(
+            'name'               => 'Kennisbank',
+            'singular_name'      => 'Kennisartikel',
+            'add_new'            => 'Nieuw Artikel',
+            'add_new_item'       => 'Nieuw Kennisartikel Toevoegen',
+            'edit_item'          => 'Kennisartikel Bewerken',
+            'new_item'           => 'Nieuw Kennisartikel',
+            'view_item'          => 'Kennisartikel Bekijken',
+            'search_items'       => 'Kennisartikelen Zoeken',
+            'not_found'          => 'Geen kennisartikelen gevonden',
+            'not_found_in_trash' => 'Geen kennisartikelen in prullenbak',
+            'all_items'          => 'Alle Kennisartikelen',
+        ),
+        'public'          => true,
+        'has_archive'     => false,
+        'rewrite'         => array( 'slug' => 'kennis-artikel' ),
+        'supports'        => array( 'title', 'editor', 'thumbnail', 'excerpt' ),
+        'menu_icon'       => 'dashicons-book-alt',
+        'menu_position'   => 5,
+        'show_in_rest'    => true,
+    ));
+}
+add_action( 'init', 'avw_register_kennis_cpt' );
+
+/**
+ * KENNISBANK: Custom admin columns
+ */
+function avw_kennis_columns( $cols ) {
+    return array(
+        'cb'           => $cols['cb'],
+        'title'        => 'Titel',
+        'kennis_thumb' => 'Afbeelding',
+        'date'         => 'Datum',
+    );
+}
+add_filter( 'manage_avw_kennis_posts_columns', 'avw_kennis_columns' );
+
+function avw_kennis_column_content( $col, $post_id ) {
+    if ( $col === 'kennis_thumb' ) {
+        $thumb = get_the_post_thumbnail( $post_id, array( 60, 40 ) );
+        echo $thumb ?: '—';
+    }
+}
+add_action( 'manage_avw_kennis_posts_custom_column', 'avw_kennis_column_content', 10, 2 );
+
+/**
  * SEARCH: Live product search
  */
 add_action('wp_ajax_avw_live_search',        'avw_live_search');
