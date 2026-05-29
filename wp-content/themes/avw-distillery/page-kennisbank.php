@@ -19,7 +19,6 @@ $kennis = new WP_Query(array(
     'paged'          => $paged,
     'orderby'        => 'date',
     'order'          => 'DESC',
-    'lang'           => $is_en ? 'en' : 'nl',
 ));
 ?>
 
@@ -182,29 +181,32 @@ $kennis = new WP_Query(array(
             <?php endwhile; wp_reset_postdata(); ?>
         </div>
 
-        <?php
-        $total_pages = max( 1, $kennis->max_num_pages );
-        $kb_base     = trailingslashit( get_permalink( get_queried_object_id() ) );
-        echo '<div class="avw-kb-pagination">';
-        echo paginate_links(array(
-            'base'      => $kb_base . '%_%',
-            'format'    => 'page/%#%/',
-            'current'   => $paged,
-            'total'     => $total_pages,
-            'prev_text' => '&larr;',
-            'next_text' => '&rarr;',
-            'type'      => 'plain',
-            'mid_size'  => 2,
-            'end_size'  => 1,
-        ));
-        echo '</div>';
-        ?>
-
     <?php else: ?>
         <div class="avw-kb-empty">
             <p><?php echo $is_en ? 'No articles published yet.' : 'Er zijn nog geen artikelen gepubliceerd.'; ?></p>
         </div>
     <?php endif; ?>
+
+    <?php
+    // Pagination — always rendered so the UI is always visible
+    $total_pages = max( 1, $kennis->max_num_pages );
+    $kb_base     = trailingslashit( get_permalink( get_queried_object_id() ) );
+    $links       = paginate_links(array(
+        'base'      => $kb_base . '%_%',
+        'format'    => 'page/%#%/',
+        'current'   => $paged,
+        'total'     => $total_pages,
+        'prev_text' => '&larr;',
+        'next_text' => '&rarr;',
+        'type'      => 'plain',
+        'mid_size'  => 2,
+        'end_size'  => 1,
+    ));
+    echo '<div class="avw-kb-pagination">';
+    // paginate_links returns empty when there is only 1 page — show page 1 manually
+    echo $links ?: '<span class="current">1</span>';
+    echo '</div>';
+    ?>
 </div>
 
 <script>
