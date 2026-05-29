@@ -832,6 +832,20 @@ function avw_register_nieuws_cpt() {
 add_action( 'init', 'avw_register_nieuws_cpt' );
 
 /**
+ * Auto-apply page-nieuws.php template to any page with a news-related slug
+ * so the English news page works even if the template wasn't manually assigned.
+ */
+add_filter( 'page_template', function( $template ) {
+    if ( ! is_page() ) return $template;
+    $news_slugs = array( 'news', 'nieuws', 'en-nieuws', 'news-en', 'nl-nieuws', 'actueel' );
+    if ( is_page( $news_slugs ) ) {
+        $t = get_template_directory() . '/page-nieuws.php';
+        if ( file_exists( $t ) ) return $t;
+    }
+    return $template;
+} );
+
+/**
  * NIEUWS: Custom admin columns
  */
 function avw_nieuws_columns( $cols ) {
