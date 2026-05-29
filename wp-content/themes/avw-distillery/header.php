@@ -175,6 +175,31 @@
             }
         }
 
+        /* ---- Desktop dropdown (replaces Tailwind group-hover) ---- */
+        .avw-dropdown {
+            position: absolute;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+            pointer-events: none;
+        }
+        .avw-drop-down {
+            top: 100%; left: 0;
+            padding-top: 16px;
+            transform: translateY(6px);
+        }
+        .avw-drop-right {
+            top: 0; left: 100%;
+            padding-left: 12px;
+            transform: translateX(6px);
+        }
+        .avw-has-drop:hover > .avw-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(0, 0);
+            pointer-events: auto;
+        }
+
         /* ---- Search overlay ---- */
         #avw-search-backdrop {
             display: none;
@@ -363,14 +388,14 @@
             ?>
 
             <!-- Left: Nav links (desktop only) -->
-            <div id="desktop-nav-links" class="flex items-center gap-8">
+            <div id="desktop-nav-links" class="flex items-center gap-5 flex-wrap">
                 <?php if (!empty($menu_tree)) : ?>
                     <?php foreach ($menu_tree as $parent) : ?>
-                        <div class="group/lvl-1 relative py-2">
-                            <a href="<?php echo esc_url($parent->url); ?>" class="font-kurversbrug font-light text-[#cdbca6] text-[14px] uppercase tracking-widest hover:text-white transition-colors whitespace-nowrap flex items-center gap-1">
+                        <div class="avw-has-drop relative py-2">
+                            <a href="<?php echo esc_url($parent->url); ?>" class="font-kurversbrug font-light text-[#cdbca6] text-[13px] uppercase tracking-wide hover:text-white transition-colors whitespace-nowrap flex items-center gap-1" style="text-decoration:none;">
                                 <?php echo esc_html($parent->title); ?>
                                 <?php if (!empty($parent->children)) : ?>
-                                    <svg class="w-3 h-3 opacity-50 group-hover/lvl-1:rotate-180 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    <svg class="w-3 h-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                                 <?php endif; ?>
                             </a>
                             <?php if (!empty($parent->children) && function_exists('avw_render_dropdown')) avw_render_dropdown($parent->children, 1); ?>

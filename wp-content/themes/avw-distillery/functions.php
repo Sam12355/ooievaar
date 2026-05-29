@@ -294,24 +294,18 @@ add_action('init', 'avw_auto_create_menu');
 if (!function_exists('avw_render_dropdown')) {
     function avw_render_dropdown($children, $level = 1) {
         $z_index = 100 + $level;
-        $is_first_level = ($level === 1);
-        
-        // Use unique group names for each level to avoid recursive hover bleed
-        $group_name = 'lvl-' . $level;
-        $panel_pos = $is_first_level ? 'top-full left-0 pt-4 translate-y-2' : 'left-full top-0 ml-4 translate-x-2';
-        
-        // Match the group/lvl-N name from the parent loop
-        $hover_trigger = 'group-hover/' . $group_name . ':opacity-100 group-hover/' . $group_name . ':visible ' . ($is_first_level ? 'group-hover/' . $group_name . ':translate-y-0' : 'group-hover/' . $group_name . ':translate-x-0');
+        $is_first = ($level === 1);
+        $pos_class = $is_first ? 'avw-drop-down' : 'avw-drop-right';
         ?>
-        <div class="dropdown-panel absolute <?php echo $panel_pos; ?> opacity-0 invisible transition-all duration-300 z-[<?php echo $z_index; ?>] <?php echo $hover_trigger; ?>">
+        <div class="avw-dropdown <?php echo $pos_class; ?>" style="z-index:<?php echo $z_index; ?>;">
             <div class="bg-black border border-[#cdbca6]/10 rounded-xl shadow-2xl p-6 min-w-[240px]">
                 <div class="flex flex-col gap-4">
                     <?php foreach ($children as $child) : ?>
-                        <div class="relative group/<?php echo 'lvl-' . ($level + 1); ?>">
-                            <a href="<?php echo esc_url($child->url); ?>" class="font-kurversbrug text-[#cdbca6]/80 text-[13px] uppercase tracking-wider hover:text-white flex items-center justify-between gap-4">
+                        <div class="avw-has-drop relative">
+                            <a href="<?php echo esc_url($child->url); ?>" class="font-kurversbrug text-[#cdbca6]/80 text-[13px] uppercase tracking-wide hover:text-white flex items-center justify-between gap-4" style="text-decoration:none;">
                                 <?php echo esc_html($child->title); ?>
                                 <?php if (!empty($child->children)) : ?>
-                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                    <svg class="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                                 <?php endif; ?>
                             </a>
                             <?php if (!empty($child->children)) avw_render_dropdown($child->children, $level + 1); ?>
