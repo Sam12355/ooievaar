@@ -10,7 +10,8 @@ get_header();
 $avw_lang = function_exists('pll_current_language') ? pll_current_language() : get_locale();
 $is_en    = ( strpos( $avw_lang, 'en' ) === 0 ) || ( strpos( $_SERVER['REQUEST_URI'], '/en/' ) !== false );
 
-$paged  = ( get_query_var('paged') ) ? get_query_var('paged') : ( ( get_query_var('page') ) ? get_query_var('page') : 1 );
+// Static pages use 'page', archives use 'paged'
+$paged  = max( 1, (int) get_query_var('page') ?: (int) get_query_var('paged') ?: 1 );
 $kennis = new WP_Query(array(
     'post_type'      => 'avw_kennis',
     'post_status'    => 'publish',
@@ -184,9 +185,10 @@ $kennis = new WP_Query(array(
         <?php
         $total_pages = $kennis->max_num_pages;
         if ( $total_pages > 1 ) :
+            $kb_base = trailingslashit( get_permalink( get_queried_object_id() ) );
             echo '<div class="avw-kb-pagination">';
             echo paginate_links(array(
-                'base'      => get_pagenum_link(1) . '%_%',
+                'base'      => $kb_base . '%_%',
                 'format'    => 'page/%#%/',
                 'current'   => $paged,
                 'total'     => $total_pages,
