@@ -2,7 +2,12 @@
 /**
  * Template Name: Registration
  */
-get_header(); ?>
+get_header();
+
+$avw_lang  = function_exists('pll_current_language') ? pll_current_language() : get_locale();
+$is_en     = ( strpos($avw_lang, 'en') === 0 ) || ( strpos($_SERVER['REQUEST_URI'], '/en/') !== false );
+$reg_form_id = $is_en ? 1 : 5;
+?>
 
 
 <style>
@@ -125,21 +130,25 @@ get_header(); ?>
         
         <!-- Header -->
         <header class="avw-biz-header">
-            <h1 class="avw-biz-title">Business Registration</h1>
+            <h1 class="avw-biz-title"><?php echo $is_en ? 'Business Registration' : 'Zakelijke Registratie'; ?></h1>
             <p class="avw-biz-subtitle">
-                Become a wholesale partner. Complete the form below to apply for a business account and access our artisanal collection of genevers and liqueurs.
+                <?php echo $is_en
+                    ? 'Become a wholesale partner. Complete the form below to apply for a business account and access our artisanal collection of genevers and liqueurs.'
+                    : 'Word groothandelspartner. Vul het onderstaande formulier in om een zakelijk account aan te vragen en toegang te krijgen tot onze ambachtelijke collectie jenever en likeuren.'; ?>
             </p>
         </header>
 
-        <!-- Application Form (Gravity Forms ID 1) -->
+        <!-- Application Form (Gravity Forms) -->
         <div class="avw-biz-form-wrap">
             <?php
             if ( function_exists('gravity_form') ) {
-                gravity_form( 1, false, false, false, null, true );
+                gravity_form( $reg_form_id, false, false, false, null, true );
             } elseif ( class_exists('GFAPI') ) {
-                echo do_shortcode( '[gravityforms id="1"]' );
+                echo do_shortcode( '[gravityforms id="' . intval($reg_form_id) . '"]' );
             } else {
-                echo '<p style="font-family:\'DM Sans\',sans-serif;color:rgba(19,62,35,0.6);font-size:14px;text-align:center;">Form is not available. Please install Gravity Forms.</p>';
+                echo '<p style="font-family:\'DM Sans\',sans-serif;color:rgba(19,62,35,0.6);font-size:14px;text-align:center;">'
+                   . ( $is_en ? 'Form is not available. Please install Gravity Forms.' : 'Formulier is niet beschikbaar.' )
+                   . '</p>';
             }
             ?>
         </div>
