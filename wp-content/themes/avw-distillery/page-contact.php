@@ -92,41 +92,62 @@ $is_en    = ( strpos( $avw_lang, 'en' ) === 0 ) || ( strpos( $_SERVER['REQUEST_U
 .avw-con-form-title {
     font-family: 'Kurversbrug', serif; font-size: 22px; color: #36221d;
     text-transform: uppercase; letter-spacing: 0.1em; font-weight: normal;
-    margin: 0 0 32px;
+    margin: 0 0 28px;
 }
-.avw-con-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 18px; }
-.avw-con-field label {
-    font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.12em; color: rgba(54,34,29,0.5);
-}
-.avw-con-field label .req { color: #c62828; margin-left: 2px; }
-.avw-con-field input,
-.avw-con-field textarea {
-    font-family: 'DM Sans', sans-serif; font-size: 14px; color: #36221d;
-    border: 1.5px solid rgba(54,34,29,0.15); border-radius: 12px;
-    padding: 12px 16px; background: #fdf8f1;
-    outline: none; transition: border-color 0.2s; width: 100%; box-sizing: border-box;
-}
-.avw-con-field input:focus,
-.avw-con-field textarea:focus { border-color: #36221d; background: #fff; }
-.avw-con-field textarea { resize: vertical; min-height: 140px; }
 
-.avw-con-submit-btn {
-    background: linear-gradient(90deg, rgba(0,0,0,0.2), rgba(0,0,0,0.2)), #432B25;
-    color: #fff; font-family: 'Kurversbrug', serif; font-size: 17px;
-    text-transform: uppercase; letter-spacing: 0.12em;
-    padding: 14px 52px; border-radius: 34px; border: none;
-    cursor: pointer; transition: opacity 0.2s; margin-top: 8px;
+/* ---- Gravity Forms brand overrides ---- */
+.avw-con-form-card .gform_wrapper { margin: 0; }
+.avw-con-form-card .gform_body .gfield { margin-bottom: 18px; }
+.avw-con-form-card .gfield_label,
+.avw-con-form-card .gfield_label label {
+    font-family: 'DM Sans', sans-serif !important; font-size: 11px !important; font-weight: 700 !important;
+    text-transform: uppercase !important; letter-spacing: 0.12em !important;
+    color: rgba(54,34,29,0.5) !important; margin-bottom: 6px !important;
 }
-.avw-con-submit-btn:hover { opacity: 0.88; }
-.avw-con-submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-.avw-con-msg {
-    margin-top: 16px; padding: 14px 18px; border-radius: 12px;
-    font-family: 'DM Sans', sans-serif; font-size: 14px; display: none;
+.avw-con-form-card .gfield_required { color: #c62828 !important; }
+.avw-con-form-card input[type="text"],
+.avw-con-form-card input[type="email"],
+.avw-con-form-card input[type="tel"],
+.avw-con-form-card input[type="url"],
+.avw-con-form-card input[type="number"],
+.avw-con-form-card select,
+.avw-con-form-card textarea {
+    font-family: 'DM Sans', sans-serif !important; font-size: 14px !important; color: #36221d !important;
+    border: 1.5px solid rgba(54,34,29,0.15) !important; border-radius: 12px !important;
+    padding: 12px 16px !important; background: #fdf8f1 !important;
+    width: 100% !important; box-sizing: border-box !important;
+    outline: none !important; transition: border-color 0.2s !important;
+    box-shadow: none !important;
 }
-.avw-con-msg.success { background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7; }
-.avw-con-msg.error   { background: #ffebee; color: #c62828; border: 1px solid #ef9a9a; }
+.avw-con-form-card input[type="text"]:focus,
+.avw-con-form-card input[type="email"]:focus,
+.avw-con-form-card textarea:focus { border-color: #36221d !important; background: #fff !important; }
+.avw-con-form-card textarea { resize: vertical !important; min-height: 140px !important; }
+.avw-con-form-card .gform_footer,
+.avw-con-form-card .gform_page_footer { padding: 8px 0 0; border: none; }
+.avw-con-form-card .gform_footer input[type="submit"],
+.avw-con-form-card .gform_page_footer input[type="submit"],
+.avw-con-form-card .gform_footer button[type="submit"],
+.avw-con-form-card .gform_next_button {
+    background: linear-gradient(90deg, rgba(0,0,0,0.2), rgba(0,0,0,0.2)), #432B25 !important;
+    color: #fff !important; font-family: 'Kurversbrug', serif !important; font-size: 17px !important;
+    text-transform: uppercase !important; letter-spacing: 0.12em !important;
+    padding: 14px 52px !important; border-radius: 34px !important; border: none !important;
+    cursor: pointer !important; transition: opacity 0.2s !important; box-shadow: none !important;
+}
+.avw-con-form-card .gform_footer input[type="submit"]:hover,
+.avw-con-form-card .gform_footer button[type="submit"]:hover { opacity: 0.88 !important; }
+.avw-con-form-card .gform_confirmation_message {
+    font-family: 'DM Sans', sans-serif; font-size: 15px; color: #36221d;
+    background: #e8f5e9; border: 1px solid #a5d6a7; border-radius: 12px;
+    padding: 18px 22px; line-height: 1.7;
+}
+.avw-con-form-card .validation_error,
+.avw-con-form-card .gfield_description.validation_message {
+    font-family: 'DM Sans', sans-serif !important; font-size: 13px !important;
+    color: #c62828 !important; margin-top: 5px !important;
+    background: none !important; border: none !important; padding: 0 !important;
+}
 
 @media (max-width: 960px) {
     .avw-con-body { width: 92%; }
@@ -210,32 +231,22 @@ $is_en    = ( strpos( $avw_lang, 'en' ) === 0 ) || ( strpos( $_SERVER['REQUEST_U
             </div>
         </div>
 
-        <!-- Form -->
+        <!-- Form (Gravity Forms) -->
         <div class="avw-con-form-card">
             <h2 class="avw-con-form-title"><?php echo $is_en ? 'Send us a message' : 'Stuur ons een bericht'; ?></h2>
-            <form id="avw-contact-form" novalidate>
-                <?php wp_nonce_field( 'avw_contact_nonce', 'avw_contact_nonce_field' ); ?>
-
-                <div class="avw-con-field">
-                    <label for="con-email"><?php echo $is_en ? 'Email' : 'E-mail'; ?> <span class="req">*</span></label>
-                    <input type="email" id="con-email" name="email" placeholder="<?php echo $is_en ? 'your@email.com' : 'jouw@email.nl'; ?>" required />
-                </div>
-                <div class="avw-con-field">
-                    <label for="con-name"><?php echo $is_en ? 'Name' : 'Naam'; ?> <span class="req">*</span></label>
-                    <input type="text" id="con-name" name="name" placeholder="<?php echo $is_en ? 'Your name' : 'Jouw naam'; ?>" required />
-                </div>
-                <div class="avw-con-field">
-                    <label for="con-subject"><?php echo $is_en ? 'Subject' : 'Onderwerp'; ?></label>
-                    <input type="text" id="con-subject" name="subject" placeholder="<?php echo $is_en ? 'What is your question about?' : 'Waar gaat je vraag over?'; ?>" />
-                </div>
-                <div class="avw-con-field">
-                    <label for="con-message"><?php echo $is_en ? 'Message' : 'Bericht'; ?> <span class="req">*</span></label>
-                    <textarea id="con-message" name="message" placeholder="<?php echo $is_en ? 'Your message…' : 'Je bericht…'; ?>" required></textarea>
-                </div>
-
-                <button type="submit" class="avw-con-submit-btn"><?php echo $is_en ? 'Send' : 'Versturen'; ?></button>
-                <div id="avw-con-msg" class="avw-con-msg"></div>
-            </form>
+            <?php
+            // Set this to your Gravity Forms contact form ID (Forms → hover a form → note the ID).
+            $avw_gf_id = get_option( 'avw_contact_form_id', 1 );
+            if ( function_exists('gravity_form') ) {
+                gravity_form( $avw_gf_id, false, false, false, null, true );
+            } elseif ( class_exists('GFAPI') ) {
+                echo do_shortcode( '[gravityforms id="' . intval($avw_gf_id) . '"]' );
+            } else {
+                echo '<p style="font-family:\'DM Sans\',sans-serif;color:rgba(54,34,29,0.6);font-size:14px;">'
+                   . ( $is_en ? 'Contact form is not available.' : 'Contactformulier is niet beschikbaar.' )
+                   . '</p>';
+            }
+            ?>
         </div>
 
     </div>
@@ -250,59 +261,6 @@ document.addEventListener('DOMContentLoaded', function() {
               scrollTrigger: { trigger: '#con-hero-title', start: 'top bottom', end: 'bottom top', scrub: true } }
         );
     }
-
-    var form = document.getElementById('avw-contact-form');
-    var msg  = document.getElementById('avw-con-msg');
-    var btn  = form.querySelector('button[type="submit"]');
-
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-
-        var email   = form.querySelector('#con-email').value.trim();
-        var name    = form.querySelector('#con-name').value.trim();
-        var message = form.querySelector('#con-message').value.trim();
-
-        if (!email || !name || !message) {
-            msg.className = 'avw-con-msg error';
-            msg.textContent = <?php echo $is_en ? "'Please fill in all required fields.'" : "'Vul alle verplichte velden in.'"; ?>;
-            msg.style.display = 'block';
-            return;
-        }
-
-        btn.disabled = true;
-        btn.textContent = <?php echo $is_en ? "'Sending…'" : "'Versturen…'"; ?>;
-
-        var data = new FormData();
-        data.append('action',  'avw_contact_submit');
-        data.append('nonce',   form.querySelector('#avw_contact_nonce_field').value);
-        data.append('email',   email);
-        data.append('name',    name);
-        data.append('subject', form.querySelector('#con-subject').value.trim());
-        data.append('message', message);
-
-        fetch('<?php echo admin_url('admin-ajax.php'); ?>', { method: 'POST', body: data })
-            .then(function(r) { return r.json(); })
-            .then(function(res) {
-                msg.style.display = 'block';
-                if (res.success) {
-                    msg.className = 'avw-con-msg success';
-                    msg.textContent = res.data;
-                    form.reset();
-                } else {
-                    msg.className = 'avw-con-msg error';
-                    msg.textContent = res.data;
-                }
-                btn.disabled = false;
-                btn.textContent = <?php echo $is_en ? "'Send'" : "'Versturen'"; ?>;
-            })
-            .catch(function() {
-                msg.className = 'avw-con-msg error';
-                msg.textContent = <?php echo $is_en ? "'Something went wrong. Please try again.'" : "'Er ging iets mis. Probeer het opnieuw.'"; ?>;
-                msg.style.display = 'block';
-                btn.disabled = false;
-                btn.textContent = <?php echo $is_en ? "'Send'" : "'Versturen'"; ?>;
-            });
-    });
 });
 </script>
 
