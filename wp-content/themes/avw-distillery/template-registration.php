@@ -123,6 +123,11 @@ $reg_form_id = $is_en ? 1 : 5;
     color: #c62828 !important; background: none !important;
     border: none !important; padding: 0 !important;
 }
+/* Hide Gravity Forms honeypot / validation field */
+.avw-biz-form-wrap .gform_validation_container,
+.avw-biz-form-wrap .gform-validation-container,
+.avw-biz-form-wrap li.gfield--type-honeypot,
+.avw-biz-form-wrap .gfield_honeypot_wrapper { display: none !important; }
 </style>
 
 <div class="avw-biz-reg">

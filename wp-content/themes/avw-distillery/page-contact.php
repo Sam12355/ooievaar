@@ -148,6 +148,11 @@ $is_en    = ( strpos( $avw_lang, 'en' ) === 0 ) || ( strpos( $_SERVER['REQUEST_U
     color: #c62828 !important; margin-top: 5px !important;
     background: none !important; border: none !important; padding: 0 !important;
 }
+/* Hide Gravity Forms honeypot / validation field */
+.avw-con-form-card .gform_validation_container,
+.avw-con-form-card .gform-validation-container,
+.avw-con-form-card li.gfield--type-honeypot,
+.avw-con-form-card .gfield_honeypot_wrapper { display: none !important; }
 
 @media (max-width: 960px) {
     .avw-con-body { width: 92%; }
