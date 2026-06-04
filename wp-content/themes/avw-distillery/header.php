@@ -544,13 +544,15 @@
             return;
         }
 
-        // Reflect stored language on load — default to Dutch (nl)
-        document.addEventListener('DOMContentLoaded', function() {
+        // Update button labels on load to reflect current language
+        (function() {
             var stored = document.cookie.match(/avw_lang=([a-z]{2})/);
             var cur = stored ? stored[1] : 'nl';
-            // Always switch to stored lang (or default nl) on load
-            setTimeout(function() { avwSwitchLang(cur); }, 800);
-        });
+            var label = document.getElementById('avw-lang-label');
+            if (label) label.textContent = cur.toUpperCase();
+            var mob = document.getElementById('avw-mob-lang-' + cur);
+            if (mob) mob.classList.add('active');
+        })();
 
         // Dropdown open/close
         (function() {
