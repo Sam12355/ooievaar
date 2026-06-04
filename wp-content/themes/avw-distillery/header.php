@@ -534,14 +534,28 @@
             }
         })();
 
-        // Language switcher — uses Google Translate cookies
+        // Language switcher — controls Google Translate via combo element
         function avwSwitchLang(lang) {
-            // Set Google Translate cookie: empty for Dutch (original), '/nl/en' for English
-            var val = lang === 'nl' ? '' : '/nl/' + lang;
-            document.cookie = 'googtrans=' + val + ';path=/;max-age=' + (lang === 'nl' ? '-1' : '31536000');
-            // Force reload to apply translation
-            setTimeout(function() { window.location.reload(); }, 200);
-            return;
+            // Try to find and use the combo element (most direct method)
+            var combo = document.querySelector('.goog-te-combo');
+            if (combo && combo.style.visibility !== 'hidden') {
+                combo.value = lang === 'nl' ? '' : lang;
+                combo.dispatchEvent(new Event('change'));
+            }
+            // Update button labels
+            var label = document.getElementById('avw-lang-label');
+            if (label) label.textContent = lang.toUpperCase();
+            ['nl','en'].forEach(function(l) {
+                var el = document.getElementById('avw-lang-' + l);
+                if (el) el.style.fontWeight = l === lang ? '900' : '700';
+                var mob = document.getElementById('avw-mob-lang-' + l);
+                if (mob) mob.classList.toggle('active', l === lang);
+            });
+            // Close dropdown
+            var drop = document.getElementById('avw-lang-dropdown');
+            var chev = document.getElementById('avw-lang-chevron');
+            if (drop) drop.style.display = 'none';
+            if (chev) chev.style.transform = 'rotate(0deg)';
         }
 
         // Update button labels on load to reflect current language
