@@ -7,9 +7,8 @@
 
 get_header();
 
-$avw_lang = function_exists('pll_current_language') ? pll_current_language() : get_locale();
-$is_en    = ( strpos( $avw_lang, 'en' ) === 0 ) || ( strpos( $_SERVER['REQUEST_URI'], '/en/' ) !== false );
-$cur_lang = $is_en ? 'en' : 'nl';
+$googtrans = isset($_COOKIE['googtrans']) ? $_COOKIE['googtrans'] : '';
+$is_en    = ( strpos( $_SERVER['REQUEST_URI'], '/en/' ) !== false ) || ( strpos( $googtrans, '/en' ) !== false );
 
 // Find the news listing page for back link
 $news_list_page = get_pages(array(
@@ -19,7 +18,7 @@ $news_list_page = get_pages(array(
 ));
 $news_url = ! empty($news_list_page)
     ? get_permalink( $news_list_page[0]->ID )
-    : home_url( $is_en ? '/en/news/' : '/nl/nieuws/' );
+    : home_url('/nieuws/');
 
 $other_news = new WP_Query(array(
     'post_type'      => 'avw_nieuws',
@@ -28,7 +27,6 @@ $other_news = new WP_Query(array(
     'orderby'        => 'date',
     'order'          => 'DESC',
     'post__not_in'   => array( get_the_ID() ),
-    'lang'           => $cur_lang,
 ));
 ?>
 

@@ -7,8 +7,8 @@
 
 get_header();
 
-$avw_lang = function_exists('pll_current_language') ? pll_current_language() : get_locale();
-$is_en    = ( strpos( $avw_lang, 'en' ) === 0 ) || ( strpos( $_SERVER['REQUEST_URI'], '/en/' ) !== false );
+$googtrans = isset($_COOKIE['googtrans']) ? $_COOKIE['googtrans'] : '';
+$is_en    = ( strpos( $_SERVER['REQUEST_URI'], '/en/' ) !== false ) || ( strpos( $googtrans, '/en' ) !== false );
 
 $vacatures = new WP_Query(array(
     'post_type'      => 'vacature',

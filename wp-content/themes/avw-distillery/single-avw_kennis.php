@@ -7,8 +7,8 @@
 
 get_header();
 
-$avw_lang = function_exists('pll_current_language') ? pll_current_language() : get_locale();
-$is_en    = ( strpos( $avw_lang, 'en' ) === 0 ) || ( strpos( $_SERVER['REQUEST_URI'], '/en/' ) !== false );
+$googtrans = isset($_COOKIE['googtrans']) ? $_COOKIE['googtrans'] : '';
+$is_en    = ( strpos( $_SERVER['REQUEST_URI'], '/en/' ) !== false ) || ( strpos( $googtrans, '/en' ) !== false );
 
 // Link back to the kennisbank listing page
 $kb_page = get_pages(array(
@@ -16,7 +16,7 @@ $kb_page = get_pages(array(
     'meta_value' => 'page-kennisbank.php',
     'number'     => 1,
 ));
-$kb_url = ! empty($kb_page) ? get_permalink( $kb_page[0]->ID ) : home_url( $is_en ? '/en/kennisbank/' : '/nl/kennisbank/' );
+$kb_url = ! empty($kb_page) ? get_permalink( $kb_page[0]->ID ) : home_url('/kennisbank/');
 
 $other_kennis = new WP_Query(array(
     'post_type'      => 'avw_kennis',
@@ -25,7 +25,6 @@ $other_kennis = new WP_Query(array(
     'orderby'        => 'date',
     'order'          => 'DESC',
     'post__not_in'   => array( get_the_ID() ),
-    'lang'           => $is_en ? 'en' : 'nl',
 ));
 ?>
 

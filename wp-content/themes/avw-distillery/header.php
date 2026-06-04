@@ -320,7 +320,7 @@
             $locations  = get_nav_menu_locations();
             $menu_items = false;
 
-            // 1. Try Polylang-filtered primary location
+            // 1. Primary menu location
             if ( has_nav_menu('primary') ) {
                 $menu_items = wp_get_nav_menu_items( $locations['primary'] );
             }
@@ -332,25 +332,6 @@
                     if ( $obj ) {
                         $menu_items = wp_get_nav_menu_items( $obj->term_id );
                         if ( $menu_items ) break;
-                    }
-                }
-            }
-
-            // Translate menu items to current language via Polylang
-            if ( $menu_items && function_exists('pll_get_post') ) {
-                foreach ( $menu_items as $item ) {
-                    if ( in_array( $item->object, array('page','post','product'), true ) && ! empty( $item->object_id ) ) {
-                        $translated_id = pll_get_post( $item->object_id );
-                        if ( $translated_id && $translated_id !== (int) $item->object_id ) {
-                            $translated = get_post( $translated_id );
-                            if ( $translated ) {
-                                // Use translated page title only if user hasn't set a custom menu label
-                                if ( $item->title === get_post( $item->object_id )->post_title ) {
-                                    $item->title = $translated->post_title;
-                                }
-                                $item->url = get_permalink( $translated_id );
-                            }
-                        }
                     }
                 }
             }
@@ -438,43 +419,9 @@
                     </svg>
                     <span class="text-black text-[14px] font-bold hidden md:inline">Zoek</span>
                 </button>
-                <!-- Language switcher — hidden on mobile -->
-                <?php
-                $avw_langs = function_exists('pll_the_languages') ? pll_the_languages(array('raw' => 1)) : array();
-                $avw_cur   = function_exists('pll_current_language') ? pll_current_language() : substr(get_locale(), 0, 2);
-                ?>
-                <div class="relative hidden md:block" id="avw-lang-switcher">
-                    <button id="avw-lang-btn" class="bg-white rounded-full px-3 py-2 flex items-center gap-1.5 hover:bg-gray-100 transition-all active:scale-95 shadow-sm" aria-label="Taal wisselen">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10"/>
-                            <path d="M2 12h20"/>
-                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-                        </svg>
-                        <span class="text-black text-[13px] font-bold uppercase tracking-wider"><?php echo esc_html(strtoupper($avw_cur)); ?></span>
-                        <svg id="avw-lang-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform 0.2s">
-                            <path d="M19 9l-7 7-7-7"/>
-                        </svg>
-                    </button>
-                    <div id="avw-lang-dropdown" style="display:none;position:absolute;top:calc(100% + 8px);right:0;background:#fff;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,0.14);overflow:hidden;min-width:72px;z-index:200;">
-                        <?php if (!empty($avw_langs)) :
-                            foreach ($avw_langs as $lang) :
-                                if ($lang['slug'] === $avw_cur) continue;
-                        ?>
-                            <a href="<?php echo esc_url($lang['url']); ?>"
-                               style="display:flex;align-items:center;padding:10px 16px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;color:#36221d;text-transform:uppercase;text-decoration:none;letter-spacing:0.06em;transition:background 0.15s;"
-                               onmouseover="this.style.background='#f5ede3'" onmouseout="this.style.background=''">
-                                <?php echo esc_html(strtoupper($lang['slug'])); ?>
-                            </a>
-                        <?php endforeach; else :
-                            $avw_other = ($avw_cur === 'nl') ? array('slug' => 'en', 'url' => home_url('/en/')) : array('slug' => 'nl', 'url' => home_url('/nl/'));
-                        ?>
-                            <a href="<?php echo esc_url($avw_other['url']); ?>"
-                               style="display:flex;align-items:center;padding:10px 16px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;color:#36221d;text-transform:uppercase;text-decoration:none;letter-spacing:0.06em;transition:background 0.15s;"
-                               onmouseover="this.style.background='#f5ede3'" onmouseout="this.style.background=''">
-                                <?php echo esc_html(strtoupper($avw_other['slug'])); ?>
-                            </a>
-                        <?php endif; ?>
-                    </div>
+                <!-- Language switcher — GTranslate widget -->
+                <div class="hidden md:block" id="avw-lang-switcher">
+                    <div class="gtranslate_wrapper"></div>
                 </div>
 
                 <!-- Hamburger (mobile only) -->
@@ -620,19 +567,9 @@
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                         Account
                     </a>
-                    <!-- Language -->
+                    <!-- Language — GTranslate widget -->
                     <span style="width:1px;height:16px;background:rgba(205,188,166,0.2);display:inline-block;"></span>
-                    <?php if (!empty($avw_langs)) :
-                        foreach ($avw_langs as $lang) :
-                            $is_mob_cur = ($lang['slug'] === $avw_cur);
-                    ?>
-                        <a href="<?php echo esc_url($lang['url']); ?>" class="avw-mob-lang<?php echo $is_mob_cur ? ' active' : ''; ?>">
-                            <?php echo esc_html(strtoupper($lang['slug'])); ?>
-                        </a>
-                    <?php endforeach; else : ?>
-                        <a href="<?php echo home_url('/nl/'); ?>" class="avw-mob-lang<?php echo $avw_cur === 'nl' ? ' active' : ''; ?>">NL</a>
-                        <a href="<?php echo home_url('/en/'); ?>" class="avw-mob-lang<?php echo $avw_cur === 'en' ? ' active' : ''; ?>">EN</a>
-                    <?php endif; ?>
+                    <div class="gtranslate_wrapper"></div>
                 </div>
 
             </div>

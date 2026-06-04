@@ -7,18 +7,15 @@
 
 get_header();
 
-$avw_lang = function_exists('pll_current_language') ? pll_current_language() : get_locale();
-$is_en    = ( strpos( $avw_lang, 'en' ) === 0 ) || ( strpos( $_SERVER['REQUEST_URI'], '/en/' ) !== false );
-$cur_lang = $is_en ? 'en' : 'nl';
+$googtrans = isset($_COOKIE['googtrans']) ? $_COOKIE['googtrans'] : '';
+$is_en    = ( strpos( $_SERVER['REQUEST_URI'], '/en/' ) !== false ) || ( strpos( $googtrans, '/en' ) !== false );
 
-// Query posts in current language; fallback to all languages if none found
 $nieuws = new WP_Query(array(
     'post_type'      => 'avw_nieuws',
     'post_status'    => 'publish',
     'posts_per_page' => -1,
     'orderby'        => 'date',
     'order'          => 'DESC',
-    'lang'           => $cur_lang,
 ));
 if ( ! $nieuws->have_posts() ) {
     $nieuws = new WP_Query(array(
