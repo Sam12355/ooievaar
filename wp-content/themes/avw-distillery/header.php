@@ -419,9 +419,27 @@
                     </svg>
                     <span class="text-black text-[14px] font-bold hidden md:inline">Zoek</span>
                 </button>
-                <!-- Language switcher — GTranslate widget -->
-                <div class="hidden md:block" id="avw-lang-switcher">
-                    <div class="gtranslate_wrapper"></div>
+                <!-- Language switcher — branded pill, uses GTranslate JS API -->
+                <div class="relative hidden md:block" id="avw-lang-switcher">
+                    <button id="avw-lang-btn" class="bg-white rounded-full px-3 py-2 flex items-center gap-1.5 hover:bg-gray-100 transition-all active:scale-95 shadow-sm" aria-label="Taal wisselen">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M2 12h20"/>
+                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                        </svg>
+                        <span id="avw-lang-label" class="text-black text-[13px] font-bold uppercase tracking-wider">NL</span>
+                        <svg id="avw-lang-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform 0.2s">
+                            <path d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div id="avw-lang-dropdown" style="display:none;position:absolute;top:calc(100% + 8px);right:0;background:#fff;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,0.14);overflow:hidden;min-width:72px;z-index:200;">
+                        <a href="#" id="avw-lang-nl" onclick="avwSwitchLang('nl');return false;"
+                           style="display:flex;align-items:center;padding:10px 16px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;color:#36221d;text-transform:uppercase;text-decoration:none;letter-spacing:0.06em;transition:background 0.15s;"
+                           onmouseover="this.style.background='#f5ede3'" onmouseout="this.style.background=''">NL</a>
+                        <a href="#" id="avw-lang-en" onclick="avwSwitchLang('en');return false;"
+                           style="display:flex;align-items:center;padding:10px 16px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;color:#36221d;text-transform:uppercase;text-decoration:none;letter-spacing:0.06em;transition:background 0.15s;"
+                           onmouseover="this.style.background='#f5ede3'" onmouseout="this.style.background=''">EN</a>
+                    </div>
                 </div>
 
                 <!-- Hamburger (mobile only) -->
@@ -516,7 +534,42 @@
             }
         })();
 
-        // Language dropdown toggle
+        // Language switcher — GTranslate API
+        function avwSwitchLang(lang) {
+            var from = lang === 'en' ? 'nl' : 'en';
+            // GTranslate JS API (works with Free and Pro)
+            if (typeof doGTranslate === 'function') {
+                doGTranslate(from + '|' + lang);
+            }
+            // Update label + active state
+            var label = document.getElementById('avw-lang-label');
+            if (label) label.textContent = lang.toUpperCase();
+            ['nl','en'].forEach(function(l) {
+                var el = document.getElementById('avw-lang-' + l);
+                if (el) el.style.fontWeight = l === lang ? '900' : '700';
+                var mob = document.getElementById('avw-mob-lang-' + l);
+                if (mob) mob.classList.toggle('active', l === lang);
+            });
+            // Close dropdown
+            var drop = document.getElementById('avw-lang-dropdown');
+            var chev = document.getElementById('avw-lang-chevron');
+            if (drop) drop.style.display = 'none';
+            if (chev) chev.style.transform = 'rotate(0deg)';
+            // Store choice
+            document.cookie = 'avw_lang=' + lang + ';path=/;max-age=31536000';
+        }
+
+        // Reflect stored language on load
+        (function() {
+            var stored = document.cookie.match(/avw_lang=([a-z]{2})/);
+            var cur = stored ? stored[1] : 'nl';
+            var label = document.getElementById('avw-lang-label');
+            if (label) label.textContent = cur.toUpperCase();
+            var mob = document.getElementById('avw-mob-lang-' + cur);
+            if (mob) mob.classList.add('active');
+        })();
+
+        // Dropdown open/close
         (function() {
             var langBtn  = document.getElementById('avw-lang-btn');
             var langDrop = document.getElementById('avw-lang-dropdown');
@@ -567,9 +620,10 @@
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                         Account
                     </a>
-                    <!-- Language — GTranslate widget -->
+                    <!-- Language — GTranslate -->
                     <span style="width:1px;height:16px;background:rgba(205,188,166,0.2);display:inline-block;"></span>
-                    <div class="gtranslate_wrapper"></div>
+                    <a href="#" onclick="avwSwitchLang('nl');return false;" class="avw-mob-lang" id="avw-mob-lang-nl">NL</a>
+                    <a href="#" onclick="avwSwitchLang('en');return false;" class="avw-mob-lang" id="avw-mob-lang-en">EN</a>
                 </div>
 
             </div>
