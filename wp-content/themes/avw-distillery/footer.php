@@ -327,8 +327,8 @@
         });
     });
     </script>
-    <!-- GTranslate initialisation wrapper (hidden — our custom button calls doGTranslate()) -->
-    <div class="gtranslate_wrapper" style="position:absolute;width:0;height:0;overflow:hidden;opacity:0;pointer-events:none;"></div>
+    <!-- GTranslate initialisation wrapper — off-screen so Google Translate can render its element -->
+    <div class="gtranslate_wrapper" style="position:fixed;bottom:-200px;left:0;width:220px;height:60px;overflow:hidden;z-index:-9999;opacity:0;pointer-events:none;"></div>
     <?php wp_footer(); ?>
 </body>
 

@@ -534,14 +534,33 @@
             }
         })();
 
-        // Language switcher — GTranslate API
+        // Language switcher — GTranslate API with multiple fallbacks
         function avwSwitchLang(lang) {
-            var from = lang === 'en' ? 'nl' : 'en';
-            // GTranslate JS API (works with Free and Pro)
+            var from = 'nl';
+
+            // Method 1: GTranslate's doGTranslate() function
             if (typeof doGTranslate === 'function') {
                 doGTranslate(from + '|' + lang);
             }
-            // Update label + active state
+            // Method 2: Directly trigger the hidden Google Translate combo box
+            else {
+                var combo = document.querySelector('.goog-te-combo');
+                if (combo) {
+                    combo.value = lang === 'nl' ? from : lang;
+                    combo.dispatchEvent(new Event('change'));
+                }
+                // Method 3: Set googtrans cookie and reload (works with GTranslate Free)
+                else {
+                    var cookieVal = lang === 'nl' ? '' : '/' + from + '/' + lang;
+                    var exp = lang === 'nl' ? 'expires=Thu, 01 Jan 1970 00:00:00 GMT;' : 'max-age=31536000;';
+                    document.cookie = 'googtrans=' + cookieVal + ';path=/;' + exp;
+                    document.cookie = 'googtrans=' + cookieVal + ';path=/;domain=' + location.hostname + ';' + exp;
+                    window.location.reload();
+                    return;
+                }
+            }
+
+            // Update button label + active states
             var label = document.getElementById('avw-lang-label');
             if (label) label.textContent = lang.toUpperCase();
             ['nl','en'].forEach(function(l) {
@@ -555,7 +574,6 @@
             var chev = document.getElementById('avw-lang-chevron');
             if (drop) drop.style.display = 'none';
             if (chev) chev.style.transform = 'rotate(0deg)';
-            // Store choice
             document.cookie = 'avw_lang=' + lang + ';path=/;max-age=31536000';
         }
 
