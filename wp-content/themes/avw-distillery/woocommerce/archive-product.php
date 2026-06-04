@@ -448,13 +448,31 @@ defined( 'ABSPATH' ) || exit;
             
             <!-- PAGINATION -->
             <div id="ajax-pagination-container">
+            <style>
+            .avw-woo-pagination { display:flex; align-items:center; justify-content:center; gap:8px; margin-top:48px; flex-wrap:wrap; }
+            .avw-woo-pagination .page-numbers {
+                font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600;
+                display:inline-flex; align-items:center; justify-content:center;
+                min-width:42px; height:42px; padding:0 14px; border-radius:999px;
+                text-decoration:none; transition:all 0.2s; list-style:none;
+                border:1.5px solid rgba(19,62,35,0.15); color:rgba(19,62,35,0.65); background:#fff;
+            }
+            .avw-woo-pagination .page-numbers:hover,
+            .avw-woo-pagination .page-numbers.current {
+                background:#133E23; color:#fff; border-color:#133E23;
+            }
+            .avw-woo-pagination .page-numbers.dots { border:none; background:none; color:rgba(19,62,35,0.35); }
+            .avw-woo-pagination ul { display:flex; gap:8px; padding:0; margin:0; list-style:none; flex-wrap:wrap; align-items:center; justify-content:center; }
+            </style>
             <?php if ( have_posts() ) : ?>
-            <div class="flex justify-center woo-pagination mt-10 font-sans">
+            <div class="avw-woo-pagination">
                 <?php
                 echo paginate_links( array(
-                    'prev_text' => '&larr; Vorige',
-                    'next_text' => 'Volgende &rarr;',
-                    'type'      => 'list',
+                    'prev_text' => '&larr;',
+                    'next_text' => '&rarr;',
+                    'type'      => 'plain',
+                    'mid_size'  => 2,
+                    'end_size'  => 1,
                 ) );
                 ?>
             </div>

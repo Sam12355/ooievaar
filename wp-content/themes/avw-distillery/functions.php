@@ -20,6 +20,9 @@ function avw_distillery_scripts() {
 }
 add_action('wp_enqueue_scripts', 'avw_distillery_scripts');
 
+// Show 12 products per page on the shop/assortiment archive
+add_filter( 'loop_shop_per_page', function() { return 12; }, 20 );
+
 function avw_tailwind_config() {
     ?>
     <script>
