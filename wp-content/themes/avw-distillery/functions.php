@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 
 function avw_distillery_scripts() {
