@@ -22,6 +22,11 @@ add_action('wp_enqueue_scripts', 'avw_distillery_scripts');
 
 // Show 12 products per page on the shop/assortiment archive
 add_filter( 'loop_shop_per_page', function() { return 12; }, 20 );
+add_action( 'pre_get_posts', function( $query ) {
+    if ( ! is_admin() && $query->is_main_query() && ( is_shop() || is_product_category() || is_product_tag() ) ) {
+        $query->set( 'posts_per_page', 12 );
+    }
+} );
 
 function avw_tailwind_config() {
     ?>

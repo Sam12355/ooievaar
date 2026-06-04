@@ -9,7 +9,7 @@ defined( 'ABSPATH' ) || exit;
 <section class="relative bg-[#36221d] pt-28 pb-16 sm:pt-36 sm:pb-20 px-4 sm:px-6 overflow-hidden">
     <!-- Background Image with Parallax-ready styling -->
     <div class="absolute inset-0 z-0">
-        <img id="assortment-hero-img" src="<?php echo get_template_directory_uri(); ?>/assets/assortment-hero-v2.png" alt="A. van Wees Assortment Background" class="w-full object-cover opacity-60" style="object-position: center 40%; position: absolute; top: -30%; height: 160%;" />
+        <img id="assortment-hero-img" src="<?php echo get_template_directory_uri(); ?>/assets/home_about.jpg" alt="A. van Wees Assortment Background" class="w-full object-cover opacity-60" style="object-position: center 40%; position: absolute; top: -30%; height: 160%;" />
         <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-transparent"></div>
     </div>
 
