@@ -327,8 +327,18 @@
         });
     });
     </script>
-    <!-- GTranslate initialisation wrapper — off-screen so Google Translate can render its element -->
-    <div class="gtranslate_wrapper" style="position:fixed;bottom:-200px;left:0;width:220px;height:60px;overflow:hidden;z-index:-9999;opacity:0;pointer-events:none;"></div>
+    <!-- Google Translate — hidden element, controlled by custom switcher button -->
+    <div id="avw_google_translate_el" style="position:fixed;top:-9999px;left:-9999px;width:200px;"></div>
+    <script type="text/javascript">
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'nl',
+            includedLanguages: 'en',
+            autoDisplay: false
+        }, 'avw_google_translate_el');
+    }
+    </script>
+    <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" defer></script>
     <?php wp_footer(); ?>
 </body>
 

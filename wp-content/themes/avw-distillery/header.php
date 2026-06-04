@@ -534,33 +534,25 @@
             }
         })();
 
-        // Language switcher — GTranslate API with multiple fallbacks
+        // Language switcher — directly controls Google Translate combo element
         function avwSwitchLang(lang) {
-            var from = 'nl';
-
-            // Method 1: GTranslate's doGTranslate() function
-            if (typeof doGTranslate === 'function') {
-                doGTranslate(from + '|' + lang);
+            // Find the hidden Google Translate language selector
+            var combo = document.querySelector('.goog-te-combo');
+            if (combo) {
+                combo.value = lang;
+                var evt = document.createEvent ? document.createEvent('HTMLEvents') : null;
+                if (evt) { evt.initEvent('change', true, true); combo.dispatchEvent(evt); }
+                else if (combo.fireEvent) { combo.fireEvent('onchange'); }
+            } else {
+                // Fallback: set cookie and reload (Google Translate reads this on load)
+                var exp = lang === 'nl' ? 'expires=Thu, 01 Jan 1970 00:00:00 GMT;' : 'max-age=31536000;';
+                var val = lang === 'nl' ? '' : '/nl/' + lang;
+                document.cookie = 'googtrans=' + val + ';path=/;' + exp;
+                document.cookie = 'googtrans=' + val + ';path=/;domain=' + location.hostname + ';' + exp;
+                window.location.reload();
+                return;
             }
-            // Method 2: Directly trigger the hidden Google Translate combo box
-            else {
-                var combo = document.querySelector('.goog-te-combo');
-                if (combo) {
-                    combo.value = lang === 'nl' ? from : lang;
-                    combo.dispatchEvent(new Event('change'));
-                }
-                // Method 3: Set googtrans cookie and reload (works with GTranslate Free)
-                else {
-                    var cookieVal = lang === 'nl' ? '' : '/' + from + '/' + lang;
-                    var exp = lang === 'nl' ? 'expires=Thu, 01 Jan 1970 00:00:00 GMT;' : 'max-age=31536000;';
-                    document.cookie = 'googtrans=' + cookieVal + ';path=/;' + exp;
-                    document.cookie = 'googtrans=' + cookieVal + ';path=/;domain=' + location.hostname + ';' + exp;
-                    window.location.reload();
-                    return;
-                }
-            }
-
-            // Update button label + active states
+            // Update UI
             var label = document.getElementById('avw-lang-label');
             if (label) label.textContent = lang.toUpperCase();
             ['nl','en'].forEach(function(l) {
@@ -569,12 +561,10 @@
                 var mob = document.getElementById('avw-mob-lang-' + l);
                 if (mob) mob.classList.toggle('active', l === lang);
             });
-            // Close dropdown
             var drop = document.getElementById('avw-lang-dropdown');
             var chev = document.getElementById('avw-lang-chevron');
             if (drop) drop.style.display = 'none';
             if (chev) chev.style.transform = 'rotate(0deg)';
-            document.cookie = 'avw_lang=' + lang + ';path=/;max-age=31536000';
         }
 
         // Reflect stored language on load
