@@ -539,7 +539,8 @@
             // Find the hidden Google Translate language selector
             var combo = document.querySelector('.goog-te-combo');
             if (combo) {
-                combo.value = lang;
+                // For Dutch (nl), set empty to show original; for English, set 'en'
+                combo.value = lang === 'nl' ? '' : lang;
                 var evt = document.createEvent ? document.createEvent('HTMLEvents') : null;
                 if (evt) { evt.initEvent('change', true, true); combo.dispatchEvent(evt); }
                 else if (combo.fireEvent) { combo.fireEvent('onchange'); }
