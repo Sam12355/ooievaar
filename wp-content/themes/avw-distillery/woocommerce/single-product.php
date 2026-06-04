@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * The Template for displaying all single products
  */
@@ -56,24 +56,6 @@ get_header( 'shop' ); ?>
     </div>
 
 </section>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Parallax Effect for Single Product Hero
-    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-        gsap.to("#product-hero-img", {
-            yPercent: 30,
-            ease: "none",
-            scrollTrigger: {
-                trigger: "h1",
-                start: "top bottom",
-                end: "bottom top",
-                scrub: true
-            }
-        });
-    }
-});
-</script>
 
 <?php
 get_footer( 'shop' );

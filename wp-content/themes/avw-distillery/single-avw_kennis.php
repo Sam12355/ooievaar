@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Single Kennisartikel
  *
@@ -255,14 +255,6 @@ $other_kennis = new WP_Query(array(
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-        gsap.fromTo('#skb-hero-img',
-            { yPercent: -15 },
-            { yPercent: 15, ease: 'none',
-              scrollTrigger: { trigger: '#skb-hero-title', start: 'top bottom', end: 'bottom top', scrub: true } }
-        );
-    }
-
     if (typeof Swiper !== 'undefined') {
         new Swiper('#skb-swiper', {
             slidesPerView: 1.2,

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Custom Boutique Checkout Template — De Ooievaar Distillery
  *
@@ -679,25 +679,5 @@ jQuery(function($) {
         observer.observe(document.body, { childList: true, subtree: true });
     }
 
-});
-</script>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-        gsap.fromTo('#checkout-hero-img',
-            { yPercent: -15 },
-            {
-                yPercent: 15,
-                ease: 'none',
-                scrollTrigger: {
-                    trigger: '#checkout-hero-title',
-                    start: 'top bottom',
-                    end: 'bottom top',
-                    scrub: true
-                }
-            }
-        );
-    }
 });
 </script>

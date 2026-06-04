@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Template Name: Recepten
  *
@@ -241,87 +241,5 @@ $gelegenheden = get_terms(array('taxonomy' => 'recept_gelegenheid', 'hide_empty'
 <style>
 @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 </style>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-
-    // Parallax
-    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-        gsap.fromTo('#rec-hero-img',
-            { yPercent: -15 },
-            { yPercent: 15, ease: 'none',
-              scrollTrigger: { trigger: '#rec-hero-title', start: 'top bottom', end: 'bottom top', scrub: true } }
-        );
-    }
-
-    var ajaxUrl = '<?php echo admin_url('admin-ajax.php'); ?>';
-
-    function doSearch() {
-        var product     = document.getElementById('rec-product').value;
-        var soort       = document.getElementById('rec-soort').value;
-        var gelegenheid = document.getElementById('rec-gelegenheid').value;
-        var keyword     = document.getElementById('rec-keyword').value;
-
-        document.getElementById('rec-spinner').classList.add('active');
-        document.getElementById('rec-results').innerHTML = '';
-        document.getElementById('rec-results-header').style.display = 'none';
-
-        var body = new FormData();
-        body.append('action',      'avw_recept_search');
-        body.append('product',     product);
-        body.append('soort',       soort);
-        body.append('gelegenheid', gelegenheid);
-        body.append('keyword',     keyword);
-
-        fetch(ajaxUrl, { method: 'POST', body: body })
-            .then(function(r){ return r.json(); })
-            .then(function(data) {
-                document.getElementById('rec-spinner').classList.remove('active');
-                var header = document.getElementById('rec-results-header');
-                var grid   = document.getElementById('rec-results');
-
-                if (!data.success || !data.data.length) {
-                    header.style.display = 'block';
-                    header.textContent = 'Geen recepten gevonden';
-                    grid.innerHTML = '';
-                    return;
-                }
-
-                header.style.display = 'block';
-                header.textContent = data.data.length + ' recept' + (data.data.length !== 1 ? 'en' : '') + ' gevonden';
-
-                var html = '';
-                data.data.forEach(function(r) {
-                    html += '<a href="' + r.url + '" class="avw-rec-card">';
-                    if (r.image) {
-                        html += '<img class="avw-rec-card-img" src="' + r.image + '" alt="' + r.title + '" loading="lazy" />';
-                    } else {
-                        html += '<div class="avw-rec-card-img-placeholder">';
-                        html += '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="rgba(54,34,29,0.25)" stroke-width="1.5"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M8 12h8M12 8v8"/></svg>';
-                        html += '</div>';
-                    }
-                    html += '<div class="avw-rec-card-body">';
-                    html += '<h3 class="avw-rec-card-title">' + r.title + '</h3>';
-                    if (r.excerpt) html += '<p class="avw-rec-card-excerpt">' + r.excerpt + '</p>';
-                    html += '</div></a>';
-                });
-                grid.innerHTML = html;
-            })
-            .catch(function() {
-                document.getElementById('rec-spinner').classList.remove('active');
-            });
-    }
-
-    document.getElementById('rec-search-btn').addEventListener('click', doSearch);
-
-    // Also search on Enter key in keyword field
-    document.getElementById('rec-keyword').addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') doSearch();
-    });
-
-    // Load all recipes on page load
-    doSearch();
-});
-</script>
 
 <?php get_footer(); ?>

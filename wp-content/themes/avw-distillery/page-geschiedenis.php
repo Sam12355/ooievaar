@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Template Name: Geschiedenis
  * Slug: geschiedenis
@@ -167,25 +167,5 @@ get_header();
 
     </div>
 </div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-        gsap.fromTo('#gesch-hero-img',
-            { yPercent: -15 },
-            {
-                yPercent: 15,
-                ease: 'none',
-                scrollTrigger: {
-                    trigger: '#gesch-hero-title',
-                    start: 'top bottom',
-                    end: 'bottom top',
-                    scrub: true
-                }
-            }
-        );
-    }
-});
-</script>
 
 <?php get_footer(); ?>

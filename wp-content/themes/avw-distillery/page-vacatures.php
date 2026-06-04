@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Template Name: Vacatures
  *
@@ -183,17 +183,5 @@ $vacatures = new WP_Query(array(
         </div>
     <?php endif; ?>
 </div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-        gsap.fromTo('#vac-hero-img',
-            { yPercent: -15 },
-            { yPercent: 15, ease: 'none',
-              scrollTrigger: { trigger: '#vac-hero-title', start: 'top bottom', end: 'bottom top', scrub: true } }
-        );
-    }
-});
-</script>
 
 <?php get_footer(); ?>

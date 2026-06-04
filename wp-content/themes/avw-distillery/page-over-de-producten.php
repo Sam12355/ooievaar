@@ -725,54 +725,24 @@ $is_en      = ( $post_lang === 'en' )
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-
-    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-        gsap.registerPlugin(ScrollTrigger);
-
-        gsap.fromTo('#odp-hero-img',
-            { yPercent: -15 },
-            { yPercent: 15, ease: 'none',
-              scrollTrigger: { trigger: '#odp-hero-title', start: 'top bottom', end: 'bottom top', scrub: true } }
-        );
-
-        function initParallax() {
-            document.querySelectorAll('.avw-odp-parallax-img').forEach(function(img) {
-                if (img._scrollTrigger) img._scrollTrigger.kill();
-                var st = gsap.fromTo(img,
-                    { yPercent: -10 },
-                    { yPercent: 10, ease: 'none',
-                      scrollTrigger: {
-                          trigger: img.closest('.avw-odp-img-wrap, .avw-odp-img-full'),
-                          start: 'top bottom', end: 'bottom top', scrub: true
-                      }
-                    }
-                );
-                img._scrollTrigger = st.scrollTrigger;
-            });
-        }
-
-        initParallax();
-
-        document.querySelectorAll('.avw-odp-tab').forEach(function(tab) {
-            tab.addEventListener('click', function() {
-                document.querySelectorAll('.avw-odp-tab').forEach(function(t) { t.classList.remove('active'); });
-                document.querySelectorAll('.avw-odp-section').forEach(function(s) { s.classList.remove('active'); });
-                this.classList.add('active');
-                document.getElementById('tab-' + this.dataset.tab).classList.add('active');
-                ScrollTrigger.refresh();
-            });
+    document.querySelectorAll('.avw-odp-tab').forEach(function(tab) {
+        tab.addEventListener('click', function() {
+            document.querySelectorAll('.avw-odp-tab').forEach(function(t) { t.classList.remove('active'); });
+            document.querySelectorAll('.avw-odp-section').forEach(function(s) { s.classList.remove('active'); });
+            this.classList.add('active');
+            document.getElementById('tab-' + this.dataset.tab).classList.add('active');
         });
+    });
 
-        document.querySelectorAll('.avw-odp-quicknav a').forEach(function(a) {
-            a.addEventListener('click', function(e) {
-                var target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    e.preventDefault();
-                    window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - 140, behavior: 'smooth' });
-                }
-            });
+    document.querySelectorAll('.avw-odp-quicknav a').forEach(function(a) {
+        a.addEventListener('click', function(e) {
+            var target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                e.preventDefault();
+                window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - 140, behavior: 'smooth' });
+            }
         });
-    }
+    });
 });
 </script>
 

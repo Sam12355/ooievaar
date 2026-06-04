@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Single Recept Template
  *
@@ -203,18 +203,6 @@ while ( have_posts() ) :
         </div>
     </div>
 </div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-        gsap.fromTo('#srec-hero-img',
-            { yPercent: -15 },
-            { yPercent: 15, ease: 'none',
-              scrollTrigger: { trigger: '#srec-hero-title', start: 'top bottom', end: 'bottom top', scrub: true } }
-        );
-    }
-});
-</script>
 
 <?php endwhile; ?>
 

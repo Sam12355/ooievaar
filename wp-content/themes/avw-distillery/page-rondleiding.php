@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Template Name: Rondleiding
  *
@@ -234,17 +234,5 @@ get_header();
 
     </div>
 </div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-        gsap.fromTo('#rond-hero-img',
-            { yPercent: -15 },
-            { yPercent: 15, ease: 'none',
-              scrollTrigger: { trigger: '#rond-hero-title', start: 'top bottom', end: 'bottom top', scrub: true } }
-        );
-    }
-});
-</script>
 
 <?php get_footer(); ?>

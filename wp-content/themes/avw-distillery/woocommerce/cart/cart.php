@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Custom Boutique Cart Template — De Ooievaar Distillery
  * Works for ALL WPML language versions (Dutch, English, etc.)
@@ -661,25 +661,5 @@ jQuery(function($) {
         }
     });
 
-});
-</script>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-        gsap.fromTo('#cart-hero-img',
-            { yPercent: -15 },
-            {
-                yPercent: 15,
-                ease: 'none',
-                scrollTrigger: {
-                    trigger: '#cart-hero-title',
-                    start: 'top bottom',
-                    end: 'bottom top',
-                    scrub: true
-                }
-            }
-        );
-    }
 });
 </script>

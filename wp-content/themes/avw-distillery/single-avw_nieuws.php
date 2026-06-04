@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Single Nieuwsbericht
  *
@@ -258,14 +258,6 @@ $other_news = new WP_Query(array(
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-        gsap.fromTo('#snews-hero-img',
-            { yPercent: -15 },
-            { yPercent: 15, ease: 'none',
-              scrollTrigger: { trigger: '#snews-hero-title', start: 'top bottom', end: 'bottom top', scrub: true } }
-        );
-    }
-
     if (typeof Swiper !== 'undefined') {
         new Swiper('#snews-swiper', {
             slidesPerView: 1.2,

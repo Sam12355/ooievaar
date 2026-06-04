@@ -11,19 +11,12 @@ function avw_distillery_scripts() {
     // Enqueue Tailwind (CDN)
     wp_enqueue_script('tailwind-cdn', 'https://cdn.tailwindcss.com', array(), null, false);
 
-    // Enqueue GSAP & ScrollTrigger
-    wp_enqueue_script('gsap', 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js', array(), null, true);
-    wp_enqueue_script('gsap-scroll-trigger', 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js', array('gsap'), null, true);
-
-    // Enqueue Lenis
-    wp_enqueue_script('lenis', 'https://unpkg.com/lenis@1.1.20/dist/lenis.min.js', array(), null, true);
-
     // Enqueue Swiper for carousels
     wp_enqueue_style('swiper-css', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css', array(), '11.0.0');
     wp_enqueue_script('swiper-js', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js', array(), '11.0.0', true);
 
     // Enqueue Main Script with dynamic version
-    wp_enqueue_script('avw-main-script', get_template_directory_uri() . '/js/script.js', array('gsap', 'gsap-scroll-trigger', 'lenis', 'swiper-js'), time(), true);
+    wp_enqueue_script('avw-main-script', get_template_directory_uri() . '/js/script.js', array('swiper-js'), time(), true);
 }
 add_action('wp_enqueue_scripts', 'avw_distillery_scripts');
 

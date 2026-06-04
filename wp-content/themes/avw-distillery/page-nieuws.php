@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Template Name: Nieuws
  *
@@ -172,17 +172,5 @@ if ( ! $nieuws->have_posts() ) {
         </div>
     <?php endif; ?>
 </div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-        gsap.fromTo('#news-hero-img',
-            { yPercent: -15 },
-            { yPercent: 15, ease: 'none',
-              scrollTrigger: { trigger: '#news-hero-title', start: 'top bottom', end: 'bottom top', scrub: true } }
-        );
-    }
-});
-</script>
 
 <?php get_footer(); ?>

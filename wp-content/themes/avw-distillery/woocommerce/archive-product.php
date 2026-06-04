@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 header('X-AVW-Template: archive-product');
 nocache_headers(); 
 defined( 'ABSPATH' ) || exit;
@@ -315,22 +315,6 @@ defined( 'ABSPATH' ) || exit;
 
                     rebindDynamicEvents();
                     console.log('=== AVW POWER SYNC v3.2 ACTIVE ===');
-
-                    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-                        gsap.fromTo("#assortment-hero-img",
-                            { yPercent: -15 },
-                            {
-                                yPercent: 15,
-                                ease: "none",
-                                scrollTrigger: {
-                                    trigger: "#ajax-page-title",
-                                    start: "top bottom",
-                                    end: "bottom top",
-                                    scrub: true
-                                }
-                            }
-                        );
-                    }
 
                     if (typeof jQuery !== 'undefined') {
                         jQuery(document.body).on('price_slider_change', function(event, min, max) {

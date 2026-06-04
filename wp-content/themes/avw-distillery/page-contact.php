@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Template Name: Contact
  *
@@ -256,17 +256,5 @@ $is_en    = ( strpos( $avw_lang, 'en' ) === 0 ) || ( strpos( $_SERVER['REQUEST_U
 
     </div>
 </div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-        gsap.fromTo('#con-hero-img',
-            { yPercent: -15 },
-            { yPercent: 15, ease: 'none',
-              scrollTrigger: { trigger: '#con-hero-title', start: 'top bottom', end: 'bottom top', scrub: true } }
-        );
-    }
-});
-</script>
 
 <?php get_footer(); ?>
