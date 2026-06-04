@@ -222,20 +222,6 @@ $is_en    = ( strpos( $_SERVER['REQUEST_URI'], '/en/' ) !== false ) || ( strpos(
 
         <h2 class="avw-odp-h1"><?php echo $is_en ? 'About the products' : 'Over de producten'; ?></h2>
 
-        <div class="avw-odp-quicknav">
-            <p class="avw-odp-quicknav-title"><?php echo $is_en ? 'Jump to' : 'Ga snel naar'; ?></p>
-            <ol>
-                <?php if ( $is_en ): ?>
-                <li><a href="#over-trad">Traditional and new genevers and liqueurs</a></li>
-                <li><a href="#over-eetparfums">Tempting eating perfumes for restaurateurs and home cooks</a></li>
-                <li><a href="#over-assortiment">Our Assortment</a></li>
-                <?php else: ?>
-                <li><a href="#over-trad">Traditionele en nieuwe genevers en likeuren</a></li>
-                <li><a href="#over-eetparfums">Verleidelijke eetparfums voor restaurateurs en hobbykoks</a></li>
-                <li><a href="#over-assortiment">Ons Assortiment</a></li>
-                <?php endif; ?>
-            </ol>
-        </div>
 
         <div class="avw-odp-2col img-right" id="over-trad">
             <div class="avw-odp-text">
@@ -347,20 +333,6 @@ $is_en    = ( strpos( $_SERVER['REQUEST_URI'], '/en/' ) !== false ) || ( strpos(
 
         <h2 class="avw-odp-h1">Genever</h2>
 
-        <div class="avw-odp-quicknav">
-            <p class="avw-odp-quicknav-title"><?php echo $is_en ? 'Jump to' : 'Ga snel naar'; ?></p>
-            <ol>
-                <?php if ( $is_en ): ?>
-                <li><a href="#gen-geschiedenis">History of genever</a></li>
-                <li><a href="#gen-verschil">The difference between old and young</a></li>
-                <li><a href="#gen-bereiding">Preparation</a></li>
-                <?php else: ?>
-                <li><a href="#gen-geschiedenis">Geschiedenis van genever</a></li>
-                <li><a href="#gen-verschil">Het verschil tussen oud en jong</a></li>
-                <li><a href="#gen-bereiding">Bereiding</a></li>
-                <?php endif; ?>
-            </ol>
-        </div>
 
         <div class="avw-odp-2col img-right" id="gen-geschiedenis">
             <div class="avw-odp-text">
@@ -580,20 +552,6 @@ $is_en    = ( strpos( $_SERVER['REQUEST_URI'], '/en/' ) !== false ) || ( strpos(
 
         <h2 class="avw-odp-h1">Gin</h2>
 
-        <div class="avw-odp-quicknav">
-            <p class="avw-odp-quicknav-title"><?php echo $is_en ? 'Jump to' : 'Ga snel naar'; ?></p>
-            <ol>
-                <?php if ( $is_en ): ?>
-                <li><a href="#gin-wat">What is gin?</a></li>
-                <li><a href="#gin-ontstaan">The history of gin</a></li>
-                <li><a href="#gin-smaak">Recognisable taste characteristics</a></li>
-                <?php else: ?>
-                <li><a href="#gin-wat">Wat is gin?</a></li>
-                <li><a href="#gin-ontstaan">De ontstaansgeschiedenis van gin</a></li>
-                <li><a href="#gin-smaak">Herkenbare smaakeigenschappen</a></li>
-                <?php endif; ?>
-            </ol>
-        </div>
 
         <div class="avw-odp-2col img-right" id="gin-wat">
             <div class="avw-odp-text">
@@ -651,18 +609,6 @@ $is_en    = ( strpos( $_SERVER['REQUEST_URI'], '/en/' ) !== false ) || ( strpos(
 
         <h2 class="avw-odp-h1">Esprit</h2>
 
-        <div class="avw-odp-quicknav">
-            <p class="avw-odp-quicknav-title"><?php echo $is_en ? 'Jump to' : 'Ga snel naar'; ?></p>
-            <ol>
-                <?php if ( $is_en ): ?>
-                <li><a href="#esp-wat">What is esprit?</a></li>
-                <li><a href="#esp-kooptekoop">Where to buy</a></li>
-                <?php else: ?>
-                <li><a href="#esp-wat">Wat is esprit?</a></li>
-                <li><a href="#esp-kooptekoop">Waar te koop</a></li>
-                <?php endif; ?>
-            </ol>
-        </div>
 
         <div class="avw-odp-fullblock" id="esp-wat">
             <?php if ( $is_en ): ?>
