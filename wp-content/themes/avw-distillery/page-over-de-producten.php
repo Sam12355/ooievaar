@@ -189,7 +189,8 @@ $is_en    = ( strpos( $_SERVER['REQUEST_URI'], '/en/' ) !== false ) || ( strpos(
 
 <!-- HERO -->
 <section class="avw-odp-hero">
-    <img id="odp-hero-img" class="avw-odp-hero-img" src="<?php echo get_template_directory_uri(); ?>/assets/home_about.jpg" alt="<?php echo $is_en ? 'About the Products' : 'Over de Producten'; ?>" />
+    <?php $odp_hero = file_exists( get_template_directory() . '/assets/home_about.jpg' ) ? get_template_directory_uri() . '/assets/home_about.jpg' : get_template_directory_uri() . '/assets/assortment-hero-v2.png'; ?>
+    <img id="odp-hero-img" class="avw-odp-hero-img" src="<?php echo esc_url($odp_hero); ?>" alt="<?php echo $is_en ? 'About the Products' : 'Over de Producten'; ?>" />
     <div class="avw-odp-hero-overlay"></div>
     <div class="avw-odp-hero-content">
         <nav class="avw-odp-breadcrumb">
