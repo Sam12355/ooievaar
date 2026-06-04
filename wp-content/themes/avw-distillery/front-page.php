@@ -299,4 +299,65 @@
         </div>
     </section>
 
+    <!-- ABOUT DISTILLERY SECTION -->
+    <section style="background:#36221d; overflow:hidden;">
+        <div id="avw-about-section-grid" style="max-width:1400px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; min-height:520px;">
+
+            <!-- Left: Image -->
+            <div style="position:relative; overflow:hidden; min-height:420px;">
+                <img src="<?php echo get_template_directory_uri(); ?>/assets/home_about.jpg"
+                     alt="Distilleerderij De Ooievaar"
+                     style="width:100%; height:100%; object-fit:cover; object-position:center; display:block;" />
+                <div style="position:absolute;inset:0;background:linear-gradient(to right, rgba(54,34,29,0) 60%, #36221d 100%);"></div>
+            </div>
+
+            <!-- Right: Text -->
+            <div style="padding:72px 64px 72px 48px; display:flex; flex-direction:column; justify-content:center; gap:28px;">
+
+                <!-- Eyebrow -->
+                <p style="font-family:'DM Sans',sans-serif; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.2em; color:rgba(238,223,203,0.5); margin:0;">
+                    A. van Wees &bull; Sinds 1883
+                </p>
+
+                <!-- Heading -->
+                <h2 style="font-family:'Kurversbrug',serif; font-size:clamp(26px,3.2vw,44px); color:#eedfcb; text-transform:uppercase; letter-spacing:0.08em; font-weight:normal; margin:0; line-height:1.15;">
+                    Honderden ambachtelijke dranken rechtstreeks uit onze Amsterdamse distilleerderij
+                </h2>
+
+                <!-- Divider -->
+                <div style="width:48px; height:2px; background:rgba(238,223,203,0.3);"></div>
+
+                <!-- Body text -->
+                <p style="font-family:'DM Sans',sans-serif; font-size:15px; line-height:1.85; color:rgba(238,223,203,0.7); margin:0; max-width:480px;">
+                    A. van Wees anno 1883 — distilleerderij De Ooievaar anno 1782 — omvat de enig overgebleven ambachtelijke distilleerderij in Amsterdam. U vindt ons in de Driehoekstraat, in het hart van de Jordaan.
+                </p>
+
+                <!-- CTA links -->
+                <div style="display:flex; flex-direction:column; gap:14px; margin-top:4px;">
+                    <a href="<?php echo esc_url(home_url('/over/')); ?>"
+                       style="display:inline-flex; align-items:center; gap:12px; font-family:'Kurversbrug',serif; font-size:13px; text-transform:uppercase; letter-spacing:0.18em; color:#eedfcb; text-decoration:none; transition:opacity 0.2s;"
+                       onmouseover="this.style.opacity='.7'" onmouseout="this.style.opacity='1'">
+                        <span style="width:28px; height:1px; background:#eedfcb; flex-shrink:0;"></span>
+                        Lees meer over de distilleerderij
+                    </a>
+                    <a href="<?php echo esc_url(function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/assortiment/')); ?>"
+                       style="display:inline-flex; align-items:center; gap:12px; font-family:'Kurversbrug',serif; font-size:13px; text-transform:uppercase; letter-spacing:0.18em; color:rgba(238,223,203,0.6); text-decoration:none; transition:opacity 0.2s;"
+                       onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='1'">
+                        <span style="width:28px; height:1px; background:rgba(238,223,203,0.5); flex-shrink:0;"></span>
+                        Bekijk het volledige assortiment
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+        <style>
+        @media (max-width: 768px) {
+            #avw-about-section-grid { grid-template-columns: 1fr !important; }
+            #avw-about-section-grid > div:first-child { min-height: 260px !important; }
+            #avw-about-section-grid > div:last-child { padding: 44px 28px !important; }
+        }
+        </style>
+    </section>
+
 <?php get_footer(); ?>
