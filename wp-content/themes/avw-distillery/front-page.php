@@ -340,7 +340,7 @@
                         <span style="width:28px; height:1px; background:#eedfcb; flex-shrink:0;"></span>
                         Lees meer over de distilleerderij
                     </a>
-                    <a href="<?php echo esc_url(function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/assortiment/')); ?>"
+                    <a href="<?php echo esc_url(home_url('/assortiment/')); ?>"
                        style="display:inline-flex; align-items:center; gap:12px; font-family:'Kurversbrug',serif; font-size:13px; text-transform:uppercase; letter-spacing:0.18em; color:rgba(238,223,203,0.6); text-decoration:none; transition:opacity 0.2s;"
                        onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='1'">
                         <span style="width:28px; height:1px; background:rgba(238,223,203,0.5); flex-shrink:0;"></span>
