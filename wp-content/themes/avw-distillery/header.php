@@ -534,38 +534,14 @@
             }
         })();
 
-        // Language switcher — directly controls Google Translate combo element
+        // Language switcher — uses Google Translate cookies
         function avwSwitchLang(lang) {
-            // Find the hidden Google Translate language selector
-            var combo = document.querySelector('.goog-te-combo');
-            if (combo) {
-                // For Dutch (nl), set empty to show original; for English, set 'en'
-                combo.value = lang === 'nl' ? '' : lang;
-                var evt = document.createEvent ? document.createEvent('HTMLEvents') : null;
-                if (evt) { evt.initEvent('change', true, true); combo.dispatchEvent(evt); }
-                else if (combo.fireEvent) { combo.fireEvent('onchange'); }
-            } else {
-                // Fallback: set cookie and reload (Google Translate reads this on load)
-                var exp = lang === 'nl' ? 'expires=Thu, 01 Jan 1970 00:00:00 GMT;' : 'max-age=31536000;';
-                var val = lang === 'nl' ? '' : '/nl/' + lang;
-                document.cookie = 'googtrans=' + val + ';path=/;' + exp;
-                document.cookie = 'googtrans=' + val + ';path=/;domain=' + location.hostname + ';' + exp;
-                window.location.reload();
-                return;
-            }
-            // Update UI
-            var label = document.getElementById('avw-lang-label');
-            if (label) label.textContent = lang.toUpperCase();
-            ['nl','en'].forEach(function(l) {
-                var el = document.getElementById('avw-lang-' + l);
-                if (el) el.style.fontWeight = l === lang ? '900' : '700';
-                var mob = document.getElementById('avw-mob-lang-' + l);
-                if (mob) mob.classList.toggle('active', l === lang);
-            });
-            var drop = document.getElementById('avw-lang-dropdown');
-            var chev = document.getElementById('avw-lang-chevron');
-            if (drop) drop.style.display = 'none';
-            if (chev) chev.style.transform = 'rotate(0deg)';
+            // Set Google Translate cookie: empty for Dutch (original), '/nl/en' for English
+            var val = lang === 'nl' ? '' : '/nl/' + lang;
+            document.cookie = 'googtrans=' + val + ';path=/;max-age=' + (lang === 'nl' ? '-1' : '31536000');
+            // Force reload to apply translation
+            setTimeout(function() { window.location.reload(); }, 200);
+            return;
         }
 
         // Reflect stored language on load — default to Dutch (nl)
