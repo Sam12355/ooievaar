@@ -330,9 +330,15 @@
     <!-- Google Translate — hidden element, controlled by custom switcher button -->
     <div id="avw_google_translate_el" style="position:fixed;top:-9999px;left:-9999px;width:200px;"></div>
     <style>
-    .goog-te-banner-frame { display: none !important; }
-    .goog-te-banner-frame.skiptranslate { display: none !important; }
-    body { top: 0 !important; }
+    .goog-te-banner-frame,
+    .goog-te-banner-frame.skiptranslate,
+    .goog-te-top-frame,
+    .goog-te-floating-translation-panel {
+        display: none !important;
+        visibility: hidden !important;
+    }
+    body { top: 0 !important; margin-top: 0 !important; }
+    html { top: 0 !important; }
     </style>
     <script type="text/javascript">
     function googleTranslateElementInit() {

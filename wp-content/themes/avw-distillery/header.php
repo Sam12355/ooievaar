@@ -567,7 +567,7 @@
             if (chev) chev.style.transform = 'rotate(0deg)';
         }
 
-        // Reflect stored language on load
+        // Reflect stored language on load — default to Dutch (nl)
         (function() {
             var stored = document.cookie.match(/avw_lang=([a-z]{2})/);
             var cur = stored ? stored[1] : 'nl';
@@ -575,6 +575,13 @@
             if (label) label.textContent = cur.toUpperCase();
             var mob = document.getElementById('avw-mob-lang-' + cur);
             if (mob) mob.classList.add('active');
+            // Force combo to nl on load if no cookie (defaults to Dutch)
+            if (!stored) {
+                setTimeout(function() {
+                    var combo = document.querySelector('.goog-te-combo');
+                    if (combo) combo.value = 'nl';
+                }, 500);
+            }
         })();
 
         // Dropdown open/close
