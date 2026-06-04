@@ -333,10 +333,15 @@
     .goog-te-banner-frame,
     .goog-te-banner-frame.skiptranslate,
     .goog-te-top-frame,
-    .goog-te-floating-translation-panel {
+    .goog-te-floating-translation-panel,
+    iframe.skiptranslate,
+    iframe[id*=":"].skiptranslate {
         display: none !important;
         visibility: hidden !important;
+        height: 0 !important;
+        width: 0 !important;
     }
+    .VIpgJd-ZVi9od-ORHb-OEVmcd { display: none !important; }
     body { top: 0 !important; margin-top: 0 !important; }
     html { top: 0 !important; }
     </style>
