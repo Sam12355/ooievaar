@@ -844,6 +844,14 @@ add_filter( 'page_template', function( $template ) {
     return $template;
 } );
 
+// Redirect legacy English assortment/shop slugs to the Dutch shop page
+add_action( 'template_redirect', function() {
+    if ( is_page( array( 'assortment', 'assortiment-en', 'en-assortiment', 'shop-en' ) ) ) {
+        wp_redirect( home_url( '/assortiment/' ), 301 );
+        exit;
+    }
+} );
+
 /**
  * NIEUWS: Custom admin columns
  */
