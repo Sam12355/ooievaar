@@ -556,24 +556,28 @@
             }
         }
 
-        // On page load, sync button state with actual Google Translate state
-        setTimeout(function() {
+        // On page load, clear googtrans cookie if NL is set, or set EN if EN is set
+        (function() {
             var stored = document.cookie.match(/avw_lang=([a-z]{2})/);
             var cur = stored ? stored[1] : 'nl';
 
-            // Update button labels
-            var label = document.getElementById('avw-lang-label');
-            if (label) label.textContent = cur.toUpperCase();
-            var mob = document.getElementById('avw-mob-lang-' + cur);
-            if (mob) mob.classList.add('active');
-
-            // Make sure Google Translate combo matches
-            var combo = document.querySelector('.goog-te-combo');
-            if (combo && cur !== 'nl') {
-                combo.value = cur;
-                combo.dispatchEvent(new Event('change'));
+            // Clear or set Google Translate cookie based on language preference
+            if (cur === 'nl') {
+                // Clear translation cookie to show original Dutch
+                document.cookie = 'googtrans=;path=/;expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+            } else if (cur === 'en') {
+                // Set translation to English
+                document.cookie = 'googtrans=/nl/en;path=/;max-age=31536000;';
             }
-        }, 1500);
+
+            // Update button labels
+            setTimeout(function() {
+                var label = document.getElementById('avw-lang-label');
+                if (label) label.textContent = cur.toUpperCase();
+                var mob = document.getElementById('avw-mob-lang-' + cur);
+                if (mob) mob.classList.add('active');
+            }, 100);
+        })();
 
         // Dropdown open/close
         (function() {
