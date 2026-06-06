@@ -534,31 +534,17 @@
             }
         })();
 
-        // Language switcher — controls Google Translate via combo element
+        // Language switcher — set Google Translate cookie and reload
         function avwSwitchLang(lang) {
-            // Store the language choice in our own cookie
+            // Store language choice in our cookie
             document.cookie = 'avw_lang=' + lang + ';path=/;max-age=31536000';
 
-            // Try to find and use the combo element (most direct method)
-            var combo = document.querySelector('.goog-te-combo');
-            if (combo && combo.style.visibility !== 'hidden') {
-                combo.value = lang === 'nl' ? '' : lang;
-                combo.dispatchEvent(new Event('change'));
-            }
-            // Update button labels
-            var label = document.getElementById('avw-lang-label');
-            if (label) label.textContent = lang.toUpperCase();
-            ['nl','en'].forEach(function(l) {
-                var el = document.getElementById('avw-lang-' + l);
-                if (el) el.style.fontWeight = l === lang ? '900' : '700';
-                var mob = document.getElementById('avw-mob-lang-' + l);
-                if (mob) mob.classList.toggle('active', l === lang);
-            });
-            // Close dropdown
-            var drop = document.getElementById('avw-lang-dropdown');
-            var chev = document.getElementById('avw-lang-chevron');
-            if (drop) drop.style.display = 'none';
-            if (chev) chev.style.transform = 'rotate(0deg)';
+            // Set Google Translate cookie: empty for Dutch (original), 'en' for English
+            var gtVal = lang === 'nl' ? '' : lang;
+            document.cookie = 'googtrans=' + gtVal + ';path=/;max-age=31536000';
+
+            // Reload page to apply translation
+            window.location.reload();
         }
 
         // Update button labels on load to reflect current language
