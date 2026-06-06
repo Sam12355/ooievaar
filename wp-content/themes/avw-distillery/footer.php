@@ -348,8 +348,7 @@
     <script type="text/javascript">
     function googleTranslateElementInit() {
         new google.translate.TranslateElement({
-            pageLanguage: 'nl',
-            includedLanguages: 'en',
+            includedLanguages: 'nl,en',
             autoDisplay: false
         }, 'avw_google_translate_el');
     }
