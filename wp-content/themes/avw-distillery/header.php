@@ -548,17 +548,15 @@
             // Store language choice
             document.cookie = 'avw_lang=' + lang + ';path=/;max-age=31536000';
 
-            if (lang === 'nl') {
-                // Reload to reset to original Dutch
-                window.location.reload();
-            } else if (lang === 'en') {
-                // Translate to English
-                if (typeof doGTranslate === 'function') {
-                    doGTranslate('nl|en');
-                } else {
-                    window.location.reload();
-                }
+            // Set googtrans cookie for Google Translate
+            if (lang === 'en') {
+                document.cookie = 'googtrans=/nl/en;path=/;max-age=31536000';
+            } else {
+                document.cookie = 'googtrans=;path=/;expires=Thu, 01 Jan 1970 00:00:00 UTC;';
             }
+
+            // Reload page to apply language change
+            window.location.reload();
         }
 
         // On page load, update button labels to match stored language
