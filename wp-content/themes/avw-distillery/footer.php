@@ -348,8 +348,10 @@
     <script type="text/javascript">
     function googleTranslateElementInit() {
         new google.translate.TranslateElement({
+            pageLanguage: 'nl',
             includedLanguages: 'nl,en',
-            autoDisplay: false
+            autoDisplay: false,
+            defaultLanguage: 'nl'
         }, 'avw_google_translate_el');
     }
     </script>

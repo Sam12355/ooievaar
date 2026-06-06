@@ -534,49 +534,33 @@
             }
         })();
 
-        // Language switcher — use doGTranslate if available, fallback to reload
+        // Language switcher
         function avwSwitchLang(lang) {
-            // Store language choice in our cookie
+            // Store language choice
             document.cookie = 'avw_lang=' + lang + ';path=/;max-age=31536000';
 
-            // Try to use doGTranslate function (format: 'source|target')
-            if (typeof doGTranslate === 'function') {
-                if (lang === 'nl') {
-                    // Reload to reset to original Dutch
-                    window.location.reload();
-                } else if (lang === 'en') {
-                    // Translate from Dutch to English
-                    doGTranslate('nl|en');
-                }
-            } else {
-                // Fallback: set googtrans cookie and reload
-                var gtVal = lang === 'nl' ? '' : lang;
-                document.cookie = 'googtrans=' + gtVal + ';path=/;max-age=31536000';
+            if (lang === 'nl') {
+                // Reload to reset to original Dutch
                 window.location.reload();
+            } else if (lang === 'en') {
+                // Translate to English
+                if (typeof doGTranslate === 'function') {
+                    doGTranslate('nl|en');
+                } else {
+                    window.location.reload();
+                }
             }
         }
 
-        // On page load, clear googtrans cookie if NL is set, or set EN if EN is set
+        // On page load, update button labels to match stored language
         (function() {
             var stored = document.cookie.match(/avw_lang=([a-z]{2})/);
             var cur = stored ? stored[1] : 'nl';
 
-            // Clear or set Google Translate cookie based on language preference
-            if (cur === 'nl') {
-                // Clear translation cookie to show original Dutch
-                document.cookie = 'googtrans=;path=/;expires=Thu, 01 Jan 1970 00:00:00 UTC;';
-            } else if (cur === 'en') {
-                // Set translation to English
-                document.cookie = 'googtrans=/nl/en;path=/;max-age=31536000;';
-            }
-
-            // Update button labels
-            setTimeout(function() {
-                var label = document.getElementById('avw-lang-label');
-                if (label) label.textContent = cur.toUpperCase();
-                var mob = document.getElementById('avw-mob-lang-' + cur);
-                if (mob) mob.classList.add('active');
-            }, 100);
+            var label = document.getElementById('avw-lang-label');
+            if (label) label.textContent = cur.toUpperCase();
+            var mob = document.getElementById('avw-mob-lang-' + cur);
+            if (mob) mob.classList.add('active');
         })();
 
         // Dropdown open/close
