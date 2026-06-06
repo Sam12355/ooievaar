@@ -536,6 +536,9 @@
 
         // Language switcher — controls Google Translate via combo element
         function avwSwitchLang(lang) {
+            // Store the language choice in our own cookie
+            document.cookie = 'avw_lang=' + lang + ';path=/;max-age=31536000';
+
             // Try to find and use the combo element (most direct method)
             var combo = document.querySelector('.goog-te-combo');
             if (combo && combo.style.visibility !== 'hidden') {
