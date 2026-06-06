@@ -534,17 +534,26 @@
             }
         })();
 
-        // Language switcher — set Google Translate cookie and reload
+        // Language switcher — use doGTranslate if available, fallback to reload
         function avwSwitchLang(lang) {
             // Store language choice in our cookie
             document.cookie = 'avw_lang=' + lang + ';path=/;max-age=31536000';
 
-            // Set Google Translate cookie: empty for Dutch (original), 'en' for English
-            var gtVal = lang === 'nl' ? '' : lang;
-            document.cookie = 'googtrans=' + gtVal + ';path=/;max-age=31536000';
-
-            // Reload page to apply translation
-            window.location.reload();
+            // Try to use doGTranslate function (format: 'source|target')
+            if (typeof doGTranslate === 'function') {
+                if (lang === 'nl') {
+                    // Reload to reset to original Dutch
+                    window.location.reload();
+                } else if (lang === 'en') {
+                    // Translate from Dutch to English
+                    doGTranslate('nl|en');
+                }
+            } else {
+                // Fallback: set googtrans cookie and reload
+                var gtVal = lang === 'nl' ? '' : lang;
+                document.cookie = 'googtrans=' + gtVal + ';path=/;max-age=31536000';
+                window.location.reload();
+            }
         }
 
         // On page load, sync button state with actual Google Translate state
