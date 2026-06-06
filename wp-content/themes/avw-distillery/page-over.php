@@ -190,7 +190,7 @@ $is_en    = ( strpos( $_SERVER['REQUEST_URI'], '/en/' ) !== false ) || ( strpos(
 
 <!-- HERO -->
 <section class="avw-over-hero">
-    <img id="over-hero-img" class="avw-over-hero-img" src="<?php echo get_template_directory_uri(); ?>/assets/over-japan.jpg" alt="A. van Wees Distilleerderij De Ooievaar" />
+    <img id="over-hero-img" class="avw-over-hero-img" src="<?php echo home_url('/wp-content/uploads/2026/05/d_Image_a6mnka6mnka6mnka.jpg'); ?>" alt="A. van Wees Distilleerderij De Ooievaar" />
     <div class="avw-over-hero-overlay"></div>
     <div class="avw-over-hero-content">
         <nav class="avw-over-breadcrumb">
@@ -208,7 +208,7 @@ $is_en    = ( strpos( $_SERVER['REQUEST_URI'], '/en/' ) !== false ) || ( strpos(
 
     <!-- 1: Japan visit -->
     <article class="avw-over-article" style="padding: 0;">
-        <img class="avw-over-japan-img" src="<?php echo get_template_directory_uri(); ?>/assets/over-japan.jpg" alt="<?php echo $is_en ? 'Working visit to Japan – Fenny van Wees' : 'Werkbezoek aan Japan – Fenny van Wees'; ?>" />
+        <img class="avw-over-japan-img" src="<?php echo home_url('/wp-content/uploads/2026/05/d_Image_a6mnka6mnka6mnka.jpg'); ?>" alt="<?php echo $is_en ? 'Working visit to Japan – Fenny van Wees' : 'Werkbezoek aan Japan – Fenny van Wees'; ?>" />
         <div style="padding: 40px 48px;">
             <div class="avw-over-article-meta">
                 <span>28 <?php echo $is_en ? 'October' : 'oktober'; ?> 2025</span>
