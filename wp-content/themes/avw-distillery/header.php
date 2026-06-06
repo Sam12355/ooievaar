@@ -547,15 +547,24 @@
             window.location.reload();
         }
 
-        // Update button labels on load to reflect current language
-        (function() {
+        // On page load, sync button state with actual Google Translate state
+        setTimeout(function() {
             var stored = document.cookie.match(/avw_lang=([a-z]{2})/);
             var cur = stored ? stored[1] : 'nl';
+
+            // Update button labels
             var label = document.getElementById('avw-lang-label');
             if (label) label.textContent = cur.toUpperCase();
             var mob = document.getElementById('avw-mob-lang-' + cur);
             if (mob) mob.classList.add('active');
-        })();
+
+            // Make sure Google Translate combo matches
+            var combo = document.querySelector('.goog-te-combo');
+            if (combo && cur !== 'nl') {
+                combo.value = cur;
+                combo.dispatchEvent(new Event('change'));
+            }
+        }, 1500);
 
         // Dropdown open/close
         (function() {
