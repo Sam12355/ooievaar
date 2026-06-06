@@ -2,6 +2,11 @@
 <html <?php language_attributes(); ?>>
 
 <head>
+    <!-- Clear Google Translate state immediately -->
+    <script>
+    document.cookie = 'googtrans=;path=/;expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+    document.cookie = 'googtrans=;domain=' + location.hostname + ';path=/;expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+    </script>
     <meta charset="<?php bloginfo('charset'); ?>" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>A. van Wees – Distilleerderij De Ooievaar</title>
