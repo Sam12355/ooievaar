@@ -288,6 +288,19 @@ function avw_auto_create_menu() {
 add_action('init', 'avw_auto_create_menu');
 
 /**
+ * Add target="_blank" to specific menu items
+ */
+function avw_menu_items_target_blank($items) {
+    foreach ($items as $item) {
+        if (in_array($item->title, array('Proeflokaal', 'Geneverschool'))) {
+            $item->target = '_blank';
+        }
+    }
+    return $items;
+}
+add_filter('wp_nav_menu_objects', 'avw_menu_items_target_blank');
+
+/**
  * RECURSIVE dropdown RENDERER: The engine that powers infinite depth
  */
 if (!function_exists('avw_render_dropdown')) {
@@ -301,7 +314,7 @@ if (!function_exists('avw_render_dropdown')) {
                 <div class="flex flex-col gap-4">
                     <?php foreach ($children as $child) : ?>
                         <div class="avw-has-drop relative">
-                            <a href="<?php echo esc_url($child->url); ?>" class="font-kurversbrug text-[#cdbca6]/80 text-[13px] uppercase tracking-wide hover:text-white flex items-center justify-between gap-4" style="text-decoration:none;">
+                            <a href="<?php echo esc_url($child->url); ?>" <?php echo $child->target ? 'target="' . esc_attr($child->target) . '"' : ''; ?> class="font-kurversbrug text-[#cdbca6]/80 text-[13px] uppercase tracking-wide hover:text-white flex items-center justify-between gap-4" style="text-decoration:none;">
                                 <?php echo esc_html($child->title); ?>
                                 <?php if (!empty($child->children)) : ?>
                                     <svg class="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
