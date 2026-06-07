@@ -172,7 +172,7 @@
             </div>
 
             <div class="flex justify-center mt-10 sm:mt-14">
-                <a href="<?php echo esc_url( home_url( '/assortment/' ) ); ?>"
+                <a href="<?php echo esc_url( home_url( '/assortiment/' ) ); ?>"
                     class="rounded-[34px] px-8 sm:px-10 py-3 sm:py-4 text-white font-kurversbrug text-[16px] sm:text-[18px] hover:opacity-90 transition-opacity"
                     style="background:linear-gradient(90deg,rgba(0,0,0,0.2),rgba(0,0,0,0.2)),#432B25; display:inline-block;">
                     <?php echo function_exists('pll__') ? pll__('Naar de WEBWINKEL') : 'Naar de WEBWINKEL'; ?>
