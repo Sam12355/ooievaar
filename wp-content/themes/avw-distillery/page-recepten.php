@@ -242,4 +242,69 @@ $gelegenheden = get_terms(array('taxonomy' => 'recept_gelegenheid', 'hide_empty'
 @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 </style>
 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchBtn = document.getElementById('rec-search-btn');
+    const productSelect = document.getElementById('rec-product');
+    const soortSelect = document.getElementById('rec-soort');
+    const gelegenheidSelect = document.getElementById('rec-gelegenheid');
+    const keywordInput = document.getElementById('rec-keyword');
+    const resultsWrap = document.getElementById('rec-results-wrap');
+    const resultsHeader = document.getElementById('rec-results-header');
+    const resultsGrid = document.getElementById('rec-results');
+    const spinner = document.getElementById('rec-spinner');
+
+    function performSearch() {
+        const product = productSelect.value;
+        const soort = soortSelect.value;
+        const gelegenheid = gelegenheidSelect.value;
+        const keyword = keywordInput.value;
+
+        spinner.classList.add('active');
+        resultsHeader.style.display = 'none';
+        resultsGrid.innerHTML = '';
+
+        fetch(ajaxurl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'action=avw_recept_search&product=' + encodeURIComponent(product) + '&soort=' + encodeURIComponent(soort) + '&gelegenheid=' + encodeURIComponent(gelegenheid) + '&keyword=' + encodeURIComponent(keyword)
+        })
+        .then(r => r.json())
+        .then(data => {
+            spinner.classList.remove('active');
+            if (data.success && data.data.length > 0) {
+                resultsHeader.textContent = data.data.length + ' ' + (data.data.length === 1 ? 'recept' : 'recepten') + ' gevonden';
+                resultsHeader.style.display = 'block';
+                resultsGrid.innerHTML = data.data.map(r => `
+                    <a href="${r.url}" class="avw-rec-card">
+                        ${r.image ? `<img src="${r.image}" alt="${r.title}" class="avw-rec-card-img" />` : '<div class="avw-rec-card-img-placeholder"></div>'}
+                        <div class="avw-rec-card-body">
+                            <h3 class="avw-rec-card-title">${r.title}</h3>
+                            <p class="avw-rec-card-excerpt">${r.excerpt}</p>
+                        </div>
+                    </a>
+                `).join('');
+            } else {
+                resultsHeader.textContent = 'Geen recepten gevonden';
+                resultsHeader.style.display = 'block';
+            }
+        })
+        .catch(e => {
+            spinner.classList.remove('active');
+            resultsHeader.textContent = 'Fout bij zoeken. Probeer later opnieuw.';
+            resultsHeader.style.display = 'block';
+            console.error('Recipe search error:', e);
+        });
+    }
+
+    searchBtn.addEventListener('click', performSearch);
+    [productSelect, soortSelect, gelegenheidSelect, keywordInput].forEach(el => {
+        el.addEventListener('keypress', e => e.key === 'Enter' && performSearch());
+    });
+
+    // Load all recipes on initial page load
+    performSearch();
+});
+</script>
+
 <?php get_footer(); ?>
