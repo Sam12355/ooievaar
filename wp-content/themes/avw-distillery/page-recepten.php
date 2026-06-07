@@ -264,7 +264,7 @@ document.addEventListener('DOMContentLoaded', function() {
         resultsHeader.style.display = 'none';
         resultsGrid.innerHTML = '';
 
-        fetch(ajaxurl, {
+        fetch('<?php echo admin_url("admin-ajax.php"); ?>', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: 'action=avw_recept_search&product=' + encodeURIComponent(product) + '&soort=' + encodeURIComponent(soort) + '&gelegenheid=' + encodeURIComponent(gelegenheid) + '&keyword=' + encodeURIComponent(keyword)
