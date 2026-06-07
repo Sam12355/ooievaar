@@ -103,6 +103,7 @@ get_header();
     padding-right: 32px;
     padding-top: 0;
     min-height: 0;
+    margin-top: -40px;
 }
 
 /* Login page: zero out all wrapper spacing */
