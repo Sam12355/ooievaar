@@ -319,8 +319,8 @@ $is_en    = ( strpos( $_SERVER['REQUEST_URI'], '/en/' ) !== false ) || ( strpos(
                 <img src="<?php echo get_template_directory_uri(); ?>/assets/distilleerderij5.png" alt="Distilleerderij" class="avw-over-carousel-slide" />
                 <img src="<?php echo get_template_directory_uri(); ?>/assets/distilleerderij6.png" alt="Distilleerderij" class="avw-over-carousel-slide" />
             </div>
-            <button class="avw-over-carousel-nav avw-over-carousel-prev" onclick="scrollCarousel(-1)">‹</button>
-            <button class="avw-over-carousel-nav avw-over-carousel-next" onclick="scrollCarousel(1)">›</button>
+            <button class="avw-over-carousel-nav avw-over-carousel-prev" onclick="scrollCarouselById('carousel-track', -1)">‹</button>
+            <button class="avw-over-carousel-nav avw-over-carousel-next" onclick="scrollCarouselById('carousel-track', 1)">›</button>
         </div>
 
         <!-- TWO COLUMN SECTION 1 -->
@@ -393,10 +393,28 @@ $is_en    = ( strpos( $_SERVER['REQUEST_URI'], '/en/' ) !== false ) || ( strpos(
         </div>
     </div>
 
-    <!-- PLACEHOLDER TABS (can be filled with content later) -->
+    <!-- TAB: GESCHIEDENIS -->
     <div class="avw-over-tab-content" id="tab-geschiedenis">
         <h2 class="avw-over-section-title">Geschiedenis</h2>
-        <p style="font-family: 'DM Sans', sans-serif; line-height: 1.8; color: rgba(54,34,29,0.8);">Content coming soon...</p>
+
+        <div class="avw-over-text">
+            <p>'A.van Wees distilleerderij de Ooievaar' stamt uit 1782. Adriaan van Wees, neemt in 1922 distilleerderij en wijnkoperij Henri Matveld anno 1883 over. Hij vestigt zich in de Driehoekstraat. Tot 1970 leverden wij onze producten in vaten en mandflessen aan cafés en restaurants door heel Nederland. Eind jaren zeventig kiest Cees van Wees voor de corebusiness: ambachtelijk distilleren. Hij stoot alle andere activiteiten af. Kleindochter Fenny van Wees heeft het stokje overgenomen. Achterkleindochter Nikki leert inmiddels ook het ambacht.</p>
+            <p>De reputatie van onze distilleerderij is gebaseerd op het verleden. Deze oorsprong, onze betrokkenheid bij de producten en extreme interesse in ons vak, houdt ons verre van massaproductie. Niet voor niets is ons ambacht fijndistillatie op de Nationale Inventaris Immaterieel Erfgoed geplaatst. Als hoeder van dit ooit zo befaamde Nederlands vakmanschap hebben wij ons verplicht het ambacht in stand te houden en uit te dragen.</p>
+            <p>Maar weinig mensen weten dat Nederland toonaangevend is geweest op het gebied van gedistilleerd. Nederlanders beheersten als eersten de kunst om uitstekende gedistilleerde producten te maken van landbouwproducten. Hun distilleertechnieken werden wereldwijd overgenomen.</p>
+        </div>
+
+        <!-- CAROUSEL -->
+        <div class="avw-over-carousel">
+            <div class="avw-over-carousel-track" id="carousel-track-geschiedenis">
+                <img src="<?php echo get_template_directory_uri(); ?>/assets/geschiedenis1.png" alt="Geschiedenis" class="avw-over-carousel-slide" />
+                <img src="<?php echo get_template_directory_uri(); ?>/assets/geschiedenis2.png" alt="Geschiedenis" class="avw-over-carousel-slide" />
+                <img src="<?php echo get_template_directory_uri(); ?>/assets/geschiedenis3.png" alt="Geschiedenis" class="avw-over-carousel-slide" />
+                <img src="<?php echo get_template_directory_uri(); ?>/assets/geschiedenis4.png" alt="Geschiedenis" class="avw-over-carousel-slide" />
+                <img src="<?php echo get_template_directory_uri(); ?>/assets/geschiedenis5.png" alt="Geschiedenis" class="avw-over-carousel-slide" />
+            </div>
+            <button class="avw-over-carousel-nav avw-over-carousel-prev" onclick="scrollCarouselById('carousel-track-geschiedenis', -1)">‹</button>
+            <button class="avw-over-carousel-nav avw-over-carousel-next" onclick="scrollCarouselById('carousel-track-geschiedenis', 1)">›</button>
+        </div>
     </div>
 
     <div class="avw-over-tab-content" id="tab-distilleerproces">
@@ -435,14 +453,10 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-function getSlideWidth() {
-    const track = document.getElementById('carousel-track');
-    return track.querySelector('.avw-over-carousel-slide').offsetWidth + 16; // width + gap
-}
-
-function scrollCarousel(direction) {
-    const track = document.getElementById('carousel-track');
-    const slideWidth = getSlideWidth();
+function scrollCarouselById(trackId, direction) {
+    const track = document.getElementById(trackId);
+    if (!track) return;
+    const slideWidth = track.querySelector('.avw-over-carousel-slide').offsetWidth + 16; // width + gap
     const maxScroll = track.scrollWidth - track.clientWidth;
 
     if (direction > 0) {
@@ -462,24 +476,27 @@ function scrollCarousel(direction) {
     }
 }
 
-// Auto-scroll the carousel every 3 seconds
+// Auto-scroll all carousels every 3 seconds
 document.addEventListener('DOMContentLoaded', function() {
-    const carousel = document.querySelector('.avw-over-carousel');
-    let autoScroll = setInterval(function() {
-        scrollCarousel(1);
-    }, 3000);
+    document.querySelectorAll('.avw-over-carousel').forEach(function(carousel) {
+        const track = carousel.querySelector('.avw-over-carousel-track');
+        if (!track || !track.id) return;
+        const trackId = track.id;
 
-    // Pause on hover
-    if (carousel) {
+        let autoScroll = setInterval(function() {
+            scrollCarouselById(trackId, 1);
+        }, 3000);
+
+        // Pause on hover
         carousel.addEventListener('mouseenter', function() {
             clearInterval(autoScroll);
         });
         carousel.addEventListener('mouseleave', function() {
             autoScroll = setInterval(function() {
-                scrollCarousel(1);
+                scrollCarouselById(trackId, 1);
             }, 3000);
         });
-    }
+    });
 });
 </script>
 
