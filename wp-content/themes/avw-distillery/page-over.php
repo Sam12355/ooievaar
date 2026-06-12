@@ -417,19 +417,89 @@ $is_en    = ( strpos( $_SERVER['REQUEST_URI'], '/en/' ) !== false ) || ( strpos(
         </div>
     </div>
 
+    <!-- TAB: DISTILLEERPROCES -->
     <div class="avw-over-tab-content" id="tab-distilleerproces">
         <h2 class="avw-over-section-title">Distilleerproces</h2>
-        <p style="font-family: 'DM Sans', sans-serif; line-height: 1.8; color: rgba(54,34,29,0.8);">Content coming soon...</p>
+
+        <h3 class="avw-over-subtitle">Subtiele geur en smaak dankzij vakkundig distilleren</h3>
+        <div class="avw-over-divider"></div>
+        <div class="avw-over-text">
+            <p>Bij Van Wees stoken we in koperen fijnketels tot 240 liter. Door vakkundig distilleren van de fijnste grondstoffen ontstaan producten met een subtiele geur en smaak. Brandewijn en moutwijn dienen als dragers van smaak. Brandewijn stoken we zelf. Moutwijn kopen wij bij branders (moutwijnstokers). We distilleren ze met jeneverbessen en kruiden nog een 4e en 5e keer. Zoals eeuwen geleden toen Amsterdamse fijndistillateurs moutwijn uit Weesp en Schiedam kochten en verfijnden. Fijndistillateurs zijn geen branders. Branders zijn geen fijndistillateurs. Ieder zijn vak.</p>
+        </div>
+
+        <!-- TWO COLUMN: text left, image right -->
+        <div class="avw-over-two-col" style="align-items: start;">
+            <div>
+                <h3 class="avw-over-subtitle">Alle ingrediënten zijn puur natuur</h3>
+                <div class="avw-over-divider"></div>
+                <div class="avw-over-text">
+                    <p>Onze producten worden gemaakt van distillaten. Creatieve composities van natuurlijke ingrediënten en dat proeft u. Dankzij onze kennis van vruchten, bloemen, planten, wortels, noten en zaden kunnen we een uitgebalanceerde smaak creëren zonder kunstmatige aroma's. Elk product is puur natuur, verkregen via het aloude proces van distilleren. Een techniek die zich eind 14e eeuw ontwikkelt. Eind 15e eeuw stookt men hoofdzakelijk brandewijn van wijnen. In de eeuwen erna worden graandistillaten ontwikkeld: moutwijn, ook wel Corenwijn genoemd. Pas in de 19e eeuw komt de techniek van fijndistillatie met name in Amsterdam tot volle wasdom en ontstaat de genever die wij nog steeds stoken. Dubbele Amsterdamse genevers en likeuren gestookt in ketels met een rectificatiebol verwerven wereldfaam.</p>
+
+                    <h3 class="avw-over-subtitle" style="margin-top: 32px;">Onze werkwijze</h3>
+                    <div class="avw-over-divider"></div>
+                    <ul>
+                        <li>Voor we gaan stoken vullen we de ketel met vaste en vloeibare ingrediënten.</li>
+                        <li>Dan verhitten we de ketel tot een temperatuur van ongeveer 78°C.</li>
+                        <li>De brandewijn (voor esprit) of moutwijn (genever) en de daarin opgeloste etherische oliën scheidt zich door verdamping af van het water en trekt via de helm van de ketel naar de rectificeerbol.</li>
+                        <li>Door het koelwater dat over de buitenkant van de rectificeerbol loopt, condenseert de damp. De condens belandt vervolgens via een serpentine in het koelvat eronder, waar het verder afkoelt.</li>
+                        <li>De geconcentreerde condens verlaat het koelvat via de uitloop en wordt daar opgevangen. Zo ontstaan de zogenaamde 'esprits' en geneverdistillaten die de basis vormen voor al onze producten.</li>
+                        <li>De laatste stap is het bepalen van het alcoholpercentage van de distillaten, waarna ze in vaten, stenen pot of RVS-tanks worden opgeslagen.</li>
+                    </ul>
+                </div>
+            </div>
+            <div>
+                <img src="<?php echo get_template_directory_uri(); ?>/assets/distilleerproces.png" alt="Distilleerproces" style="width: 100%; border-radius: 16px; display: block;" />
+            </div>
+        </div>
+
+        <!-- FULL WIDTH IMAGE -->
+        <div style="margin-top: 40px;">
+            <img src="<?php echo get_template_directory_uri(); ?>/assets/distilleerproces2.png" alt="Distilleerproces" style="width: 100%; border-radius: 16px; display: block;" />
+        </div>
     </div>
 
+    <!-- TAB: BOTTELARIJ -->
     <div class="avw-over-tab-content" id="tab-bottelarij">
         <h2 class="avw-over-section-title">Bottelarij</h2>
-        <p style="font-family: 'DM Sans', sans-serif; line-height: 1.8; color: rgba(54,34,29,0.8);">Content coming soon...</p>
+
+        <div class="avw-over-text">
+            <p>We bottelen al onze producten handmatig of halfautomatisch. Ook de afwerking van de kruiken en flessen – met kurk- en schroefdoppen, linten, krimpcapsules, etiketten en lakzegels – doen we voornamelijk met de hand.</p>
+        </div>
+
+        <!-- CAROUSEL -->
+        <div class="avw-over-carousel">
+            <div class="avw-over-carousel-track" id="carousel-track-bottelarij">
+                <img src="<?php echo get_template_directory_uri(); ?>/assets/bottelarij1.png" alt="Bottelarij" class="avw-over-carousel-slide" />
+                <img src="<?php echo get_template_directory_uri(); ?>/assets/bottelarij2.png" alt="Bottelarij" class="avw-over-carousel-slide" />
+                <img src="<?php echo get_template_directory_uri(); ?>/assets/bottelarij3.png" alt="Bottelarij" class="avw-over-carousel-slide" />
+                <img src="<?php echo get_template_directory_uri(); ?>/assets/bottelarij4.png" alt="Bottelarij" class="avw-over-carousel-slide" />
+                <img src="<?php echo get_template_directory_uri(); ?>/assets/bottelarij5.png" alt="Bottelarij" class="avw-over-carousel-slide" />
+            </div>
+            <button class="avw-over-carousel-nav avw-over-carousel-prev" onclick="scrollCarouselById('carousel-track-bottelarij', -1)">‹</button>
+            <button class="avw-over-carousel-nav avw-over-carousel-next" onclick="scrollCarouselById('carousel-track-bottelarij', 1)">›</button>
+        </div>
     </div>
 
+    <!-- TAB: LAGERKELDER -->
     <div class="avw-over-tab-content" id="tab-lagerkelder">
         <h2 class="avw-over-section-title">Lagerkelder</h2>
-        <p style="font-family: 'DM Sans', sans-serif; line-height: 1.8; color: rgba(54,34,29,0.8);">Content coming soon...</p>
+
+        <div class="avw-over-text">
+            <p>Afhankelijk van het type worden onze genevers op eikenhouten fusten bewaard, gerijpt of gelagerd. Naarmate ze langer op vat liggen, ontwikkelt zich een zachte, rijkgeschakeerde smaak. De kunst is om de genevers te bottelen wanneer de smaakbalans perfect is. Naast genevers lageren we meer producten. Zo bewaren we onze Kaneellikeur bijvoorbeeld tien jaar op vat en onze rums twee tot minimaal 15 jaar.</p>
+        </div>
+
+        <div style="margin-top: 40px;">
+            <h3 class="avw-over-subtitle">Echte oude genever</h3>
+            <div class="avw-over-divider"></div>
+            <div class="avw-over-text">
+                <p>Onze oude genever is écht oud; de oudste wordt maar liefst twintig jaar gelagerd. Een groot verschil met de zogenaamde 'oude' jenevers uit fabrieken: die worden direct na aanmaak gebotteld voor distributie en consumptie. Fabrieksjenevers zijn dus niet gerijpt.</p>
+            </div>
+        </div>
+
+        <!-- IMAGE -->
+        <div style="margin-top: 40px;">
+            <img src="<?php echo get_template_directory_uri(); ?>/assets/lagerkelder.png" alt="Lagerkelder" style="width: 100%; border-radius: 16px; display: block;" />
+        </div>
     </div>
 
 </div>
