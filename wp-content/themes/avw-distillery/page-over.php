@@ -15,6 +15,7 @@ $is_en    = ( strpos( $_SERVER['REQUEST_URI'], '/en/' ) !== false ) || ( strpos(
 <style>
 .avw-over-hero {
     width: 100vw;
+    height: 400px;
     position: relative;
     left: 50%;
     transform: translateX(-50%);
@@ -22,6 +23,8 @@ $is_en    = ( strpos( $_SERVER['REQUEST_URI'], '/en/' ) !== false ) || ( strpos(
     overflow: hidden;
     padding-top: 96px;
     padding-bottom: 56px;
+    display: flex;
+    align-items: center;
 }
 .avw-over-hero-img {
     position: absolute;
