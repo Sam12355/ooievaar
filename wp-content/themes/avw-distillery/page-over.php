@@ -435,11 +435,52 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+function getSlideWidth() {
+    const track = document.getElementById('carousel-track');
+    return track.querySelector('.avw-over-carousel-slide').offsetWidth + 16; // width + gap
+}
+
 function scrollCarousel(direction) {
     const track = document.getElementById('carousel-track');
-    const slideWidth = track.querySelector('.avw-over-carousel-slide').offsetWidth + 16; // width + gap
-    track.scrollLeft += slideWidth * direction * 3; // Scroll 3 slides at a time
+    const slideWidth = getSlideWidth();
+    const maxScroll = track.scrollWidth - track.clientWidth;
+
+    if (direction > 0) {
+        // Scrolling right — if at end, loop back to start
+        if (track.scrollLeft >= maxScroll - 5) {
+            track.scrollLeft = 0;
+        } else {
+            track.scrollLeft += slideWidth;
+        }
+    } else {
+        // Scrolling left — if at start, loop to end
+        if (track.scrollLeft <= 5) {
+            track.scrollLeft = maxScroll;
+        } else {
+            track.scrollLeft -= slideWidth;
+        }
+    }
 }
+
+// Auto-scroll the carousel every 3 seconds
+document.addEventListener('DOMContentLoaded', function() {
+    const carousel = document.querySelector('.avw-over-carousel');
+    let autoScroll = setInterval(function() {
+        scrollCarousel(1);
+    }, 3000);
+
+    // Pause on hover
+    if (carousel) {
+        carousel.addEventListener('mouseenter', function() {
+            clearInterval(autoScroll);
+        });
+        carousel.addEventListener('mouseleave', function() {
+            autoScroll = setInterval(function() {
+                scrollCarousel(1);
+            }, 3000);
+        });
+    }
+});
 </script>
 
 <?php get_footer(); ?>
