@@ -122,22 +122,27 @@ $is_en    = ( strpos( $_SERVER['REQUEST_URI'], '/en/' ) !== false ) || ( strpos(
     margin: 40px 0;
     background: #f5ede3;
     border-radius: 16px;
-    overflow: hidden;
+    padding: 16px;
 }
 
 .avw-over-carousel-track {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    display: flex;
     gap: 16px;
-    padding: 16px;
+    overflow-x: auto;
     scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.avw-over-carousel-track::-webkit-scrollbar {
+    display: none;
 }
 
 .avw-over-carousel-slide {
-    width: 100%;
+    flex: 0 0 calc((100% - 32px) / 3);
+    width: calc((100% - 32px) / 3);
     height: 280px;
     border-radius: 12px;
-    overflow: hidden;
     object-fit: cover;
     background: #ddd;
 }
@@ -255,6 +260,18 @@ $is_en    = ( strpos( $_SERVER['REQUEST_URI'], '/en/' ) !== false ) || ( strpos(
     .avw-over-tab-btn { padding: 12px 16px; font-size: 14px; }
     .avw-over-two-col { grid-template-columns: 1fr; gap: 32px; }
     .avw-over-carousel-nav { width: 40px; height: 40px; }
+    .avw-over-carousel-slide {
+        flex: 0 0 calc((100% - 16px) / 2);
+        width: calc((100% - 16px) / 2);
+        height: 220px;
+    }
+}
+@media (max-width: 560px) {
+    .avw-over-carousel-slide {
+        flex: 0 0 100%;
+        width: 100%;
+        height: 200px;
+    }
 }
 </style>
 
